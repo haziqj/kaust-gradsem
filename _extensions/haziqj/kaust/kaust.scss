@@ -59,6 +59,11 @@ $callout-color-important: kaust(mer);
 // Font (Noto Sans Arabic)
 @import url('https://fonts.cdnfonts.com/css/neo-sans-arabic'); 
 
+// Font (Pretendard Korean)
+// @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+
 $font-family-sans-serif: "Raleway", "Neo Sans Arabic", sans-serif !default;
 $presentation-font-size-root: 36px;
 
@@ -368,6 +373,7 @@ $selection-bg: kaust(tur) !default;
   bottom: 11px !important;
   left: 8px !important;
   color: mix(white, kaust(gry, neu), 30%) !important;
+  font-size: 70%;
 }
 
 // Hide logo and slide number on the title slide
@@ -377,7 +383,7 @@ $selection-bg: kaust(tur) !default;
 
 // Format for inline code and chunks
 .reveal .slides code{
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: kaust(bla);
   background-color: mix(kaust(gry, neu), white, 35%);
   padding: 0.05em;
@@ -389,14 +395,21 @@ $selection-bg: kaust(tur) !default;
 }
 
 div.cell-output.cell-output-stdout > pre > code {
-  /* Your styles here, e.g., */
-  font-size: 1.2em;  /* Adjust this value to your preference */
+  font-size: 1.2em;
   background-color: mix(kaust(blu, nshd), white, 0%);
   padding: 0.25em;
   border-radius: 0px;  
   // overflow-y: visible;
   overflow-y: auto;
-  max-height: 320px;
+  max-height: 600px;
+}
+
+div.cell-output.cell-output-stderr > pre > code {
+  font-size: 1.05em;
+  color: kaust(bla);
+  background-color: mix(kaust(gry, neu), white, 35%);
+  padding: 0.05em;
+  border-radius: 0px;  
 }
 
 // Make column text smaller
@@ -418,16 +431,32 @@ div.cell-output.cell-output-stdout > pre > code {
 }
 
 .reveal .thanks-slide {
-  background-color: kaust(tur);
+  background-color: rgba(kaust(tur), 0.85);
   display: grid;
   place-items: center;
   text-align: center;
   direction: rtl;
 }
 
+.reveal .thanks-slide ul {
+  direction: ltr;
+
+  li::marker {
+    color: white;
+  }
+}
+
+.reveal .thanks-slide a {
+  color: white;
+}
+
+.reveal .thanks-slide a:hover {
+  color: kaust(org);
+}
+
 // Make math fonts smaller
 span.math.inline, span.math.display {
-  font-size: 0.9em;  
+  font-size: 0.85em;  
 }
 
 // Reduce space between display equation
@@ -435,9 +464,9 @@ span.math.inline, span.math.display {
 .reveal .math.display,
 .reveal mjx-container[display="true"],   /* MathJax v3 */
 .reveal .katex-display {                 /* KaTeX */
-  margin-top: 1em !important;
+  margin-top: 0.6em !important;
   margin-bottom: 0.2em !important;
-  padding-bottom: -0.5em !important;
+  //padding-bottom: -0.5em !important;
 }
 
 /* When a paragraph WRAPS a display equation, reduce its margins */
@@ -485,7 +514,7 @@ span.math.inline, span.math.display {
 }
 
 .small-text {
-  font-size: 0.6em;
+  font-size: 0.8em;
   margin-top: -5px;
 }
 
@@ -614,10 +643,20 @@ div.figure {
   transform: translateY(12.5px);
 }
 
+.nudge-down-xs {
+  transform: translateY(5px);
+}
+
 .nudge-down-medium {
   transform: translateY(37.5px);
 }
 
 .nudge-down-large {
   transform: translateY(50px);
+}
+
+// Center text
+
+.reveal section div.center-h {
+	text-align: center;
 }
