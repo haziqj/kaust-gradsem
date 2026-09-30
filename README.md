@@ -1,26 +1,30 @@
-# Bias-Reduced Estimation of Structural Equation Models
+# Approximate Bayesian inference for structural equation models
 
-> **POLL**: <https://opinionstage.com/page/4a6d1509-d5fb-41bc-b956-7a8fe5e49750>
+> This talk reviews a fast approximate Bayesian SEM method that combines Laplace, variational Bayes, and Gaussian copula techniques to deliver near-MLE speed with MCMC-like inference, and is implemented in the R package INLAvaan.
 
-Finite-sample bias is a pervasive challenge in the estimation of structural equation models (SEMs), especially when sample sizes are small or measurement reliability is low. A range of methods have been proposed to improve finite-sample bias in the SEM literature, ranging from analytic bias corrections to resampling-based techniques, with each carrying trade-offs in scope, computational burden, and statistical performance. We apply the reduced-bias M-estimation framework (RBM, Kosmidis & Lunardon, 2024, J. R. Stat. Soc. Series B Stat. Methodol.) to SEMs. The RBM framework is attractive as it requires only first- and second-order derivatives of the log-likelihood, which renders it both straightforward to implement, and computationally more efficient compared to resampling-based alternatives such as bootstrap and jackknife. It is also robust to departures from modelling assumptions. Through extensive simulations studies under a range of experimental conditions, we illustrate that RBM estimators consistently reduce mean bias in the estimation of SEMs without inflating mean squared error. They also deliver improvements in both median bias and inference relative to maximum likelihood estimators, while maintaining robustness under non-normality. Our findings suggest that RBM offers a promising, practical, and broadly applicable tool for mitigating bias in the estimation of SEMs, particularly in small-sample research contexts.
+Structural equation models (SEM) are widely used to study causal pathways, latent constructs, and measurement error. Full Bayesian estimation via Markov chain Monte Carlo (MCMC), however, is often too slow for the complexity of modern applications. An approximate Bayesian approach to SEM is presented, drawing on ideas from the integrated nested Laplace approximation (INLA) framework. A Laplace approximation to the joint posterior is computed first, and its mean is then shifted by a variational Bayes correction to better capture the posterior mass. Each marginal is estimated by a simplified Laplace approximation, which profiles the posterior density efficiently along each parameter direction while correcting for asymmetry, yielding a parametric skew-normal fit. An efficient Gaussian copula sampling scheme then delivers the essential quantities: factor scores, model-fit indices, and credible intervals for nonlinear derived parameters such as indirect effects. The approach achieves speeds close to maximum likelihood estimation, while retaining the inferential richness of full Bayesian analysis. The methodology is implemented in the R package INLAvaan, and its speed and accuracy are illustrated against MCMC benchmarks on simulated and real data.
 
-Keywords: Structural equation models; growth curve models; small sample estimation; bias
-reduction; penalized likelihood
+Keywords: Bayesian Structural Equation Model; Integrated Nested Laplace Approximation
+(INLA); Approximate Bayesian Inference; Variational Bayes; Skew-Normal Distribution
 
 ## Citation
 
-> Jamil, H., Rosseel, Y., Kemp, O., & Kosmidis, I. (2025). Bias-Reduced Estimation of Structural Equation Models. *Manuscript in Submission*. [`arXiv`]().
+> Jamil, H., & Rue, H. (2026). *Approximate Bayesian inference for structural equation models using integrated nested Laplace approximations* (2603.25690 [stat.ME]). arXiv. https://doi.org/10.48550/arXiv.2603.25690
 
 Please cite this work as:
 
 ``` latex
-@online{jamil2025biasreduced,
-  title = {Bias-{{Reduced Estimation}} of {{Structural Equation Models}}},
-  author = {Jamil, Haziq and Rosseel, Yves and Kemp, Oliver and Kosmidis, Ioannis},
-  date = {2025},
-  abstract = {Finite-sample bias is a pervasive challenge in the estimation of structural equation models (SEMs), especially when sample sizes are small or measurement reliability is low. A range of methods have been proposed to improve finite-sample bias in the SEM literature, ranging from analytic bias corrections to resampling-based techniques, with each carrying trade-offs in scope, computational burden, and statistical performance. We apply the reduced-bias M-estimation framework (RBM, Kosmidis \& Lunardon, 2024, J. R. Stat. Soc. Series B Stat. Methodol.) to SEMs. The RBM framework is attractive as it requires only first- and second-order derivatives of the log-likelihood, which renders it both straightforward to implement, and computationally more efficient compared to resampling-based alternatives such as bootstrap and jackknife. It is also robust to departures from modelling assumptions. Through extensive simulations studies under a range of experimental conditions, we illustrate that RBM estimators consistently reduce mean bias in the estimation of SEMs without inflating mean squared error. They also deliver improvements in both median bias and inference relative to maximum likelihood estimators, while maintaining robustness under non-normality. Our findings suggest that RBM offers a promising, practical, and broadly applicable tool for mitigating bias in the estimation of SEMs, particularly in small-sample research contexts.},
-  langid = {english},
+@online{jamil2026approximate,
+  title = {Approximate {{Bayesian}} Inference for Structural Equation Models Using Integrated Nested {{Laplace}} Approximations},
+  author = {Jamil, Haziq and Rue, H\aa vard},
+  date = {2026},
+  number = {2603.25690 [stat.ME]},
+  eprint = {2603.25690},
+  eprinttype = {arXiv},
+  eprintclass = {stat.ME},
+  doi = {10.48550/arXiv.2603.25690},
+  url = {https://arxiv.org/abs/2603.25690},
+  organization = {arXiv},
   pubstate = {prepublished}
 }
-
 ```
