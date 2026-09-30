@@ -249,8 +249,24 @@ p3
 :::
 
 ::: {.column width="50%"}
+
+::: {.content-visible unless-meta="nogif"}
 <!-- Animated version of R/variational.R; regenerate with R/variational_anim.R -->
 ![](figures/variational.gif){width=100% fig-align="center"}
+:::
+
+::: {.content-hidden unless-meta="nogif"}
+```{r}
+#| label: variational
+#| fig-height: 2.8
+#| fig-width: 7
+#| file: "R/variational.R"
+#| fig-align: center
+#| out-width: 100%
+```
+
+:::
+
 :::
 
 :::

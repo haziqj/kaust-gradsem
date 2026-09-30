@@ -41,13 +41,22 @@ options(width = 80)
 
 <!-- Cast call: -->
 <!-- agg --theme nord --font-family "Fira Code" --font-size 35 --cols 49 --rows 12 inlavaan-kidney.cast inlavaan.gif -->
-::: {.content-visible unless-meta="params.nogif"}
+::: {.content-visible unless-meta="nogif"}
 ::: {.nudge-up-small}
 ![](figures/INLAvaan.gif){width=100% fig-align='center'}
 :::
+
+::: {.nudge-up}
+```{r, engine = "tikz", code = dag_tikz(5, psi_fixed = TRUE)}
+#| eval: true
+#| fig-align: center
+#| out-width: 95%
+```
 :::
 
-::: {.content-hidden unless-meta="params.nogif"}
+:::
+
+::: {.content-hidden unless-meta="nogif"}
 ```{r}
 #| label: inlavaan-demo
 #| echo: false
@@ -61,14 +70,15 @@ fit <- INLAvaan::asem(
 )
 timing(fit)
 ```
-:::
 
-::: {.nudge-up}
+::: {.nudge-down-small}
 ```{r, engine = "tikz", code = dag_tikz(5, psi_fixed = TRUE)}
 #| eval: true
 #| fig-align: center
 #| out-width: 95%
 ```
+:::
+
 :::
 
 :::
@@ -139,7 +149,17 @@ cat(paste0(summ, collapse = "\n"))
 
 - Interchangeable commands (c.f. `bsem()`) with `blavaan` [@merkle2021efficient] which interfaces with `Stan` [@carpenter2017stan].
 
+
+
+::: {.content-visible unless-meta="nogif"}
 ![](figures/blavaan-single.gif){fig-align="center" width="90%"}
+:::
+
+::: {.content-hidden unless-meta="nogif"}
+![](figures/blavaan-single.jpg){fig-align="center" width="90%"}
+:::
+
+
 
 
 ## Comparison to MCMC *(cont.)*

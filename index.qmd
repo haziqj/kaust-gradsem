@@ -31,7 +31,7 @@ execute:
   cache: true
 params:
   url: 'https://haziqj.ml/kaust-gradsem'
-  nogif: false  
+nogif: true
 ---
 
 ::: {.columns}
@@ -1005,7 +1005,13 @@ $$
 
 ## MCMC-based estimation *(cont.)*
 
+::: {.content-visible unless-meta="nogif"}
 ![](figures/samp_v_approx_900425.gif){width=100% fig-align='center'}
+:::
+
+::: {.content-hidden unless-meta="nogif"}
+![](figures/samp_v_approx_900425.png){width=100% fig-align='center'}
+:::
 
 ::: {.nudge-up-large}
 ::: {style="font-size: 90%;"}
