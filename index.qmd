@@ -20,7 +20,7 @@ author:
     orcid: 0000-0003-3298-1010
     affiliations: 
       - 'Research Specialist<br>BAYESCOMP @ CEMSE-KAUST'
-      - '<span style="font-style:normal;">[``r params$url``](`r params$url`)  |  [📥 PDF](https://haziqj.ml/imps26/slides.pdf)</span> '
+      - '<span style="font-style:normal;">[``r params$url``](`r params$url`)  |  [📥 PDF](https://haziqj.ml/kaust-gradsem/slides.pdf)</span> '
 date: 2026-10-08
 bibliography: refs.bib
 csl: https://raw.githubusercontent.com/citation-style-language/styles/refs/heads/master/apa.csl

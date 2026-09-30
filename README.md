@@ -7,6 +7,11 @@ Structural equation models (SEM) are widely used to study causal pathways, laten
 Keywords: Bayesian Structural Equation Model; Integrated Nested Laplace Approximation
 (INLA); Approximate Bayesian Inference; Variational Bayes; Skew-Normal Distribution
 
+## Links
+
+- [Seminar information](https://cemse.kaust.edu.sa/events/by-type/graduate-seminar/2026/10/08/approximate-bayesian-inference-structural-equation)
+- [R/INLAvaan](https://inlavaan.haziqj.ml)
+
 ## Citation
 
 > Jamil, H., & Rue, H. (2026). *Approximate Bayesian inference for structural equation models using integrated nested Laplace approximations* (2603.25690 [stat.ME]). arXiv. https://doi.org/10.48550/arXiv.2603.25690
