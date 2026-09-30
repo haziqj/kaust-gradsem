@@ -89,19 +89,19 @@ In the social sciences, latent variables are used to represent **constructs**---
 :::: {.columns}
 
 ::: {.column width="25%"}
-![*(Psychology)*<br>Personality traits](https://unsplash.com/photos/5bYxXawHOQg/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzU5MjMzMTM4fA&force=true&w=640){height=210px}
+![*(Psychology)*<br>Personality traits](figures/unsplash-psychology.jpg){height=210px}
 :::
 
 ::: {.column width="25%"}
-![*(Healthcare)*<br>Quality of life](https://unsplash.com/photos/hIgeoQjS_iE/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzU5MjI2Nzg4fA&force=true&w=640){height=210px}
+![*(Healthcare)*<br>Quality of life](figures/unsplash-healthcare.jpg){height=210px}
 :::
 
 ::: {.column width="25%"}
-![*(Political science)*<br>Social trust](https://unsplash.com/photos/zjeZXMU1SKE/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzU5MjMzNzIxfA&force=true&w=640){height=210px}
+![*(Political science)*<br>Social trust](figures/unsplash-polsci.jpg){height=210px}
 :::
 
 ::: {.column width="25%"}
-![*(Education)*<br>Competencies](https://unsplash.com/photos/oXV3bzR7jxI/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzU5MjMzNzM1fA&force=true&w=640){height=210px}
+![*(Education)*<br>Competencies](figures/unsplash-education.jpg){height=210px}
 :::
 
 ::::
