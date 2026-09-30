@@ -11,3 +11,4 @@
 
 **/*.quarto_ipynb
 R/p_simulations.RData
+/_freeze
