@@ -10,8 +10,8 @@
   <meta name="generator" content="quarto-1.9.23">
 
   <meta name="author" content="Haziq Jamil">
-  <meta name="dcterms.date" content="2025-10-16">
-  <title>Bias-reduced estimation of structural equation models</title>
+  <meta name="dcterms.date" content="2026-10-08">
+  <title>Approximate Bayesian inference for Structural Equation Models (SEM)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -102,6 +102,7 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
+      margin-bottom: 0em;
     }
     .hanging-indent div.csl-entry {
       margin-left:2em;
@@ -118,7 +119,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-4c3da5dc67fa1b09edb710e9cef642e5.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-e896485200e0f9e2c809f9345588e3a1.css">
   <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -218,7 +219,8 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="_extensions/haziqj/kaust/KAUST-beacon-with-logo.png" data-background-position="center" data-background-size="cover" class="quarto-title-block center">
-  <h1 class="title">Bias-reduced estimation of structural equation models</h1>
+  <h1 class="title">Approximate Bayesian inference for Structural Equation Models (SEM)</h1>
+  <p class="subtitle">The INLA approach</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -226,73 +228,60 @@
 Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
 </div>
         <p class="quarto-title-affiliation">
-            Research Specialist, BAYESCOMP @ CEMSE-KAUST
+            Research Specialist<br>BAYESCOMP @ CEMSE-KAUST
           </p>
         <p class="quarto-title-affiliation">
-            <span style="font-style:normal;"><a href="https://haziqj.ml/sembias-gradsem/"><code>https://haziqj.ml/sembias-gradsem/</code></a></span>
+            <span style="font-style:normal;"><a href="https://haziqj.ml/kaust-gradsem"><code>https://haziqj.ml/kaust-gradsem</code></a> | <a href="https://haziqj.ml/imps26/slides.pdf">📥 PDF</a></span>
           </p>
     </div>
 </div>
 
-  <p class="date">October 16, 2025</p>
+  <p class="date">October 8, 2026</p>
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
+<section class="slide level2">
+
 <div class="columns">
-<div class="column" style="width:33%;">
-<figure class="quarto-figure quarto-figure-center" style="text-align:center;">
-<a href="https://lavaan.org" target="_blank"> <img src="https://science-academy.ugent.be/sites/acugain/files/styles/medium_1_1/public/teachers/rosseel_yves.jpg?h=04d92ac6&amp;itok=GUYp9IIm" alt="Yves Rosseel" style="--size:220px; width:var(--size); height:var(--size);
-             object-fit:cover; object-position:top;"> </a>
-<figcaption>
-Yves Rosseel<br><em>Universiteit Gent</em> | R/<code>{lavaan}</code>
-</figcaption>
-</figure>
-</div><div class="column" style="width:33%;">
-<figure class="quarto-figure quarto-figure-center" style="text-align:center;">
-<img src="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/kemp/img_warwick.jpg" style="--size:220px; width:var(--size); height:var(--size);
-           object-fit:cover; object-position:top;">
-<figcaption>
-Ollie Kemp<br><em>University of Warwick</em>
-</figcaption>
-</figure>
-</div><div class="column" style="width:33%;">
-<figure class="quarto-figure quarto-figure-center" style="text-align:center;">
-<a href="https://www.ikosmidis.com" target="_blank"> <img src="https://www.ikosmidis.com/img/me.jpg" style="--size:220px; width:var(--size); height:var(--size);
-             object-fit:cover; object-position:top;"> </a>
-<figcaption>
-Ioannis Kosmidis<br><em>University of Warwick</em>
-</figcaption>
-</figure>
-</div></div>
-<div class="nudge-up">
+<div class="column" style="width:50%;">
+<div class="nudge-up-large">
+<p><img data-src="figures/BAYESCOMP-group-2025-v2.JPG"></p>
+</div>
+</div><div class="column" style="width:50%;">
 <blockquote>
-<p><strong>Jamil, H.</strong>, Rosseel, Y., Kemp, O., &amp; Kosmidis, I. (2025). Bias-Reduced Estimation of Structural Equation Models. <em>Manuscript in Submission</em>. <a href="https://doi.org/10.48550/arXiv.2509.25419"><code>arXiv:2509.25419</code></a>.</p>
+<p>Bayesian Computational Statistics and Modeling Research Group (BAYESCOMP)</p>
 </blockquote>
-<div class="nudge-down-small">
-<ul>
-<li>Source: <a href="https://github.com/haziqj/sembias-gradsem" class="uri">https://github.com/haziqj/sembias-gradsem</a></li>
-<li>Slides: <a href="https://haziqj.ml/sembias-gradsem/slides.pdf" class="uri">https://haziqj.ml/sembias-gradsem/slides.pdf</a></li>
-<li>R Package: <a href="https://github.com/haziqj/brlavaan" class="uri">https://github.com/haziqj/brlavaan</a></li>
-</ul>
+<div class="small-text">
+<p>Led by Prof.&nbsp;Håvard Rue—<em>Integrated Nested Laplace Approximation <span class="citation" data-cites="rue2009approximate">(INLA, <a href="#/references" role="doc-biblioref" onclick="">Rue et al., 2009</a>)</span></em></p>
+</div>
+</div></div>
+<div class="fragment">
+<div class="nudge-up-large">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/BAYESCOMP-applications-wordcloud.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
 </div>
 </div>
-<p><span class="absolute" style="bottom: -10px; right: 0px; "><img data-src="figures/qr.svg" width="245" height="245"></span></p>
-<p><span class="absolute" style="bottom: 210px; right: 235px; "><span class="bg-yel"><strong>poll</strong></span></span></p>
+</div>
+</div>
+</div>
 </section>
-<section id="context" class="slide level2">
-<h2>Context</h2>
-<div title="SEM in a nutshell">
+<section id="data-context" class="slide level2">
+<h2>Data context</h2>
+<div title="Structural equation models (SEM) in a nutshell">
 <div class="callout callout-note no-icon callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>SEM in a nutshell</strong></p>
+<p><strong>Structural equation models (SEM) in a nutshell</strong></p>
 </div>
 <div class="callout-content">
-<p>Analyse multivariate data <span class="math inline">\(\mathbf y=(y_1,\dots,y_p)^\top\)</span> to measure and relate hidden variables <span class="math inline">\(\boldsymbol\eta=(\eta_1,\dots,\eta_q)^\top\)</span>, <span class="math inline">\(q \ll p\)</span>, and uncover complex patterns.</p>
+<p>Analyse multivariate data <span class="math inline">\(\mathbf y=(y_1,\dots,y_p)^\top\)</span> to <span class="text-org"><strong>measure</strong></span> and <span class="text-grnn"><strong>relate</strong></span> <em>hidden</em> variables <span class="math inline">\(\boldsymbol\eta=(\eta_1,\dots,\eta_q)^\top\)</span>, <span class="math inline">\(q \ll p\)</span>, and uncover complex patterns.</p>
 </div>
 </div>
 </div>
 </div>
+<div class="fragment">
 <div class="nudge-up-small">
 <p>In the social sciences, latent variables are used to represent <strong>constructs</strong>—the <em>theoretical, unobserved</em> concepts of interest.</p>
 </div>
@@ -329,69 +318,588 @@ Ioannis Kosmidis<br><em>University of Warwick</em>
 </div></div>
 </div>
 
+</div>
 <aside><div>
 <p>Photo credits: Unsplash <a href="https://unsplash.com/photos/brown-fountain-pen-on-notebook-5bYxXawHOQg">@dtravisphd</a>, <a href="https://unsplash.com/photos/doctor-holding-red-stethoscope-hIgeoQjS_iE">@impulsq</a>, <a href="https://unsplash.com/photos/a-group-of-police-standing-next-to-each-other-zjeZXMU1SKE">@ev</a>, <a href="https://unsplash.com/photos/person-using-pencil-oXV3bzR7jxI">@benmullins</a>.</p>
 </div></aside></section>
-<section id="key-issue" class="slide level2">
-<h2>Key issue</h2>
-<p><span class="text-tur"><em>“Using SEMs in empirical research is often challenged by small sample sizes.”</em></span></p>
-<ul>
-<li>Why? Data collection is expensive, time-consuming, or difficult, or all of these!</li>
-</ul>
-<div class="fragment">
-<ul>
-<li>Rare populations:
-<ul>
-<li><strong><span class="citation" data-cites="quezada2016explanatory">Quezada et al. (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span>:</strong> Identifying factors of adjustment in pediatric burn patients to facilitate appropriate mental health interventions postinjury (<span class="math inline">\(n=51\)</span>).</li>
-<li><strong><span class="citation" data-cites="figueroa2021structural">Figueroa-Jiménez et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span>:</strong> Studying functional connectivity network on individuals with rare genetic disorders (<span class="math inline">\(n=22\)</span>).</li>
-<li><strong><span class="citation" data-cites="fabbricatore2023componentbased">Fabbricatore et al. (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></strong>: Assessment of psycho-social aspects and performance of elite swimmers (<span class="math inline">\(n=161\)</span>).</li>
-<li><strong><span class="citation" data-cites="manuela2013pacific">Manuela and Sibley (<a href="#/references" role="doc-biblioref" onclick="">2013</a>)</span></strong>: Validating self-report measures of identity on a unique cultural group (<span class="math inline">\(n=143\)</span>).</li>
-</ul></li>
-</ul>
+<section id="european-social-survey-ess-round-5" class="slide level2">
+<h2>European Social Survey (ESS) Round 5</h2>
+<p>Total <span class="math inline">\(n=52,458\)</span> respondents from 27 countries. Example of items measuring the construct <em>“Trust in Police Effectiveness”</em>:</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<div id="mcopiuexni" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mcopiuexni table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mcopiuexni thead, #mcopiuexni tbody, #mcopiuexni tfoot, #mcopiuexni tr, #mcopiuexni td, #mcopiuexni th {
+  border-style: none;
+}
+
+#mcopiuexni p {
+  margin: 0;
+  padding: 0;
+}
+
+#mcopiuexni .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 85%;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mcopiuexni .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mcopiuexni .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mcopiuexni .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mcopiuexni .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mcopiuexni .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mcopiuexni .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mcopiuexni .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mcopiuexni .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mcopiuexni .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mcopiuexni .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mcopiuexni .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mcopiuexni .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mcopiuexni .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mcopiuexni .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mcopiuexni .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mcopiuexni .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mcopiuexni .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mcopiuexni .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mcopiuexni .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mcopiuexni .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mcopiuexni .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mcopiuexni .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mcopiuexni .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mcopiuexni .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mcopiuexni .gt_left {
+  text-align: left;
+}
+
+#mcopiuexni .gt_center {
+  text-align: center;
+}
+
+#mcopiuexni .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mcopiuexni .gt_font_normal {
+  font-weight: normal;
+}
+
+#mcopiuexni .gt_font_bold {
+  font-weight: bold;
+}
+
+#mcopiuexni .gt_font_italic {
+  font-style: italic;
+}
+
+#mcopiuexni .gt_super {
+  font-size: 65%;
+}
+
+#mcopiuexni .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mcopiuexni .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mcopiuexni .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mcopiuexni .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mcopiuexni .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mcopiuexni .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mcopiuexni .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#mcopiuexni .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mcopiuexni div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;" data-quarto-disable-processing="true" data-quarto-bootstrap="false">
+  <colgroup>
+    <col style="width:65px;">
+    <col>
+  </colgroup>
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Ser.">Ser.</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Question">Question</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Ser." class="gt_row gt_left">D12</td>
+<td headers="Question" class="gt_row gt_left">Based on what you have heard or your own experience how successful do you think the police are at preventing crimes in [country] where violence is used or threatened?</td></tr>
+    <tr><td headers="Ser." class="gt_row gt_left">D13</td>
+<td headers="Question" class="gt_row gt_left">How successful do you think the police are at catching people who commit house burglaries in [country]?</td></tr>
+    <tr><td headers="Ser." class="gt_row gt_left">D14</td>
+<td headers="Question" class="gt_row gt_left">If a violent crime were to occur near to where you live and the police were called, how slowly or quickly do you think they would arrive at the scene?</td></tr>
+  </tbody>
+  
+</table>
 </div>
-<div class="fragment">
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p><br> <img data-src="figures/scale.png"></p>
+</div></div>
+
+<aside><div>
+<p>Data available from <span class="citation" data-cites="ess2023ess5">European Social Survey European Research Infrastructure (ESS ERIC) (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span>.</p>
+</div></aside></section>
+<section id="european-social-survey-ess-round-5-cont." class="slide level2">
+<h2>European Social Survey (ESS) Round 5 <em>(cont.)</em></h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="nudge-up">
 <ul>
-<li>SEM is desirable, but small <span class="math inline">\(n \Rightarrow\)</span> poor finite-sample performance (esp.&nbsp;bias).</li>
+<li><p>Modelling procedural fairness theory linking trust, legitimacy, and compliance with authorities <span class="citation" data-cites="jackson2011developing jackson2011trust">(<a href="#/references" role="doc-biblioref" onclick="">Jackson, Bradford, et al., 2011</a>; <a href="#/references" role="doc-biblioref" onclick="">Jackson, Hough, et al., 2011</a>)</span>.</p></li>
+<li><p>Big and layered data suited for Bayesian approaches. But model fit and evaluation can be computationally challenging or time-consuming.</p></li>
+<li><p>Often, country-level effects are ignored, but they can be crucial in understanding the variability in the latent constructs across countries.</p></li>
 </ul>
 </div>
 </section>
+<section id="programme-for-international-student-assessment-pisa" class="slide level2">
+<h2>Programme for International Student Assessment (PISA)</h2>
+<div class="columns">
+<div class="column" style="width:3.33%;">
+
+</div><div class="column" style="width:55%;">
+<p><img data-src="figures/pisa2025.jpeg"></p>
+</div><div class="column" style="width:3.33%;">
+
+</div><div class="column" style="width:35%;">
+<p><a href="https://www.youtube.com/shorts/hIzX6r3IQbg"><img data-src="figures/economist.png"></a></p>
+</div><div class="column" style="width:3.33%;">
+
+</div></div>
+</section>
+<section id="pisa-cont." class="slide level2">
+<h2>PISA <em>(cont.)</em></h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="nudge-up">
+<ul>
+<li><p>PISA uses 2PL <em>item response theory (IRT)</em> models to measure unobserved proficiency from item responses.</p></li>
+<li><p><strong>Estimation involves large-scale, multi-group calibration and latent population modelling</strong>, with incomplete forms and complex survey sampling.</p></li>
+<li><p>Population inference uses <em>plausible values</em> (draws from students’ conditional proficiency posteriors), given fitted item and population parameters.</p></li>
+</ul>
+</div>
+</section>
+<section id="advancing-scalable-bayesian-methods-for-latent-variable-modelling" class="slide level2">
+<h2>Advancing scalable Bayesian methods for latent variable modelling</h2>
+<h3 id="håvard-rue-pi-haziq-jamil-co-i">Håvard Rue (PI) + Haziq Jamil (co-I)</h3>
+<div class="nudge-down">
+<div class="small-text">
+<blockquote>
+
+<ul>
+<li><strong>Jamil, H.</strong>, &amp; Rue, H. (2026a). <em>Approximate Bayesian inference for structural equation models using integrated nested Laplace approximations</em> (<a href="https://doi.org/10.48550/arXiv.2603.25690"><code>arXiv:2603.25690 [stat.ME]</code></a>).<sup>1</sup></li>
+<li><strong>Jamil, H.</strong>, &amp; Rue, H. (2026b). <em>Implementation and workflows for INLA-based approximate Bayesian structural equation modelling</em>(<a href="https://doi.org/10.48550/arXiv.2604.00671"><code>arXiv:2604.00671 [stat.CO]</code></a>).<sup>1</sup></li>
+<li>Alhyari, M., <strong>Jamil, H.</strong>, Montcho, H., &amp; Rue, H. (2026). <em>Deterministic Leave-One-Cluster-Out Cross-Validation for Multilevel Bayesian Structural Equation Models</em> (<a href="https://doi.org/10.48550/arXiv.2609.00670"><code>arXiv:2609.00670 [stat.ME]</code></a>).<sup>1</sup></li>
+<li>R Package: <a href="https://github.com/haziqj/INLAvaan" class="uri">https://github.com/haziqj/INLAvaan</a></li>
+</ul>
+
+</blockquote>
+</div>
+<p>Supported by the 2025 KAUST Competitive Research Grant (CRG)<sup>2</sup>.</p>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Under review at Psychometrika (<a href="https://www.scimagojr.com/journalsearch.php?q=14061&amp;tip=sid&amp;clean=0">Q1, Applied Mathematics</a>).</p></li><li id="fn2"><p><a href="https://bayescomp.kaust.edu.sa/articles/2026/03/10/bayescomp-group-secures-crg-funding-revolutionize-latent-variable-modeling" class="uri">https://bayescomp.kaust.edu.sa/articles/2026/03/10/bayescomp-group-secures-crg-funding-revolutionize-latent-variable-modeling</a></p></li></ol></aside></section>
 <section id="outline" class="slide level2">
 <h2>Outline</h2>
 <div class="columns">
-<div class="column" style="width:60%;">
+<div class="column" style="width:80%;">
 <ol type="1">
 <li><strong>Brief overview of SEMs</strong>
 <ul>
 <li>Motivating example</li>
-<li>ML estimation and inference</li>
-<li>Examples of SEMs
+<li>Bayesian inference</li>
+<li>Marginal likelihood</li>
+</ul></li>
+<li><strong>INLA-based inference</strong>
 <ul>
-<li>Two-factor SEM</li>
-<li>Latent growth models</li>
+<li>Joint Gaussian approximation with variational mean correction</li>
+<li>Skew-normal Laplace profiling of posterior marginals</li>
+<li>Gaussian copula sampling</li>
 </ul></li>
-</ul></li>
-<li><strong>Bias reducing methods</strong>
-<ul>
-<li>What is bias?</li>
-<li>A review of bias reduction methods</li>
-<li>Reduced-Bias <span class="math inline">\(M\)</span>-estimation (RBM)
-<ul>
-<li>Implicit correction</li>
-<li>Explicit correction</li>
-</ul></li>
-</ul></li>
-<li><strong>Simulation studies and results</strong></li>
+<li><strong>The INLAvaan R package</strong></li>
 </ol>
-</div><div class="column" style="width:40%;">
-<br> <br>
-<center>
-<span class="center"><span class="bg-yel"><strong>poll</strong></span></span>
-</center>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/qr.svg" class="quarto-figure quarto-figure-center" height="350"></p>
-</figure>
-</div>
 </div></div>
 <p><span class="math display">\[
 \definecolor{kaustorg}{RGB}{241, 143, 0}
@@ -416,12 +924,504 @@ Ioannis Kosmidis<br><em>University of Warwick</em>
 <div class="columns">
 <div class="column" style="width:48%;">
 <p>Observe <span class="math inline">\(p=6\)</span> variables for each patient:</p>
+<div class="cell">
+<div class="cell-output-display" data-html-table-processing="none">
+<div id="zinwswxiqt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+#zinwswxiqt table {
+  font-family: Raleway, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#zinwswxiqt thead, #zinwswxiqt tbody, #zinwswxiqt tfoot, #zinwswxiqt tr, #zinwswxiqt td, #zinwswxiqt th {
+  border-style: none;
+}
+
+#zinwswxiqt p {
+  margin: 0;
+  padding: 0;
+}
+
+#zinwswxiqt .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 25px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 100%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#zinwswxiqt .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zinwswxiqt .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zinwswxiqt .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zinwswxiqt .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zinwswxiqt .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zinwswxiqt .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zinwswxiqt .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zinwswxiqt .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#zinwswxiqt .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#zinwswxiqt .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zinwswxiqt .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zinwswxiqt .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zinwswxiqt .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zinwswxiqt .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zinwswxiqt .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#zinwswxiqt .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#zinwswxiqt .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#zinwswxiqt .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zinwswxiqt .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#zinwswxiqt .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zinwswxiqt .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zinwswxiqt .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zinwswxiqt .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zinwswxiqt .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zinwswxiqt .gt_left {
+  text-align: left;
+}
+
+#zinwswxiqt .gt_center {
+  text-align: center;
+}
+
+#zinwswxiqt .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zinwswxiqt .gt_font_normal {
+  font-weight: normal;
+}
+
+#zinwswxiqt .gt_font_bold {
+  font-weight: bold;
+}
+
+#zinwswxiqt .gt_font_italic {
+  font-style: italic;
+}
+
+#zinwswxiqt .gt_super {
+  font-size: 65%;
+}
+
+#zinwswxiqt .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#zinwswxiqt .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#zinwswxiqt .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#zinwswxiqt .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#zinwswxiqt .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#zinwswxiqt .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#zinwswxiqt .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#zinwswxiqt .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#zinwswxiqt div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Variable"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Indicator">Indicator</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Description">Description</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Unit">Unit</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Variable" class="gt_row gt_left"><span data-qmd-base64="PHNwYW4gY2xhc3M9Im1hdGggaW5saW5lIiBzdHlsZT0iY29sb3I6IzUyODRDNCI+XFwoeV8xXFwpPC9zcGFuPg=="><span class="gt_from_md"><span class="math inline" style="color:#5284C4">\(y_1\)</span></span></span></td>
+<td headers="Indicator" class="gt_row gt_left">HbA1c</td>
+<td headers="Description" class="gt_row gt_left">3-month avg. blood glucose</td>
+<td headers="Unit" class="gt_row gt_left">%</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left"><span data-qmd-base64="PHNwYW4gY2xhc3M9Im1hdGggaW5saW5lIiBzdHlsZT0iY29sb3I6IzUyODRDNCI+XFwoeV8yXFwpPC9zcGFuPg=="><span class="gt_from_md"><span class="math inline" style="color:#5284C4">\(y_2\)</span></span></span></td>
+<td headers="Indicator" class="gt_row gt_left">FPG</td>
+<td headers="Description" class="gt_row gt_left">Fasting plasma glucose</td>
+<td headers="Unit" class="gt_row gt_left">mmol/L</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left"><span data-qmd-base64="PHNwYW4gY2xhc3M9Im1hdGggaW5saW5lIiBzdHlsZT0iY29sb3I6IzUyODRDNCI+XFwoeV8zXFwpPC9zcGFuPg=="><span class="gt_from_md"><span class="math inline" style="color:#5284C4">\(y_3\)</span></span></span></td>
+<td headers="Indicator" class="gt_row gt_left">Insulin</td>
+<td headers="Description" class="gt_row gt_left">Fasting insulin level</td>
+<td headers="Unit" class="gt_row gt_left">µU/mL</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left"><span data-qmd-base64="PHNwYW4gY2xhc3M9Im1hdGggaW5saW5lIiBzdHlsZT0iY29sb3I6I2IxMGYyZSI+XFwoeV80XFwpPC9zcGFuPg=="><span class="gt_from_md"><span class="math inline" style="color:#b10f2e">\(y_4\)</span></span></span></td>
+<td headers="Indicator" class="gt_row gt_left">PCr</td>
+<td headers="Description" class="gt_row gt_left">Plasma creatinine</td>
+<td headers="Unit" class="gt_row gt_left">µmol/L</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left"><span data-qmd-base64="PHNwYW4gY2xhc3M9Im1hdGggaW5saW5lIiBzdHlsZT0iY29sb3I6I2IxMGYyZSI+XFwoeV81XFwpPC9zcGFuPg=="><span class="gt_from_md"><span class="math inline" style="color:#b10f2e">\(y_5\)</span></span></span></td>
+<td headers="Indicator" class="gt_row gt_left">ACR</td>
+<td headers="Description" class="gt_row gt_left">Albumin–creatinine ratio</td>
+<td headers="Unit" class="gt_row gt_left">mg/g</td></tr>
+    <tr><td headers="Variable" class="gt_row gt_left"><span data-qmd-base64="PHNwYW4gY2xhc3M9Im1hdGggaW5saW5lIiBzdHlsZT0iY29sb3I6I2IxMGYyZSI+XFwoeV82XFwpPC9zcGFuPg=="><span class="gt_from_md"><span class="math inline" style="color:#b10f2e">\(y_6\)</span></span></span></td>
+<td headers="Indicator" class="gt_row gt_left">BUN</td>
+<td headers="Description" class="gt_row gt_left">Blood urea nitrogen</td>
+<td headers="Unit" class="gt_row gt_left">mmol/L</td></tr>
+  </tbody>
+  
+</table>
+</div>
+</div>
+</div>
 </div><div class="column" style="width:2%;">
 
 </div><div class="column" style="width:50%;">
 <div class="fragment">
 <div class="nudge-down">
-<p>“<em>casewise</em>” thinking leads to <span class="math display">\[
+<p>“<em>piecemeal</em>” thinking leads to <span class="math display">\[
 \small
 \begin{align*}
 \textcolor{kaustmer}{y_{4}} &amp;= \beta_0^{(4)} + \beta_1^{(4)} \textcolor{kaustblu}{y_{1}} + \beta_2^{(4)} \textcolor{kaustblu}{y_{2}} + \beta_3^{(4)} \textcolor{kaustblu}{y_{3}} + \epsilon^{(4)} \\
@@ -438,7 +1438,7 @@ Ioannis Kosmidis<br><em>University of Warwick</em>
 </div></div>
 
 <aside><div>
-<p>Example adapted from <span class="citation" data-cites="song2012basic">Song and Lee (<a href="#/references" role="doc-biblioref" onclick="">2012</a>)</span>.</p>
+<p>Example adapted from <span class="citation" data-cites="song2012basic">Song &amp; Lee (<a href="#/references" role="doc-biblioref" onclick="">2012</a>)</span>.</p>
 </div></aside></section>
 <section id="covariance-based-approach" class="slide level2">
 <h2>Covariance-based approach</h2>
@@ -446,35 +1446,139 @@ Ioannis Kosmidis<br><em>University of Warwick</em>
 <div class="column" style="width:45%;">
 <div class="nudge-up-small">
 <p>Sample correlation matrix looks like this<sup>1</sup>:</p>
+<div class="nudge-up-small">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div><div class="column" style="width:55%;">
-<div class="nudge-down-medium">
+<div class="nudge-down">
 <ul>
 <li>The data suggests clustering of variables
 <ul>
 <li><span class="text-blu"><span class="math inline">\(y_1\)</span>,<span class="math inline">\(y_2\)</span>,<span class="math inline">\(y_3\)</span></span> measure <em>glycemic control</em> (<span class="text-blu"><span class="math inline">\(\texttt{GlyCon}\)</span></span>)</li>
 <li><span class="text-mer"><span class="math inline">\(y_4\)</span>,<span class="math inline">\(y_5\)</span>,<span class="math inline">\(y_6\)</span></span> measure <em>kidney health</em> (<span class="text-mer"><span class="math inline">\(\texttt{KdnHlt}\)</span></span>)</li>
 </ul></li>
-<li>There is an element of dimension-reduction; much needed for analysing (correlated) multivariate data.</li>
 </ul>
+<!-- - There is an element of dimension-reduction; much needed for analysing (correlated) multivariate data. -->
 <div class="fragment">
 <ul>
 <li><p>Easier to hypothesize relationships, e.g. <span class="math display">\[
 {\color{kaustmer}\texttt{KdnHlt}} = \alpha + \beta \,  {\color{kaustblu}\texttt{GlyCon}} + \texttt{error}
 \]</span></p></li>
-<li><p>SEM is about modelling the <u>covariance structure</u> of the data, <span class="math display">\[
-\boldsymbol\Sigma = \boldsymbol\Sigma(\vartheta).
-\]</span></p></li>
+<li><p>But these are unobserved—we only see their <em>footprint</em> on the correlations: items in a cluster share a latent cause, and cross-cluster correlation flows through <span class="math inline">\(\beta\)</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="nudge-up-xs">
+<ul>
+<li>SEM is about modelling the <u>covariance structure</u> of the data, <span class="math display">\[
+\boldsymbol\Sigma = \boldsymbol\Sigma(\boldsymbol\vartheta),
+\]</span> where <span class="math inline">\(\boldsymbol\vartheta\)</span> are model parameters.</li>
 </ul>
 </div>
 </div>
+</div>
 </div></div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Simulated data, from a two-factor SEM (<span class="math inline">\(n=1000\)</span>).</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>Simulated data, from a two-factor SEM (<span class="math inline">\(n=1000\)</span>).</p></li></ol></aside></section>
+<section id="directed-acyclic-graph-dag" class="slide level2">
+<h2>Directed acyclic graph (DAG)</h2>
+<div class="r-stack" style="width: 980px; margin: 0 auto;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="4">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="5">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="nudge-up">
+<div class="fragment" data-fragment-index="1">
+<ul>
+<li><strong>Measurement model:</strong> loadings <span class="math inline">\(\color{kaustpur}\lambda\)</span>, intercepts <span class="math inline">\(\color{Gray}\nu\)</span>, residual (co)variances <span class="math inline">\(\color{kaustorg}\theta\)</span>.</li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="4">
+<ul>
+<li><strong>Structural model:</strong> regression coefficients <span class="math inline">\(\color{kaustgrn}\beta\)</span>, latent (co)variances <span class="math inline">\(\color{kausttur}\psi\)</span>.</li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="6">
+<ul>
+<li>Collect free parameters in <span class="math inline">\(\boldsymbol\vartheta \in\mathbb R^m\)</span>, where <span class="math inline">\(m &lt; p(p+1)/2 + p\)</span>.</li>
+</ul>
+</div>
+</div>
+</section>
 <section id="sem-equations" class="slide level2">
 <h2>SEM equations</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<div class="nudge-up">
+<div class="column" style="width:48%;">
+<div style="font-size: 90%;">
 <p><span class="math display">\[
 \small
 \begin{gathered}
@@ -488,6 +1592,15 @@ y_6
 \end{pmatrix}
 =
 \begin{pmatrix}
+\nu_1 \\
+\nu_2 \\
+\nu_3 \\
+\nu_4 \\
+\nu_5 \\
+\nu_6
+\end{pmatrix}
++
+\begin{pmatrix}
 \textcolor{kaustpur}{\lambda_{11}} &amp; 0 \\
 \textcolor{kaustpur}{\lambda_{21}} &amp; 0 \\
 \textcolor{kaustpur}{\lambda_{31}} &amp; 0 \\
@@ -500,6 +1613,7 @@ y_6
 \eta_2
 \end{pmatrix}
 +
+{\color{Gray}
 \begin{pmatrix}
 \epsilon_1 \\
 \epsilon_2 \\
@@ -507,12 +1621,17 @@ y_6
 \epsilon_4 \\
 \epsilon_5 \\
 \epsilon_6
-\end{pmatrix} \\[1em]
+\end{pmatrix}} \\[1.1em]
 \begin{pmatrix}
 \eta_1 \\
 \eta_2
 \end{pmatrix}
 =
+\begin{pmatrix}
+\alpha_1 \\
+\alpha_2
+\end{pmatrix}
++
 \begin{pmatrix}
 0 &amp; 0 \\
 {\color{kaustgrn}\beta} &amp; 0 \\
@@ -522,360 +1641,736 @@ y_6
 \eta_2
 \end{pmatrix}
 +
+{\color{Gray}
 \begin{pmatrix}
 \zeta_1 \\
 \zeta_2
-\end{pmatrix}
+\end{pmatrix}}
 \end{gathered}
 \]</span></p>
+</div>
 <div class="fragment">
 <div class="nudge-up-small">
 <p>Or, more compactly as</p>
-<div class="nudge-up">
-<p><span class="math display">\[
-\begin{gathered}
-\mathbf y = {\color{Gray}\boldsymbol\nu +\,}  {\color{kaustpur}\boldsymbol\Lambda} \boldsymbol\eta + \boldsymbol\epsilon \\
-\boldsymbol\eta = {\color{Gray}\boldsymbol\alpha +\,} {\color{kaustgrn}\mathbf B} \boldsymbol\eta + \boldsymbol\zeta
-\end{gathered}
-\]</span></p>
-<p>with assumptions <span class="math inline">\(\boldsymbol\epsilon\sim\operatorname{N}_p(\mathbf 0, {\color{kaustorg}\boldsymbol\Theta})\)</span>, <span class="math inline">\(\boldsymbol\zeta\sim\operatorname{N}_q(\mathbf 0, {\color{kausttur}\boldsymbol\Psi})\)</span>, and <span class="math inline">\(\operatorname{cov}(\boldsymbol\epsilon, \boldsymbol\zeta)=\mathbf 0\)</span>.</p>
-</div>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="fragment">
-<ul>
-<li><p>SEM parameters include the free entries of <span class="math inline">\(\color{Gray}\boldsymbol\nu\)</span>, <span class="math inline">\(\color{kaustpur}\boldsymbol\Lambda\)</span>, <span class="math inline">\(\color{kaustorg}\boldsymbol\Theta\)</span>, <span class="math inline">\(\color{Gray}\boldsymbol\alpha\)</span>, <span class="math inline">\(\color{kaustgrn}\mathbf B\)</span>, and <span class="math inline">\(\color{kausttur}\boldsymbol\Psi\)</span>.</p></li>
-<li><p>Dump all in <span class="math inline">\(\vartheta \in\mathbb R^m\)</span>, where <span class="math inline">\(m &lt; p(p+1)/2 {\color{Gray} \,+\, p}\)</span>.</p></li>
-<li><p>Sometimes, not interested in mean structure, so <span class="math inline">\(\color{Gray}\boldsymbol\nu\)</span> and <span class="math inline">\(\color{Gray}\boldsymbol\alpha\)</span> are dropped.</p></li>
-</ul>
-</div>
-</div></div>
-</section>
-<section id="ml-estimation" class="slide level2">
-<h2>ML estimation</h2>
-<ul>
-<li>It can be shown that the normal SEM reduces to <span class="math inline">\(\mathbf y\sim \text{N}_p\big(\boldsymbol\mu(\vartheta), \boldsymbol\Sigma(\vartheta)\big)\)</span>, where <span id="eq-margsem"><span class="math display">\[
-\begin{align}
-\boldsymbol\mu(\vartheta) &amp;= \boldsymbol\nu + \boldsymbol\Lambda (\mathbf I - \mathbf B)^{-1} \boldsymbol\alpha  \\
-\boldsymbol\Sigma(\vartheta) &amp;=
-\underbrace{\boldsymbol\Lambda (\mathbf I - \mathbf B)^{-1} \boldsymbol\Psi (\mathbf I - \mathbf B)^{-\top} \boldsymbol\Lambda^\top}_{\boldsymbol\Sigma^*(\vartheta)} + \boldsymbol\Theta
-\end{align}
-\tag{1}\]</span></span></li>
-</ul>
-<div class="fragment">
-<ul>
-<li>Suppose we observe <span class="math inline">\(\mathcal Y= \{\mathbf y_1,\dots,\mathbf y_n\}\)</span>. ML estimation maximises (up to a constant) the log-likelihood <span id="eq-margloglik"><span class="math display">\[
-\ell(\vartheta)
-= -\frac{n}{2}\Bigl[
-\log \bigl|\boldsymbol\Sigma(\vartheta)\bigr|
-+ \operatorname{tr} \bigl(\boldsymbol\Sigma(\vartheta)^{-1} \mathbf S\bigr)
-{\color{Gray}+ \bigl(\bar {\mathbf y} - \boldsymbol\mu(\vartheta)\bigr)^{\top}
-  \boldsymbol\Sigma(\vartheta)^{-1}
-  \bigl(\bar {\mathbf y} - \boldsymbol\mu(\vartheta)\bigr)}
-\Bigr]
-\tag{2}\]</span></span> where
-<ul>
-<li><span class="math inline">\(\mathbf S = \frac{1}{n}\sum_{i=1}^n (\mathbf y_i - \bar{\mathbf y})(\mathbf y_i - \bar{\mathbf y})^\top\)</span> is the (biased) sample covariance matrix; and</li>
-<li><span class="math inline">\(\bar{\mathbf y} = \frac{1}{n}\sum_{i=1}^n \mathbf y_i\)</span> is the sample mean.</li>
-</ul></li>
-</ul>
-<div class="nudge-down-small">
-<ul>
-<li>Clearly, the MLE aims to minimise the discrepancy between <span class="math inline">\(\mathbf S\)</span> and <span class="math inline">\(\boldsymbol\Sigma(\vartheta)\)</span>.</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="properties-of-mle" class="slide level2">
-<h2>Properties of MLE</h2>
-<ul>
-<li><p>Let <span class="math inline">\(\bar{\vartheta}\)</span> be the true parameter value. Subject to standard regularity conditions <span class="citation" data-cites="cox1979theoretical">(<a href="#/references" role="doc-biblioref" onclick="">Cox and Hinkley 1979</a>)</span>, as <span class="math inline">\(n\to\infty\)</span>, <span id="eq-asympmle"><span class="math display">\[
-\sqrt n (\hat\vartheta - \bar\vartheta) \xrightarrow{\;\;\text D\;\;}
-\text N_m\left(\mathbf 0, \big[ U(\bar\vartheta)V(\bar\vartheta)^{-1} U(\bar\vartheta) \big]^{-1} \right)
-\tag{3}\]</span></span> where</p>
-<ul>
-<li><span class="math inline">\(U(\vartheta) = -\mathbb{E}\left[ \nabla\nabla^\top \ell_1(\vartheta) \right]\)</span> is the <em>sensitivity matrix</em>; and</li>
-<li><span class="math inline">\(V(\vartheta) = \operatorname{var}\left[ \nabla\ell_1(\vartheta) \right]\)</span> is the <em>variability matrix</em>.</li>
-</ul></li>
-</ul>
-<div class="nudge-down">
-<ul>
-<li>Calculation of SEs are based off <u>estimates</u> of these matrices. The Godambe or “sandwich” matrix gives robust SEs <span class="citation" data-cites="satorra1994corrections savalei2014understanding">(<a href="#/references" role="doc-biblioref" onclick="">Satorra and Bentler 1994</a>; <a href="#/references" role="doc-biblioref" onclick="">Savalei 2014</a>)</span> in cases of model misspecification.</li>
-</ul>
-<div class="nudge-down-small">
-<ul>
-<li><em>If</em> model is correctly specified, <span class="math inline">\(U(\vartheta) = V(\vartheta) = I(\vartheta)\)</span>, the Fisher information.</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="latent-growth-curve-model-gcm" class="slide level2">
-<h2>Latent growth curve model (GCM)</h2>
-<ul>
-<li><p><strong>Longitudinal data:</strong> repeated measurements on individuals <span class="math inline">\(i\)</span> over time, e.g.&nbsp;<span class="math inline">\(\mathbf y_i = (y_{i1},y_{i2},\dots,y_{i10})^\top\)</span>, <span class="math inline">\(i=1,\dots,n\)</span> <span class="citation" data-cites="rabe2008multilevel">(<a href="#/references" role="doc-biblioref" onclick="">Rabe-Hesketh and Skrondal 2008</a>)</span>.</p></li>
-<li><p>Usually, linear mixed effects models are used, where <span class="math display">\[
-\begin{gathered}
-y_{it} = \overbrace{(\alpha_1 + \eta_{1i})}^{\text{random int.}} +  \overbrace{(\alpha_2 + \eta_{2i})}^{\text{random slope}} \cdot (t-1) + \epsilon_{it} \quad\quad t=1,\dots,10 \\[0.5em]
-\begin{pmatrix}
-\eta_{1i} \\
-\eta_{2i}
-\end{pmatrix}
-\sim \text{N}_2\left(\mathbf 0,
-\begin{pmatrix}
-\psi_{11} &amp; \psi_{12} \\
-\cdot &amp; \psi_{22}
-\end{pmatrix}\right) \\
-\end{gathered}
-\]</span></p>
-<div class="nudge-down-small">
-<ul>
-<li><span class="math inline">\(\alpha_1\)</span> and <span class="math inline">\(\alpha_2\)</span> are fixed effects (intercept and slope);</li>
-<li><span class="math inline">\(\eta_{1i}\)</span> and <span class="math inline">\(\eta_{2i}\)</span> are correlated random effects (individual deviations);</li>
-<li><span class="math inline">\(\epsilon_{it}\sim\text{N}(0,\theta)\)</span> are measurement errors.</li>
-</ul>
-</div></li>
-</ul>
-<div class="nudge-down-small">
-<ul>
-<li>Restricted ML is a popular method to estimate such models, with good parameter recovery for variance components <span class="citation" data-cites="corbeil1976restricted">(<a href="#/references" role="doc-biblioref" onclick="">Corbeil and Searle 1976</a>)</span>.</li>
-</ul>
-</div>
-</section>
-<section id="latent-gcm-as-sem" class="slide level2">
-<h2>Latent GCM as SEM</h2>
-<div class="absolute" style="bottom: 2%; right: 1%; ">
-<p><span class="math display">\[
-\begin{gathered}
-\boldsymbol\Lambda = \begin{bmatrix}
-1 &amp; 0 \\
-1 &amp; 1 \\
-\vdots &amp; \vdots \\
-1 &amp; 9 \\
-\end{bmatrix}
-\\
-\\
-\mathbf y = \boldsymbol\Lambda \boldsymbol\eta + \boldsymbol\epsilon \\
-\boldsymbol\epsilon \sim \operatorname{N}_{10}(\mathbf 0, \theta \mathbf I) \\
-\boldsymbol\eta \sim \operatorname{N}_2 (\boldsymbol\alpha, \boldsymbol\Psi)
-\end{gathered}
-\]</span></p>
-</div>
-</section></section>
-<section>
-<section id="bias-reduction-methods" class="title-slide slide level1 transition-slide center">
-<h1>Bias reduction methods</h1>
-
-</section>
-<section id="poll" class="slide level2">
-<h2>Poll</h2>
-<p><br></p>
-<iframe name="opinionstage-widget" src="https://www.opinionstage.com/api/v2/widgets/4a6d1509-d5fb-41bc-b956-7a8fe5e49750/iframe?em=1" data-opinionstage-iframe="4a6d1509-d5fb-41bc-b956-7a8fe5e49750" width="100%" height="60%" scrolling="auto" style="border:none;box-shadow:0px 0px 12px rgba(0,0,0,0.25);border-radius:12px" frameborder="0" allow="fullscreen" webkitallowfullscreen="true" mozallowfullscreen="true" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-</iframe>
-</section>
-<section id="what-is-bias" class="slide level2">
-<h2>What is bias?</h2>
-<div class="callout callout-tip no-icon callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Bias of an estimator</strong></p>
-</div>
-<div class="callout-content">
-<p><span id="eq-bias"><span class="math display">\[
-\mathcal B_{\bar\vartheta}(\hat\vartheta) = \mathbb E\left[\hat\vartheta - \bar\vartheta\right]
-\tag{4}\]</span></span></p>
-</div>
-</div>
-</div>
-<div class="fragment">
-<p>Consider the stochastic Taylor expansion of <span class="math inline">\(s(\hat\vartheta)=\nabla\ell(\hat\vartheta)=0\)</span> around <span class="math inline">\(\bar\vartheta\)</span>. For many common estimators including MLE, the bias function is: <span id="eq-biasseries"><span class="math display">\[
-\mathcal B_{\bar\vartheta} = \frac{b_1(\bar\vartheta)}{n} +  \frac{b_2(\bar\vartheta)}{n^2} + \frac{b_3(\bar\vartheta)}{n^3} +O(n^{-4}).
-\tag{5}\]</span></span></p>
-<div class="nudge-up">
-<p>Bias arises because the roots of the score equations are <strong>not exactly centred at <span class="math inline">\(\bar\vartheta\)</span></strong>, due to:</p>
 <div class="nudge-up-small">
-<ol type="a">
-<li>The curvature of the score <span class="math inline">\(s(\vartheta)\)</span> creating asymmetry; and</li>
-<li>The randomness of the score itself.</li>
-</ol>
-</div>
-</div>
-</div>
-</section>
-<section id="illustration" class="slide level2">
-<h2>Illustration</h2>
-<h3 id="biased-mle-estimator-for-sigma2">Biased MLE estimator for <span class="math inline">\(\sigma^2\)</span></h3>
-<p>Consider <span class="math inline">\(X_1,\dots,X_n \sim \text N(0, \sigma^2)\)</span>. The MLE for <span class="math inline">\(\sigma^2\)</span> is <span class="math inline">\(\hat\sigma^2 = \frac{1}{n}\sum_{i=1}^n X_i^2\)</span>.</p>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><span class="math inline">\(n=10\)</span></a></li><li><a href="#tabset-1-2"><span class="math inline">\(n=25\)</span></a></li><li><a href="#tabset-1-3"><span class="math inline">\(n=1000\)</span></a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-
-</div>
-<div id="tabset-1-2">
-
-</div>
-<div id="tabset-1-3">
-
-</div>
-</div>
-</div>
-</section>
-<section id="illustration-cont." class="slide level2">
-<h2>Illustration (cont.)</h2>
-<h3 id="score-functions-are-random-too">Score functions are random too</h3>
-<p>The score function is <span class="math inline">\(s(\sigma^2)=\ell'(\sigma^2) = -\frac{n}{2\sigma^2} + \frac{1}{2\sigma^4}\sum_{i=1}^n X_i^2\)</span>.</p>
-<div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><span class="math inline">\(n=10\)</span></a></li><li><a href="#tabset-2-2"><span class="math inline">\(n=25\)</span></a></li><li><a href="#tabset-2-3"><span class="math inline">\(n=1000\)</span></a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1">
-
-</div>
-<div id="tabset-2-2">
-
-</div>
-<div id="tabset-2-3">
-
-</div>
-</div>
-</div>
-</section>
-<section id="if-youre-interested" class="slide level2">
-<h2>If you’re interested…</h2>
-<h3 id="and-love-differentiation">…and love differentiation ️❤️🤓</h3>
-<p>For a comprehensive treatment of bias-reduction methods,</p>
-<ul>
-<li>Start here: <span class="citation" data-cites="cox1968general">Cox and Snell (<a href="#/references" role="doc-biblioref" onclick="">1968</a>)</span></li>
-<li>Follow up with: <span class="citation" data-cites="firth1993bias">Firth (<a href="#/references" role="doc-biblioref" onclick="">1993</a>)</span>; <span class="citation" data-cites="kosmidis2009bias">Kosmidis and Firth (<a href="#/references" role="doc-biblioref" onclick="">2009</a>)</span>; <span class="citation" data-cites="kosmidis2014bias">Kosmidis (<a href="#/references" role="doc-biblioref" onclick="">2014</a>)</span></li>
-</ul>
-<div class="fragment">
-<div class="nudge-down">
-<p>By the way, the <span class="math inline">\(O(n^{-1})\)</span> bias term <span class="math inline">\(b_1(\bar\vartheta)/n = -I(\bar\vartheta)^{-1} C(\bar\vartheta)\)</span>, where <span class="math display">\[
+<p><span class="math display">\[
 \begin{gathered}
-C_a(\vartheta) = \frac{1}{2} \operatorname{tr} \left[
-I(\vartheta)^{-1}\big( G_a(\vartheta) + H_a(\vartheta) \big)
-\right]\\
-G_a(\vartheta)=\mathbb E[s(\vartheta)s(\vartheta)^\top s_a(\vartheta)]
-\quad\quad
-H_a(\vartheta)=-\mathbb E[I(\vartheta)s_a(\vartheta)] \\
-a=1,\dots,m
+\mathbf y = \boldsymbol\nu + {\color{kaustpur}\boldsymbol\Lambda} \boldsymbol\eta + {\color{Gray}\boldsymbol\epsilon} \\
+\boldsymbol\eta = \boldsymbol\alpha + {\color{kaustgrn}\mathbf B} \boldsymbol\eta + {\color{Gray}\boldsymbol\zeta}
 \end{gathered}
 \]</span></p>
-<p>where <span class="math inline">\(s(\vartheta) = \nabla\ell(\vartheta)\)</span> is the score function.</p>
+<p>with assumptions <span class="math inline">\({\color{Gray}\boldsymbol\epsilon}\sim\operatorname{N}_p(\mathbf 0, {\color{kaustorg}\boldsymbol\Theta})\)</span>, <span class="math inline">\({\color{Gray}\boldsymbol\zeta}\sim\operatorname{N}_q(\mathbf 0, {\color{kausttur}\boldsymbol\Psi})\)</span>, and <span class="math inline">\(\operatorname{Cov}({\color{Gray}\boldsymbol\epsilon}, {\color{Gray}\boldsymbol\zeta})=\mathbf 0\)</span>.</p>
 </div>
 </div>
-</section>
-<section id="a-review" class="slide level2">
-<h2>A review</h2>
-<div class="nudge-up-large">
+</div>
+</div><div class="column" style="width:52%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/bias.png" class="quarto-figure quarto-figure-center" style="width:67.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
-<div class="nudge-up-small">
-<div class="nudge-up-large">
+</div>
+<div class="fragment">
+<div class="nudge-up">
+<ul>
+<li><p>NB: Per person structure, assumed independent for each <span class="math inline">\(s=1,\dots,n\)</span>.</p></li>
+<li><p>Additionally, assume prior distributions</p>
+<ul>
+<li><span class="math inline">\(\nu_i \sim \operatorname{N}(0, 32^2)\)</span>, <span class="math inline">\(\alpha_j \sim \operatorname{N}(0, 10^2)\)</span></li>
+<li><span class="math inline">\({\color{kaustpur}\lambda_{ij}}, {\color{kaustgrn}\beta} \sim \operatorname{N}(0, 10^2)\)</span></li>
+<li><span class="math inline">\(\sqrt{\color{kaustorg}\theta_{ii}}, \sqrt{\color{kausttur}\psi_{jj}} \sim \Gamma(1, 0.5)\)</span>, i.e.&nbsp;on the SDs</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div></div>
+</section>
+<section id="mcmc-based-estimation" class="slide level2">
+<h2>MCMC-based estimation</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="fragment">
+<h4 id="data-augmentation-gibbs">Data augmentation Gibbs</h4>
+<p><span class="math display">\[
+\small
+\pi(\boldsymbol\vartheta, \boldsymbol\eta \mid \mathcal Y) \propto \pi(\boldsymbol\vartheta) \prod_{s=1}^n \pi(\mathbf y_s \mid \boldsymbol\eta_s, \boldsymbol\vartheta)\, \pi(\boldsymbol\eta_s \mid \boldsymbol\vartheta)
+\]</span></p>
+<ul>
+<li><p>Treat <span class="math inline">\(\boldsymbol\eta\)</span> as unknowns to be sampled; likelihood simplifies.</p></li>
+<li><p>But dimension scales with <span class="math inline">\(n\)</span>.</p></li>
+</ul>
+</div>
+</div><div class="column" style="width:4%;">
 
+</div><div class="column" style="width:48%;">
+<div class="fragment">
+<h4 id="marginal-likelihood">Marginal likelihood</h4>
+<p><span class="math display">\[
+\small
+\pi(\mathcal Y \mid \boldsymbol\vartheta) = \prod_{s=1}^n \mathcal N_p\big(\mathbf y_s \mid \boldsymbol\mu(\boldsymbol\vartheta), \boldsymbol\Sigma(\boldsymbol\vartheta)\big)
+\]</span></p>
+<div class="small-text">
+<p>where <span class="math display">\[
+\begin{align}
+\boldsymbol\mu(\boldsymbol\vartheta) &amp;= \boldsymbol\nu + \boldsymbol\Lambda (\mathbf I - \mathbf B)^{-1} \boldsymbol\alpha \\
+\boldsymbol\Sigma(\boldsymbol\vartheta) &amp;= \boldsymbol\Lambda \boldsymbol\Phi \boldsymbol\Lambda^\top + \boldsymbol\Theta \\
+\boldsymbol\Phi &amp;:= (\mathbf I - \mathbf B)^{-1} \boldsymbol\Psi (\mathbf I - \mathbf B)^{-\top}
+\end{align}
+\]</span></p>
+</div>
+</div>
+</div></div>
+</section>
+<section id="mcmc-based-estimation-cont." class="slide level2">
+<h2>MCMC-based estimation <em>(cont.)</em></h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/samp_v_approx_900425.gif" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+<div class="nudge-up-large">
+<div style="font-size: 90%;">
+<p>Many software choices to perform MCMC-based inference, e.g.&nbsp;<code>blavaan</code> <span class="citation" data-cites="merkle2021efficient">(<a href="#/references" role="doc-biblioref" onclick="">Merkle et al., 2021</a>)</span>, <code>Stan</code> <span class="citation" data-cites="carpenter2017stan">(<a href="#/references" role="doc-biblioref" onclick="">Carpenter et al., 2017</a>)</span>, <code>Mplus</code> <span class="citation" data-cites="muthen2017mplus">(<a href="#/references" role="doc-biblioref" onclick="">Muthén &amp; Muthén, 2017</a>)</span>.</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="inla-based-posterior-approximation" class="title-slide slide level1 transition-slide center">
+<h1>INLA-based posterior approximation</h1>
+
+</section>
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
+<div class="r-stack" style="width: 1150px; margin: 0 auto;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="4">
+<ul>
+<li><p>Not quite R-INLA: This is a “bespoke” INLA for SEM, keeping only the ideas that carry over (Laplace, skew-normal marginals, VB correction).</p></li>
+<li><p>Works because the exact posterior is cheap. For normal SEM, <span class="math inline">\(\pi(\mathbf y \mid \boldsymbol\vartheta)\)</span> is closed form, so <span class="math inline">\(\pi(\boldsymbol\vartheta \mid \mathbf y)\)</span> and its gradients are cheap to evaluate.</p></li>
+</ul>
+</div>
+</section>
+<section id="step-1a-joint-gaussian-approximation" class="slide level2">
+<h2>[Step 1a] Joint Gaussian approximation</h2>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Laplace approximation <span class="citation" data-cites="tierney1989fully kass1995bayes">(<a href="#/references" role="doc-biblioref" onclick="">Kass &amp; Raftery, 1995</a>; <a href="#/references" role="doc-biblioref" onclick="">Tierney et al., 1989</a>)</span></strong></p>
+</div>
+<div class="callout-content">
+<p>Assume that <span class="math inline">\(f(\boldsymbol\vartheta):=\log \left\{\pi(\mathbf y\mid \boldsymbol\vartheta) \, \pi(\boldsymbol\vartheta)\right\}\)</span> is twice continuously differentiable with a unique interior maximiser <span class="math inline">\(\boldsymbol\vartheta^*\)</span>, at which <span class="math inline">\(\mathbf H=-\nabla^2 f(\boldsymbol\vartheta^*)\)</span> is positive definite. Consider the Taylor expansion of <span class="math inline">\(f\)</span> about <span class="math inline">\(\boldsymbol\vartheta^*\)</span>,</p>
+<p><span id="eq-laplace"><span class="math display">\[
+f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
+% + \cancel{\nabla f(\boldsymbol\vartheta^*)^\top (\boldsymbol\vartheta - \boldsymbol\vartheta^*)}
+- \frac12 (\boldsymbol\vartheta - \boldsymbol\vartheta^*)^\top  \mathbf H (\boldsymbol\vartheta - \boldsymbol\vartheta^*).
+\tag{1}\]</span></span></p>
+<p>Therefore, <span class="math inline">\(\pi(\boldsymbol\vartheta \mid \mathbf y) \approx \mathcal N_m(\boldsymbol\vartheta^*, \boldsymbol\Omega)\)</span>, where <span class="math inline">\(\boldsymbol\Omega = \mathbf H^{-1}\)</span></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li>Work on an unconstrained scale (log variances, Fisher-<span class="math inline">\(z\)</span> correlations). Make the log-posterior closer to quadratic, so Laplace is more accurate.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Under standard regularity conditions, the approximation achieves a <em>relative</em> error of <span class="math inline">\(\mathcal{O}(n^{-1})\)</span> for the posterior density and marginal likelihood <span class="citation" data-cites="rue2017bayesian">(<a href="#/references" role="doc-biblioref" onclick="">Rue et al., 2017</a>)</span>—c.f. additive <span class="math inline">\(\mathcal{O}(n^{-1/2})\)</span> error typical of simulation-based methods.</p></li>
+<li><p>By the Bernstein-von Mises theorem, the posterior concentrates at a rate of <span class="math inline">\(n^{-1/2}\)</span> and converges to a Gaussian in total variation <span class="citation" data-cites="vandervaart1998asymptotic">(<a href="#/references" role="doc-biblioref" onclick="">van der Vaart, 1998</a>)</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="step-1a-joint-gaussian-approximation-cont." class="slide level2">
+<h2>[Step 1a] Joint Gaussian approximation <em>(cont.)</em></h2>
+<div class="nudge-down-medium">
+<div class="r-stack">
+<div class="fragment fade-out" data-fragment-index="1">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment fade-in-then-out" data-fragment-index="1">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-24-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment fade-in-then-out" data-fragment-index="2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment fade-in" data-fragment-index="3">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-26-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-1b-variational-mean-correction" class="slide level2">
+<h2>[Step 1b] Variational mean correction</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>Posterior mode is often far away from the “typical set”, especially for skewed distributions.</p></li>
+<li><p>Laplace may misrepresent the bulk of the distribution—correction needed!</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<!-- Animated version of R/variational.R; regenerate with R/variational_anim.R -->
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/variational.gif" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<div class="fragment">
+<div class="nudge-up-small">
+<ul>
+<li><span class="citation" data-cites="vanniekerk2024lowrank">van Niekerk &amp; Rue (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span> propose a Variational Bayes (VB) correction to the mean of global Laplace: <span class="math display">\[
+{\hat{\boldsymbol\delta}} = \operatorname{argmin}_{\boldsymbol\delta} \operatorname{D}_{\text{KL}}\big( \mathcal N_m( \boldsymbol\vartheta^* + {\boldsymbol\delta}, \mathbf H^{-1}) \;\big\Vert\; \pi(\cdot \mid \mathbf y) \big).
+\]</span>
+<ul>
+<li>Distribution that minimises <em>information loss</em> <span class="citation" data-cites="zellner1988optimal">(<a href="#/references" role="doc-biblioref" onclick="">Zellner, 1988</a>)</span>.</li>
+<li>Reuse the Laplace curvature (good locally) and correct only the centre: an <span class="math inline">\(m\)</span>-dimensional optimisation instead of re-estimating an <span class="math inline">\(m \times m\)</span> covariance.</li>
+<li>Shift the whole Gaussian towards the posterior mean.</li>
+</ul></li>
+</ul>
+</div>
+<!-- ::: aside -->
+<!-- Let $\vartheta \sim \SN(\xi, \omega, \alpha)$. Then $f_{SN}(\vartheta) =$ -->
+<!-- ::: -->
+
+</div>
+<aside><div>
+<p>Overlap (area shared by the two densities): <span class="math inline">\(\int \min\{p(\vartheta), q(\vartheta)\} \, d\vartheta = 1 - \frac12 \int |p(\vartheta) - q(\vartheta)| \, d\vartheta\)</span>.</p>
+</div></aside></section>
+<section id="step-2-posterior-marginals" class="slide level2">
+<h2>[Step 2] Posterior marginals</h2>
+<ul>
+<li>Use <strong>Laplace’s method</strong> (<a href="#/eq-laplace" class="quarto-xref">1</a>), this time to approximate an integral:</li>
+</ul>
+<div style="font-size: 90%;">
+<p><span class="math display">\[
+\pi(\vartheta_j \mid \mathbf y) = \int_{\mathbb R^{m-1}} e^{\log \pi(\vartheta_j, \boldsymbol\vartheta_{-j} \mid \mathbf y)} \, d \boldsymbol\vartheta_{-j}
+\approx (2\pi)^{\frac{m-1}{2}} \times
+\overbrace{\pi\big(\vartheta_j, \boldsymbol\vartheta_{-j}^*(\vartheta_j) \mid \mathbf y\big)}^{\text{height}} \times
+\overbrace{\left| \mathbf H_{-j}(\vartheta_j) \right|^{-1/2 }}^{\text{(cond.) width}}
+\]</span></p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<ul>
+<li><u>Geometric intuition</u>: the marginal at each <span class="math inline">\(\vartheta_j\)</span> is the volume of the posterior’s slice there, roughly the slice’s <em>peak height</em> times its <em>width</em>.</li>
+</ul>
+</div>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li><p>This is <span class="text-mer"><strong>expensive</strong></span> to compute, as for every <span class="math inline">\(\vartheta_j\)</span> evaluation, need</p>
+<ol type="1">
+<li>An optimisation of <span class="math inline">\(\boldsymbol\vartheta_{-j}\in\mathbb R^{m-1}\)</span> at this location; and</li>
+<li>The (log) determinant of the Hessian there.</li>
+</ol></li>
+<li><p>Next slides: two important results.</p></li>
+</ul>
+</div>
+</div><div class="column" style="width:54%;">
+<div class="fragment" data-fragment-index="1">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/slices-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="step-2a-posterior-marginalsthe-height" class="slide level2">
+<h2>[Step 2a] Posterior marginals—the “height”</h2>
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Lemma 1 (Conditional Mean Path) <span class="text-org">= No need for reoptimisation</span></strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\(\small \boldsymbol\vartheta\sim\operatorname{N}_m(\boldsymbol\vartheta^*,\boldsymbol\Omega)\)</span> with <span class="math inline">\(\small\boldsymbol\Omega \succ \mathbf 0\)</span>. Then the marginal density of the <span class="math inline">\(\small j\)</span>th component, <span class="math inline">\(\small j=1,\dots,m\)</span>, is proportional to the joint density evaluated along its CMP: <span class="math display">\[
+\small
+\pi(\vartheta_j=x)
+\propto
+\pi\big(\vartheta_j=x, \, \boldsymbol\vartheta_{-j} = \operatorname{E}[ \boldsymbol\vartheta_{-j} \mid \vartheta_j=x] \big).
+\]</span></p>
+</div>
+</div>
+</div>
+<!-- Figure first (R/cmp_paths.R); one click swaps it for the bullets -->
+<div class="nudge-up-small">
+<div class="r-stack">
+<div class="fragment fade-out" data-fragment-index="1">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/cmp_gaussian.png" class="quarto-figure quarto-figure-center" width="1300"></p>
+</figure>
+</div>
+</div>
+<div class="fragment fade-in" data-fragment-index="1" style="width: 100%;">
+<div class="nudge-up">
+<ul>
+<li><p>Operationally,</p>
+<ol type="i">
+<li>Lay out a grid <span class="math inline">\(\mathcal G_j=\big\{\boldsymbol\vartheta^* + t\,\mathbf v_j \;\big|\;t\in[-4,4]\big\}\)</span>, <span class="math inline">\(\mathbf v_j = \Omega_{jj}^{1/2} \, \boldsymbol\Omega_{\cdot j}\)</span>.</li>
+<li>Evaluate joint posterior <span class="math inline">\(\pi(\boldsymbol\vartheta \mid \mathbf y)\)</span> at each grid point.</li>
+</ol></li>
+<li><p>Scanning along the CMP is cheap; no re-optimisation needed.</p></li>
+<li><p>For Gaussian posteriors, this is <strong>exact</strong>; otherwise it provides a first-order approximation to a potentially curved ridge.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2b-posterior-marginalsthe-width" class="slide level2">
+<h2>[Step 2b] Posterior marginals—the “width”</h2>
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Lemma 2 (Efficient volume correction) <span class="text-org">= No need to factor dense Hessian</span></strong></p>
+</div>
+<div class="callout-content">
+<p>For the <span class="math inline">\(\small j\)</span>th component along the CMP, <span class="math inline">\(\small-\frac12 \log | \mathbf H_{-j}(t) | \approx \text{const.} + t\gamma_j'\)</span>. Then <span class="math display">\[
+\small
+\gamma_j' =
+-\frac{1}{2} \sum_{k=1}^m \frac{d}{dt} \left[ \mathbf{L}_{\cdot k}^{\top}\,\frac{d}{d\mathbf{L}_{\cdot k}}\mathbf{g} \right]_{t=0}
++ \frac{1}{2}\, \frac{d}{dt} \left[ \mathbf{v}_j^{\top}\,\frac{d}{d\mathbf{v}_j}\mathbf{g} \right]_{t=0},
+\]</span> where <span class="math inline">\(\small\mathbf{g}(\boldsymbol\vartheta) = -\nabla \log \pi(\boldsymbol\vartheta \mid \mathbf{y})\)</span>, and <span class="math inline">\(\small\mathbf H(\boldsymbol\vartheta^*)^{-1}=\mathbf L\mathbf L^\top\)</span>.</p>
+</div>
+</div>
+</div>
+<!-- Figure first (R/cmp_paths.R); one click swaps it for the bullets -->
+<div class="nudge-up-large">
+<div class="r-stack">
+<div class="fragment fade-out" data-fragment-index="1">
+<p><img data-src="figures/cmp_trumpet.png" width="1200"></p>
+</div>
+<div class="fragment fade-in" data-fragment-index="1" style="width: 100%;">
+<div class="nudge-up-small">
+<ul>
+<li><p>For non-symmetric densities, the conditional spread (“width”) changes along the scan line. This change can be computed entirely via directional derivatives.</p></li>
+<li><p>Forward difference cost is only <span class="math inline">\(m+2\)</span> gradient evaluations for each <span class="math inline">\(j\)</span>. Note: Baseline is unity in whitened coordinates.</p>
+<ol type="i">
+<li>[<code>outer</code> <span class="math inline">\(\small\nabla^3\)</span>] Shift to <span class="math inline">\(\boldsymbol\vartheta^+\)</span> along CMP, evaluate gradient.</li>
+<li>[<code>inner</code> <span class="math inline">\(\small\nabla^2\)</span>] Perturb along <span class="math inline">\(\mathbf{L}_{\cdot k}\)</span> and the scan direction <span class="math inline">\(\mathbf{v}_j\)</span>, evaluating gradients.</li>
+</ol></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2c-posterior-marginalssn-curve-fit" class="slide level2">
+<h2>[Step 2c] Posterior marginals—SN curve fit</h2>
+<div class="nudge-down-small">
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>Consider the paired points <span class="math inline">\(\{\vartheta_j(t_k), h_{kj}\}_{k=1}^K\)</span>, where
+<ul>
+<li><span class="math inline">\(t_k\in[-4,4]\)</span> are standardised grid points,</li>
+<li><span class="math inline">\(\vartheta_j(t_k) = \boldsymbol\vartheta^* + t_k  \mathbf v_j\)</span> from the CMP, and</li>
+<li><span class="math inline">\(h_{kj} := h_j(t_k) = \log \pi(\vartheta_j(t_k) \mid y ) + t \gamma_j'\)</span> are unnormalised ordinates.</li>
+</ul></li>
+</ul>
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li><p>Fit a skew normal pdf to these points via weighted least squares. A convenient default is <span class="math inline">\(w_{kj} \propto \exp(h_{kj})\)</span>, for <span class="math inline">\(j=1,\dots m\)</span>.</p></li>
+<li><p>Map back from <span class="math inline">\(t\)</span> to <span class="math inline">\(\vartheta_j\)</span> scale via the affine <span class="math inline">\(\vartheta_j = \vartheta_j^* + t\sqrt{\Omega_{jj}}\)</span>.</p></li>
+</ul>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="fragment" data-fragment-index="2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/skewnormfit-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="2">
+<div class="nudge-up-large">
+<p><span class="math display">\[(\hat\xi_j,\hat\omega_j,\hat\alpha_j,\hat c_j)
+=
+\operatorname{argmin}_{\xi,\omega,\alpha,c} \,
+\sum_{k=1}^K
+w_{kj}\big[
+h_{kj}-\big\{\log f_{\mathrm{SN}}(\vartheta_j(t_k);\xi,\omega,\alpha)+c\big\}
+\big]^2\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-gaussian-copula-sampling" class="slide level2">
+<h2>[Step 3] Gaussian copula sampling</h2>
+<p><span class="math display">\[
+\underbrace{\mathbf z \sim N(\mathbf 0, \mathbf R)}_{\text{Gaussian correlation}} \xrightarrow{\quad \Phi(\cdot) \quad} \underbrace{\mathbf u}_{\ \text{Uniform} \ } \xrightarrow{\quad F_{\text{SN}}^{-1}(\cdot) \quad} \underbrace{\boldsymbol\vartheta}_{\text{SN Marginals}}
+\]</span></p>
+<ul>
+<li><p>Reconstruct joint posterior samples <span class="math inline">\(\{\boldsymbol\vartheta^{(1)},\dots,\boldsymbol\vartheta^{(B)}\}\)</span> using a Copula <span class="citation" data-cites="nelsen2006introduction">(<a href="#/references" role="doc-biblioref" onclick="">Nelsen, 2006</a>)</span>, preserving Gaussian correlations: <span class="math display">\[
+\mathbf R = \mathbf D^{-1/2} \boldsymbol \Omega \mathbf D^{-1/2}, \qquad \mathbf D = \operatorname{diag}(\boldsymbol\Omega).
+\]</span></p></li>
+<li><p>This also allows us to derive approximate posteriors for</p>
+<ol type="i">
+<li>Parameter transformations, e.g.&nbsp;standardised solutions, non-linear transforms, etc.</li>
+<li>Posterior Predictive P-value (PPP), e.g.&nbsp;<span class="math inline">\(\#\{ T(\mathbf S_{\text{obs}}, \boldsymbol\Sigma(\boldsymbol\vartheta)) &gt;  T(\mathbf S_{\text{rep}}, \boldsymbol\Sigma(\boldsymbol\vartheta)) \}\)</span>.</li>
+<li>Factor scores, <span class="math inline">\(\boldsymbol\eta \mid \{\mathcal Y, \boldsymbol\vartheta\} \sim \operatorname{N}_q(\mathbf m(\boldsymbol\vartheta), \mathbf V(\boldsymbol\vartheta))\)</span>.</li>
+<li>Prediction and imputation.</li>
+</ol></li>
+</ul>
+</section></section>
+<section>
+<section id="rinlavaan" class="title-slide slide level1 transition-slide center">
+<h1>R/INLAvaan</h1>
+
+</section>
+<section id="the-rinlavaan-package" class="slide level2">
+<h2>The R/INLAvaan package</h2>
+<div class="absolute" style="top: -38px; left: 600px; ">
+<p><img data-src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" height="30"> <img data-src="figures/INLAvaan.svg" height="30"></p>
+</div>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="nudge-down-xs">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># Check data set</span></span>
+<span id="cb1-2"><a href=""></a><span class="fu">glimpse</span>(Kidney)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 250
+Columns: 6
+$ y1 &lt;dbl&gt; 6.068916, 6.245611, 8.29265…
+$ y2 &lt;dbl&gt; 5.849979, 6.869373, 7.71571…
+$ y3 &lt;dbl&gt; 7.4694193, 14.1171527, 18.8…
+$ y4 &lt;dbl&gt; 135.180599, 84.681048, 102.…
+$ y5 &lt;dbl&gt; 46.316038, 86.787743, 64.94…
+$ y6 &lt;dbl&gt; 7.510040, 6.820942, 11.0478…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(INLAvaan)</span>
+<span id="cb3-2"><a href=""></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb3-3"><a href=""></a><span class="st">  # Measurement model</span></span>
+<span id="cb3-4"><a href=""></a><span class="st">  GlyCon =~ y1 + y2 + y3</span></span>
+<span id="cb3-5"><a href=""></a><span class="st">  KdnHlt =~ y4 + y5 + y6</span></span>
+<span id="cb3-6"><a href=""></a></span>
+<span id="cb3-7"><a href=""></a><span class="st">  # Structural model</span></span>
+<span id="cb3-8"><a href=""></a><span class="st">  KdnHlt ~ GlyCon</span></span>
+<span id="cb3-9"><a href=""></a><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div><div class="column" style="width:52%;">
+<!-- Cast call: -->
+<!-- agg --theme nord --font-family "Fira Code" --font-size 35 --cols 49 --rows 12 inlavaan-kidney.cast inlavaan.gif -->
+<div class="nudge-up-small">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/INLAvaan.gif" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+<div class="nudge-up">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-30-1.png" class="quarto-figure quarto-figure-center" style="width:95.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="blavaan-s4-methods" class="slide level2">
+<h2>(b)lavaan S4 methods</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">print</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>INLAvaan 0.3.1.9015 ended normally after 65 iterations
+
+  Estimator                                      BAYES
+  Optimization method                           NLMINB
+  Number of model parameters                        19
+
+  Number of observations                           250
+
+Model Test (User Model):
+
+   Marginal log-likelihood                   -4398.811 
+   PPP (Chi-square)                              0.626 </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:25%;">
+<p>Also available:</p>
+<ul>
+<li><code>fitmeasures()</code></li>
+<li><code>fitted()</code></li>
+<li><code>predict()</code></li>
+<li><code>standardisedsolution()</code></li>
+<li><code>vcov()</code></li>
+<li><code>plot()</code></li>
+</ul>
+</div></div>
+<div class="nudge-down">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">coef</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   GlyCon=~y1    GlyCon=~y2    GlyCon=~y3    KdnHlt=~y4    KdnHlt=~y5 
+        0.819         1.004         4.784        25.113        20.321 
+   KdnHlt=~y6 KdnHlt~GlyCon        y1~~y1        y2~~y2        y3~~y3 
+        1.801         0.460         0.401         0.578        11.400 
+       y4~~y4        y5~~y5        y6~~y6          y1~1          y2~1 
+      434.022       238.120         3.698         6.515         5.976 
+         y3~1          y4~1          y5~1          y6~1 
+       11.703        84.934        59.687         7.599 </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="slide level2 scrollable">
+<h2>Summary</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">summary</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;output truncated&gt;
+
+Information Criteria:
+
+   Deviance (DIC)                             8625.430 
+   Effective parameters (pD)                    18.954 
+
+Parameter Estimates:
+
+   Marginalisation method                     SKEWNORM
+   VB correction                                  TRUE
+
+Latent Variables:
+                   Estimate       SD     2.5%    97.5%     NMAD    Prior       
+  GlyCon =~                                                                    
+    y1                0.819    0.059    0.705    0.938    0.002    normal(0,10)
+    y2                1.004    0.072    0.866    1.149    0.002    normal(0,10)
+    y3                4.784    0.333    4.147    5.455    0.002    normal(0,10)
+  KdnHlt =~                                                                    
+    y4               25.113    1.856   21.557   28.842    0.002    normal(0,10)
+    y5               20.321    1.465   17.516   23.267    0.002    normal(0,10)
+    y6                1.801    0.149    1.516    2.101    0.002    normal(0,10)
+
+Regressions:
+                   Estimate       SD     2.5%    97.5%     NMAD    Prior       
+  KdnHlt ~                                                                     
+    GlyCon            0.460    0.087    0.294    0.635    0.002    normal(0,10)
+
+Intercepts:
+                   Estimate       SD     2.5%    97.5%     NMAD    Prior       
+   .y1                6.515    0.065    6.388    6.641    0.000    normal(0,32)
+   .y2                5.976    0.079    5.822    6.130    0.000    normal(0,32)
+   .y3               11.703    0.366   10.986   12.421    0.000    normal(0,32)
+   .y4               84.934    2.164   80.693   89.176    0.000    normal(0,32)
+   .y5               59.687    1.699   56.357   63.018    0.000    normal(0,32)
+   .y6                7.599    0.173    7.260    7.938    0.000    normal(0,32)
+    GlyCon            0.000                                                    
+   .KdnHlt            0.000                                                    
+
+Variances:
+                   Estimate       SD     2.5%    97.5%     NMAD    Prior       
+   .y1                0.401    0.054    0.302    0.513    0.004 gamma(1,.5)[sd]
+   .y2                0.578    0.078    0.434    0.741    0.004 gamma(1,.5)[sd]
+   .y3               11.400    1.676    8.286   14.854    0.006 gamma(1,.5)[sd]
+   .y4              434.022   63.700  314.447  564.175    0.009 gamma(1,.5)[sd]
+   .y5              238.120   39.403  163.572  317.856    0.015 gamma(1,.5)[sd]
+   .y6                3.698    0.429    2.919    4.598    0.002 gamma(1,.5)[sd]
+    GlyCon            1.000                                                    
+   .KdnHlt            1.000                                                    </code></pre>
+</div>
+</div>
+</section>
+<section id="comparison-to-mcmc" class="slide level2">
+<h2>Comparison to MCMC</h2>
+<ul>
+<li>Interchangeable commands (c.f. <code>bsem()</code>) with <code>blavaan</code> <span class="citation" data-cites="merkle2021efficient">(<a href="#/references" role="doc-biblioref" onclick="">Merkle et al., 2021</a>)</span> which interfaces with <code>Stan</code> <span class="citation" data-cites="carpenter2017stan">(<a href="#/references" role="doc-biblioref" onclick="">Carpenter et al., 2017</a>)</span>.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/blavaan-single.gif" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</section>
+<section id="comparison-to-mcmc-cont." class="slide level2">
+<h2>Comparison to MCMC <em>(cont.)</em></h2>
+<div class="nudge-up">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/comparison-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
 </div>
 </div>
 
 <aside><div>
-<div class="footnotesize-text">
-<p>1–<span class="citation" data-cites="efron1975defining">Efron (<a href="#/references" role="doc-biblioref" onclick="">1975</a>)</span>, <span class="citation" data-cites="cordeiro1991bias">Cordeiro and McCullagh (<a href="#/references" role="doc-biblioref" onclick="">1991</a>)</span>; 2–<span class="citation" data-cites="firth1993bias">Firth (<a href="#/references" role="doc-biblioref" onclick="">1993</a>)</span>, <span class="citation" data-cites="kosmidis2009bias">Kosmidis and Firth (<a href="#/references" role="doc-biblioref" onclick="">2009</a>)</span>; 3–<span class="citation" data-cites="efron1994introduction">Efron and Tibshirani (<a href="#/references" role="doc-biblioref" onclick="">1994</a>)</span>, <span class="citation" data-cites="hall1988bootstrap">Hall and Martin (<a href="#/references" role="doc-biblioref" onclick="">1988</a>)</span>; 4–<span class="citation" data-cites="quenouille1956notes">Quenouille (<a href="#/references" role="doc-biblioref" onclick="">1956</a>)</span>, <span class="citation" data-cites="efron1982jackknife">Efron (<a href="#/references" role="doc-biblioref" onclick="">1982</a>)</span>; 5–<span class="citation" data-cites="gourieroux1993indirect">Gourieroux et al. (<a href="#/references" role="doc-biblioref" onclick="">1993</a>)</span>, <span class="citation" data-cites="mackinnon1998approximate">MacKinnon and Smith Jr (<a href="#/references" role="doc-biblioref" onclick="">1998</a>)</span></p>
-</div>
+<p>MCMC: 3 chains of 1,000 draws each, after 500 burn-in. % are 1 minus Jensen–Shannon divergences.</p>
 </div></aside></section>
-<section id="firths-adjusted-scores-methods" class="slide level2">
-<h2>Firth’s adjusted scores methods</h2>
-<div class="nudge-up">
-<p>Instead of solving <span class="text-org"><span class="math inline">\(s(\vartheta)=0\)</span></span>, solve <span class="text-tur"><span class="math inline">\(s(\vartheta) + \overbrace{A(\vartheta)}^{\mathcal B(\vartheta) I(\vartheta)}=0\)</span></span>.</p>
-</div>
-<!-- ```{r} -->
-<!-- #| out-width: 100% -->
-<!-- #| fig-align: center -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-width: 8 -->
-<!-- plot_adjusted_score() -->
-<!-- ``` -->
-<div class="nudge-up">
-<div class="quarto-figure quarto-figure-center">
+<section id="parameter-recovery-from-simulated-data" class="slide level2">
+<h2>Parameter recovery from simulated data</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
 <figure>
-<p><img data-src="figures/adjusted_score.gif" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="index_files/figure-revealjs/simulations-1.png" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
+</div>
 </section>
-<section id="implicit-rbm-estimator" class="slide level2">
-<h2>Implicit RBM estimator</h2>
-<p>Computing <span class="math inline">\(\mathcal B(\vartheta)\)</span> and <span class="math inline">\(I(\vartheta)\)</span> can be difficult. Consider</p>
-<p><span id="eq-irbm"><span class="math display">\[
-s(\vartheta) + A(\vartheta) = 0 \ \Leftrightarrow \ \underset{\vartheta}{\text{arg max}} \left \{ \ell(\vartheta) + P(\vartheta) \right\}
-\tag{6}\]</span></span></p>
-<div class="nudge-up-small">
-<p>where <span class="math inline">\(P(\vartheta)\)</span> is a penalty term constructed such that <span class="math inline">\(A(\vartheta) = \nabla P(\vartheta)\)</span>. <span class="citation" data-cites="kosmidis2024empirical">Kosmidis and Lunardon (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span> show that <span id="eq-penaltyterm"><span class="math display">\[
-P(\vartheta) = -\frac{1}{2} \operatorname{tr} \Big\{ j(\vartheta)^{-1} e(\vartheta) \Big\}
-\tag{7}\]</span></span> where</p>
-<div class="nudge-up-small">
+<section id="effects-of-prior-distributions" class="slide level2">
+<h2>Effects of prior distributions</h2>
 <ul>
-<li><span class="math inline">\(j(\vartheta) = \sum_{i=1}^n \nabla\nabla^\top \ell_i(\vartheta)\)</span> is the observed information;</li>
-<li><span class="math inline">\(e(\vartheta) = \sum_{i=1}^n \nabla\ell_i(\vartheta)\nabla^\top\ell_i(\vartheta)\)</span> is the outer-product of scores.</li>
+<li>Loadings: <span class="math inline">\(\lambda \sim \operatorname{N}(0,10^2) \mapsto \lambda \sim \operatorname{N}(2,0.1^2)\)</span></li>
 </ul>
-<div class="nudge-up-small">
-<p>The solution <span class="math inline">\(\tilde\vartheta\)</span> to (<a href="#/eq-irbm" class="quarto-xref">6</a>) is called the <span><em>implicit</em> RBM estimator (iRBM)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/priorlambda-1.png" style="width:100.0%"></p>
+</figure>
 </div>
 </div>
 </div>
-</section>
-<section id="explicit-rbm-estimator" class="slide level2">
-<h2>Explicit RBM estimator</h2>
-<p>Intuitively, by thinking in terms of a Newton-style update, an <em>explicit</em> estimator is obtained via</p>
-<div class="nudge-up-small">
-<p><span class="math display">\[
-\vartheta^*= \hat\vartheta + j(\hat\vartheta)^{-1} A(\hat\vartheta).
-\]</span></p>
-<p>This moves <span class="math inline">\(\hat\theta\)</span> in the direction <span class="text-mer"><span class="math inline">\(A(\hat\vartheta)\)</span></span> away from the bias, with step length governed by the curvature <span class="math inline">\(j(\hat\vartheta)^{-1}\)</span>.</p>
-<div class="columns">
-<div class="column" style="width:55%;">
-
-</div><div class="column" style="width:45%;">
 <ul>
-<li><p>Operationally, eRBM is simpler and quicker to compute than iRBM—no re-optimisation needed if <span class="math inline">\(\hat\theta\)</span> is available.</p></li>
-<li><p>However, unlike iRBM, no guarantees that bias correction stays inside the parameter space.</p></li>
+<li>Residual variances: <span class="math inline">\(\theta^{1/2} \sim \Gamma(1,0.5) \mapsto \theta \sim \Gamma(100,50)\)</span></li>
 </ul>
-</div></div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/priortheta-1.png" style="width:100.0%"></p>
+</figure>
 </div>
-<!-- ## Resampling-based methods -->
-</section></section>
-<section>
-<section id="simulation-studies" class="title-slide slide level1 transition-slide center">
-<h1>Simulation studies</h1>
-
-</section>
-<section id="simulation-design" class="slide level2">
-<h2>Simulation design</h2>
-<!-- - Data generating models: -->
-<!--    1. Two-factor SEM ($m=13$ estimable params). -->
-<!--    2. Latent growth curve model ($m=6$ estimable params). -->
-<ul>
-<li><p><strong>Sample size:</strong> <span class="math inline">\(n\in \{15,20,50,100,1000\}\)</span></p></li>
-<li><p><strong>Item reliability:</strong> Low or High (<span class="math inline">\(\operatorname{Rel} = p^{-1}\sum_{j=1}^p \boldsymbol\Sigma_{jj}^* / \boldsymbol\Sigma_{jj}\)</span>)</p></li>
-<li><p><strong>Distributional assumption:</strong> Normal or Non-normal</p></li>
-</ul>
-</section>
-<section id="results-two-factor-sem" class="slide level2">
-<h2>Results: Two-factor SEM</h2>
-<div class="nudge-up-small">
-
+</div>
 </div>
 </section>
-<section id="results-two-factor-sem-cont." class="slide level2">
-<h2>Results: Two-factor SEM (cont.)</h2>
-</section>
-<section id="results-latent-gcm" class="slide level2">
-<h2>Results: Latent GCM</h2>
-<div class="nudge-up">
+<section id="refit-free-leave-one-out-cross-validation" class="slide level2">
+<h2>Refit-free Leave-One-Out Cross-Validation</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>tictoc<span class="sc">::</span><span class="fu">tic</span>()</span>
+<span id="cb10-2"><a href=""></a><span class="fu">loo</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>── Leave-one-subject-out ───────────────────────── 250 subjects, second-order ──
 
+         Estimate   SE
+elpd_loo  -4313.0 28.9
+p_loo        19.3  1.4
+looic      8626.0 57.8
+
+── Curvature check ─────────────────────────────────────────────────────────────
+
+  first-to-second-order gap         9.7
+  pD/2 (trace)                      9.3
+  excess over pD/2 (trace)        +5.1%
+
+ℹ The gap approaches pD/2 (trace) from above. A large excess says the
+  second-order expansion has not settled over the sample.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.048 sec elapsed</code></pre>
+</div>
 </div>
 </section></section>
 <section>
@@ -883,116 +2378,106 @@ P(\vartheta) = -\frac{1}{2} \operatorname{tr} \Big\{ j(\vartheta)^{-1} e(\varthe
 <h1>Conclusion</h1>
 
 </section>
-<section id="summary-future-work" class="slide level2">
-<h2>Summary &amp; future work</h2>
-<p>RBM applied to small sample estimation of SEM show key advantages:</p>
+<section id="summary-1" class="slide level2">
+<h2>Summary</h2>
 <ul>
-<li><p>🚀 Improved estimator performances (mean &amp; median bias, RMSE, coverage).</p></li>
-<li><p>💻 Computationally efficient (c.f. resampling methods).</p></li>
-<li><p>🤖 Robust to model misspecification.</p></li>
-</ul>
-<p>Future work include</p>
-<ol type="1">
-<li><p>Computational improvements for iRBM.</p></li>
-<li><p>Plugin penalties to limit exploration of ill-conditioned regions.</p></li>
-<li><p>Extension to other SEM families, e.g.</p>
+<li>🚀 INLA methodology offers a rapid alternative for SEM, delivering Bayesian results at near the speed of frequentist estimators.
 <ul>
-<li>Path models, mediation models, latent interactions, etc.</li>
-<li>Alternative to ML estimation e.g.&nbsp;WLS, DWLS, etc.</li>
+<li>Not aiming to replace MCMC; use case is model development, testing, and exploratory analysis.</li>
 </ul></li>
-</ol>
-</section>
-<section id="software" class="slide level2">
-<h2>Software</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># pak::pak("haziqj/brlavaan")</span></span>
-<span id="cb1-2"><a href=""></a><span class="fu">library</span>(brlavaan)</span>
-<span id="cb1-3"><a href=""></a></span>
-<span id="cb1-4"><a href=""></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb1-5"><a href=""></a><span class="st">  eta1 =~ y1 + y2 + y3</span></span>
-<span id="cb1-6"><a href=""></a><span class="st">  eta2 =~ y4 + y5 + y6</span></span>
-<span id="cb1-7"><a href=""></a><span class="st">"</span></span>
-<span id="cb1-8"><a href=""></a>fit <span class="ot">&lt;-</span> <span class="fu">brsem</span>(<span class="at">model =</span> mod, <span class="at">data =</span> dat, <span class="at">estimator.args =</span> <span class="fu">list</span>(<span class="at">rbm =</span> <span class="st">"implicit"</span>))</span>
-<span id="cb1-9"><a href=""></a><span class="fu">summary</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</ul>
+<div class="columns">
+<div class="column" style="width:58%;">
+<ul>
+<li>Forward looking
+<ul>
+<li>Non-Gaussian outcomes (e.g.&nbsp;categorical, count)</li>
+<li>Better prior support <span class="citation" data-cites="freni2026informative simpson2017penalising">(priors for correlation matrices <a href="#/references" role="doc-biblioref" onclick="">Freni-Sterrantino et al., 2026</a>; penalised complexity priors <a href="#/references" role="doc-biblioref" onclick="">Simpson et al., 2017</a>)</span></li>
+<li>Dynamic SEM, including continuous-time SEM <span class="citation" data-cites="driver2017continuous">(<a href="#/references" role="doc-biblioref" onclick="">Driver et al., 2017</a>)</span></li>
+<li>Spatiotemporal extensions <span class="citation" data-cites="krainski2018advanced">(<a href="#/references" role="doc-biblioref" onclick="">Krainski et al., 2018</a>)</span></li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="https://inlavaan.haziqj.ml/"><img data-src="https://raw.githubusercontent.com/haziqj/INLAvaan/refs/heads/main/inst/hexSticker/hex_inlavaan.png" class="quarto-figure quarto-figure-center" style="width:60.0%"></a></p>
+</figure>
 </div>
+<center>
+<span class="small-text"></span>
+</center>
+</div></div>
+<ul>
+<li>Vignettes and tutorials available on <a href="https://inlavaan.haziqj.ml/" class="uri">https://inlavaan.haziqj.ml/</a>: Equality constraints, defined parameters, multigroup, multilevel, and missing data.</li>
+</ul>
 </section></section>
 <section>
 <section id="شكرا-جزيلا" class="title-slide slide level1 thanks-slide center" data-background-image="_extensions/haziqj/kaust/KAUST-Thank-you.jpg" style="padding-top:0.5em;padding-bottom:0em">
 <h1>شكراً جزيلاً</h1>
-<p><a href="https://haziqj.ml/sembias-gradsem"><code>https://haziqj.ml/sembias-gradsem</code></a></p>
+<p><a href="https://haziqj.ml/kaust-gradsem"><code>https://haziqj.ml/kaust-gradsem</code></a></p>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-corbeil1976restricted" class="csl-entry" role="listitem">
-Corbeil, Robert R., and Shayle R. Searle. 1976. <span>“Restricted Maximum Likelihood (<span>REML</span>) Estimation of Variance Components in the Mixed Model.”</span> <em>Technometrics</em> 18 (1): 31–38. <a href="https://www.tandfonline.com/doi/abs/10.1080/00401706.1976.10489397">https://www.tandfonline.com/doi/abs/10.1080/00401706.1976.10489397</a>.
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-carpenter2017stan" class="csl-entry" role="listitem">
+Carpenter, B., Gelman, A., Hoffman, M. D., Lee, D., Goodrich, B., Betancourt, M., Brubaker, M., Guo, J., Li, P., &amp; Riddell, A. (2017). <span><em>Stan</em></span>: <span>A</span> probabilistic programming language. <em>Journal of Statistical Software</em>, <em>76</em>(1), 1–32. <a href="https://doi.org/10.18637/jss.v076.i01">https://doi.org/10.18637/jss.v076.i01</a>
 </div>
-<div id="ref-cordeiro1991bias" class="csl-entry" role="listitem">
-Cordeiro, Gauss M., and Peter McCullagh. 1991. <span>“Bias Correction in Generalized Linear Models.”</span> <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> 53 (3): 629–43.
+<div id="ref-driver2017continuous" class="csl-entry" role="listitem">
+Driver, C. C., Oud, J. H. L., &amp; Voelkle, M. C. (2017). Continuous <span>Time Structural Equation Modeling</span> with <span><span><em>R</em></span></span> <span>Package</span> <span class="nocase">ctsem</span>. <em>Journal of Statistical Software</em>, <em>77</em>(5). <a href="https://doi.org/10.18637/jss.v077.i05">https://doi.org/10.18637/jss.v077.i05</a>
 </div>
-<div id="ref-cox1979theoretical" class="csl-entry" role="listitem">
-Cox, D. R., and D. V. Hinkley. 1979. <em>Theoretical <span>Statistics</span></em>. <span>Chapman and Hall/CRC</span>. <a href="https://doi.org/10.1201/b14832">https://doi.org/10.1201/b14832</a>.
+<div id="ref-ess2023ess5" class="csl-entry" role="listitem">
+European Social Survey European Research Infrastructure (ESS ERIC). (2023). <em><span>ESS5</span> - integrated file, edition 3.5 (<span>Austria</span> not included)</em> (Version 1) [Dataset]. <span>Sikt - Norwegian Agency for Shared Services in Education and Research</span>. <a href="https://doi.org/10.21338/ESS5E03_5">https://doi.org/10.21338/ESS5E03_5</a>
 </div>
-<div id="ref-cox1968general" class="csl-entry" role="listitem">
-Cox, D. R., and E. J. Snell. 1968. <span>“A <span>General Definition</span> of <span>Residuals</span>.”</span> <em>Journal of the Royal Statistical Society. Series B (Methodological)</em> 30 (2): 248–75. <a href="https://www.jstor.org/stable/2984505">https://www.jstor.org/stable/2984505</a>.
+<div id="ref-freni2026informative" class="csl-entry" role="listitem">
+Freni-Sterrantino, A., van Niekerk, J., Krainski, E., Rustand, D., Jamil, H., &amp; Rue, H. (2026). <em>Informative distance-based priors for correlation matrices centred on a target reference</em>. <a href="https://doi.org/10.48550/arXiv.2607.18926">https://doi.org/10.48550/arXiv.2607.18926</a>
 </div>
-<div id="ref-efron1975defining" class="csl-entry" role="listitem">
-Efron, Bradley. 1975. <span>“Defining the Curvature of a Statistical Problem (with Applications to Second Order Efficiency).”</span> <em>The Annals of Statistics</em>, 1189–242. <a href="https://www.jstor.org/stable/2958246">https://www.jstor.org/stable/2958246</a>.
+<div id="ref-jackson2011developing" class="csl-entry" role="listitem">
+Jackson, J., Bradford, B., Hough, M., Kuha, J., Stares, S., Widdop, S., Fitzgerald, R., Yordanova, M., &amp; Galev, T. (2011). Developing <span>European</span> indicators of trust in justice. <em>European Journal of Criminology</em>, <em>8</em>(4), 267–285. <a href="https://doi.org/10.1177/1477370811411458">https://doi.org/10.1177/1477370811411458</a>
 </div>
-<div id="ref-efron1982jackknife" class="csl-entry" role="listitem">
-Efron, Bradley. 1982. <em>The <span>Jackknife</span>, the <span>Bootstrap</span> and <span>Other Resampling Plans</span></em>. <span>Society for Industrial and Applied Mathematics</span>. <a href="https://doi.org/10.1137/1.9781611970319">https://doi.org/10.1137/1.9781611970319</a>.
+<div id="ref-jackson2011trust" class="csl-entry" role="listitem">
+Jackson, J., Hough, M., Bradford, B., Pooler, T., Hohl, K., &amp; Kuha, J. (2011, November 1). <em>Trust in justice: <span>Topline</span> results from the round 5 of the european social survey</em> (SSRN Scholarly Paper No. 2231094). <a href="https://papers.ssrn.com/abstract=2231094">https://papers.ssrn.com/abstract=2231094</a> (Pre-published)
 </div>
-<div id="ref-efron1994introduction" class="csl-entry" role="listitem">
-Efron, Bradley, and R. J. Tibshirani. 1994. <em>An <span>Introduction</span> to the <span>Bootstrap</span></em>. <span>Chapman and Hall/CRC</span>. <a href="https://doi.org/10.1201/9780429246593">https://doi.org/10.1201/9780429246593</a>.
+<div id="ref-kass1995bayes" class="csl-entry" role="listitem">
+Kass, R. E., &amp; Raftery, A. E. (1995). Bayes factors. <em>Journal of the American Statistical Association</em>, <em>90</em>(430), 773–795. <a href="https://doi.org/10.1080/01621459.1995.10476572">https://doi.org/10.1080/01621459.1995.10476572</a>
 </div>
-<div id="ref-fabbricatore2023componentbased" class="csl-entry" role="listitem">
-Fabbricatore, Rosa, Maria Iannario, Rosaria Romano, and Domenico Vistocco. 2023. <span>“Component-Based Structural Equation Modeling for the Assessment of Psycho-Social Aspects and Performance of Athletes: <span>Measurement</span> and Evaluation of Swimmers.”</span> <em>AStA Advances in Statistical Analysis</em> 107 (1–2): 343–67. <a href="https://doi.org/10.1007/s10182-021-00417-5">https://doi.org/10.1007/s10182-021-00417-5</a>.
+<div id="ref-krainski2018advanced" class="csl-entry" role="listitem">
+Krainski, E., Gómez-Rubio, V., Bakka, H., Lenzi, A., Castro-Camilo, D., Simpson, D. P., Lindgren, F., &amp; Rue, H. (2018). <em>Advanced spatial modeling with stochastic partial differential equations using <span>R</span> and <span>INLA</span></em>. <span>Chapman and Hall/CRC</span>. <a href="https://doi.org/10.1201/9780429031892">https://doi.org/10.1201/9780429031892</a>
 </div>
-<div id="ref-figueroa2021structural" class="csl-entry" role="listitem">
-Figueroa-Jiménez, Maria Dolores, Cristina Cañete-Massé, María Carbó-Carreté, Daniel Zarabozo-Hurtado, and Joan Guàrdia-Olmos. 2021. <span>“Structural Equation Models to Estimate Dynamic Effective Connectivity Networks in Resting <span class="nocase">fMRI</span>. <span>A</span> Comparison Between Individuals with <span>Down</span> Syndrome and Controls.”</span> <em>Behavioural Brain Research</em> 405 (May): 113188. <a href="https://doi.org/10.1016/j.bbr.2021.113188">https://doi.org/10.1016/j.bbr.2021.113188</a>.
+<div id="ref-merkle2021efficient" class="csl-entry" role="listitem">
+Merkle, E. C., Fitzsimmons, E., Uanhoro, J., &amp; Goodrich, B. (2021). Efficient <span>Bayesian</span> structural equation modeling in <span>Stan</span>. <em>Journal of Statistical Software</em>, <em>100</em>(6), 1–22. <a href="https://doi.org/10.18637/jss.v100.i06">https://doi.org/10.18637/jss.v100.i06</a>
 </div>
-<div id="ref-firth1993bias" class="csl-entry" role="listitem">
-Firth, David. 1993. <span>“Bias Reduction of Maximum Likelihood Estimates.”</span> <em>Biometrika</em> 80 (1): 27–38. <a href="https://doi.org/10.1093/biomet/80.1.27">https://doi.org/10.1093/biomet/80.1.27</a>.
+<div id="ref-muthen2017mplus" class="csl-entry" role="listitem">
+Muthén, B., &amp; Muthén, L. (2017). <em>Mplus user’s guide version 8.1</em> (Version 8) [Computer software]. <a href="https://www.statmodel.com/">https://www.statmodel.com/</a>
 </div>
-<div id="ref-gourieroux1993indirect" class="csl-entry" role="listitem">
-Gourieroux, C., A. Monfort, and E. Renault. 1993. <span>“Indirect Inference.”</span> <em>Journal of Applied Econometrics</em> 8 (S1): S85–118. <a href="https://doi.org/10.1002/jae.3950080507">https://doi.org/10.1002/jae.3950080507</a>.
+<div id="ref-nelsen2006introduction" class="csl-entry" role="listitem">
+Nelsen, R. B. (2006). <em>An introduction to copulas</em> (2nd ed.). Springer.
 </div>
-<div id="ref-hall1988bootstrap" class="csl-entry" role="listitem">
-Hall, Peter, and Michael A. Martin. 1988. <span>“On Bootstrap Resampling and Iteration.”</span> <em>Biometrika</em> 75 (4): 661–71.
+<div id="ref-rue2009approximate" class="csl-entry" role="listitem">
+Rue, H., Martino, S., &amp; Chopin, N. (2009). Approximate <span>Bayesian</span> inference for latent <span>Gaussian</span> models by using integrated nested <span>Laplace</span> approximations. <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em>, <em>71</em>(2), 319–392. <a href="https://doi.org/10.1111/j.1467-9868.2008.00700.x">https://doi.org/10.1111/j.1467-9868.2008.00700.x</a>
 </div>
-<div id="ref-kosmidis2014bias" class="csl-entry" role="listitem">
-Kosmidis, Ioannis. 2014. <span>“Bias in Parametric Estimation: Reduction and Useful Side-Effects.”</span> <em>WIREs Computational Statistics</em> 6 (3): 185–96. <a href="https://doi.org/10.1002/wics.1296">https://doi.org/10.1002/wics.1296</a>.
+<div id="ref-rue2017bayesian" class="csl-entry" role="listitem">
+Rue, H., Riebler, A., Sørbye, S. H., Illian, J. B., Simpson, D. P., &amp; Lindgren, F. (2017). Bayesian computing with <span>INLA</span>: <span>A</span> review. <em>Annual Review of Statistics and Its Application</em>, <em>4</em>(1), 395–421. <a href="https://doi.org/10.1146/annurev-statistics-060116-054045">https://doi.org/10.1146/annurev-statistics-060116-054045</a>
 </div>
-<div id="ref-kosmidis2009bias" class="csl-entry" role="listitem">
-Kosmidis, Ioannis, and David Firth. 2009. <span>“Bias Reduction in Exponential Family Nonlinear Models.”</span> <em>Biometrika</em> 96 (4): 793–804. <a href="https://academic.oup.com/biomet/article-abstract/96/4/793/220575">https://academic.oup.com/biomet/article-abstract/96/4/793/220575</a>.
-</div>
-<div id="ref-kosmidis2024empirical" class="csl-entry" role="listitem">
-Kosmidis, Ioannis, and Nicola Lunardon. 2024. <span>“Empirical Bias-Reducing Adjustments to Estimating Functions.”</span> <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> 86 (1): 62–89. <a href="https://doi.org/10.1093/jrsssb/qkad083">https://doi.org/10.1093/jrsssb/qkad083</a>.
-</div>
-<div id="ref-mackinnon1998approximate" class="csl-entry" role="listitem">
-MacKinnon, James G., and Anthony A. Smith Jr. 1998. <span>“Approximate Bias Correction in Econometrics.”</span> <em>Journal of Econometrics</em> 85 (2): 205–30.
-</div>
-<div id="ref-manuela2013pacific" class="csl-entry" role="listitem">
-Manuela, Sam, and Chris G. Sibley. 2013. <span>“The <span>Pacific Identity</span> and <span>Wellbeing Scale</span> (<span>PIWBS</span>): <span>A Culturally-Appropriate Self-Report Measure</span> for <span>Pacific Peoples</span> in <span>New Zealand</span>.”</span> <em>Social Indicators Research</em> 112 (1): 83–103. <a href="https://doi.org/10.1007/s11205-012-0041-9">https://doi.org/10.1007/s11205-012-0041-9</a>.
-</div>
-<div id="ref-quenouille1956notes" class="csl-entry" role="listitem">
-Quenouille, Maurice H. 1956. <span>“Notes on Bias in Estimation.”</span> <em>Biometrika</em> 43 (3/4): 353–60. <a href="https://www.jstor.org/stable/2332914">https://www.jstor.org/stable/2332914</a>.
-</div>
-<div id="ref-quezada2016explanatory" class="csl-entry" role="listitem">
-Quezada, Lucía, Mónica T. González, and Gabriel A. Mecott. 2016. <span>“Explanatory <span>Model</span> of <span>Resilience</span> in <span>Pediatric Burn Survivors</span>.”</span> <em>Journal of Burn Care &amp; Research</em> 37 (4): 216–25. <a href="https://doi.org/10.1097/bcr.0000000000000261">https://doi.org/10.1097/bcr.0000000000000261</a>.
-</div>
-<div id="ref-rabe2008multilevel" class="csl-entry" role="listitem">
-Rabe-Hesketh, Sophia, and Anders Skrondal. 2008. <em>Multilevel and Longitudinal Modeling Using <span>Stata</span></em>. STATA press. <a href="https://books.google.com/books?hl=en&amp;lr=&amp;id=woi7AheOWSkC&amp;oi=fnd&amp;pg=PR21&amp;dq=rabe+hesketh+skrondal&amp;ots=efJx8d2SOE&amp;sig=iEXwmQmmn8UMZVmuYGYXtvDlESg">https://books.google.com/books?hl=en&amp;lr=&amp;id=woi7AheOWSkC&amp;oi=fnd&amp;pg=PR21&amp;dq=rabe+hesketh+skrondal&amp;ots=efJx8d2SOE&amp;sig=iEXwmQmmn8UMZVmuYGYXtvDlESg</a>.
-</div>
-<div id="ref-satorra1994corrections" class="csl-entry" role="listitem">
-Satorra, Albert, and Pete M. Bentler. 1994. <span>“Corrections to Test Statistics and Standard Errors in Covariance Structure Analysis.”</span> In <em>Latent Variables Analysis: <span>Applications</span> for Developmental Research</em>. Sage Publications, Inc.
-</div>
-<div id="ref-savalei2014understanding" class="csl-entry" role="listitem">
-Savalei, Victoria. 2014. <span>“Understanding <span>Robust Corrections</span> in <span>Structural Equation Modeling</span>.”</span> <em>Structural Equation Modeling: A Multidisciplinary Journal</em> 21 (1): 149–60. <a href="https://doi.org/10.1080/10705511.2013.824793">https://doi.org/10.1080/10705511.2013.824793</a>.
+<div id="ref-simpson2017penalising" class="csl-entry" role="listitem">
+Simpson, D. P., Rue, H., Riebler, A., Martins, T. G., &amp; Sørbye, S. H. (2017). Penalising model component complexity: <span>A</span> principled, practical approach to constructing priors. <em>Statistical Science</em>, <em>32</em>(1), 1–28. <a href="https://doi.org/10.1214/16-STS576">https://doi.org/10.1214/16-STS576</a>
 </div>
 <div id="ref-song2012basic" class="csl-entry" role="listitem">
-Song, Xin‐Yuan, and Sik‐Yum Lee. 2012. <em>Basic and <span>Advanced Bayesian Structural Equation Modeling</span>: <span>With Applications</span> in the <span>Medical</span> and <span>Behavioral Sciences</span></em>. 1st ed. Wiley <span>Series</span> in <span>Probability</span> and <span>Statistics</span>. Wiley. <a href="https://doi.org/10.1002/9781118358887">https://doi.org/10.1002/9781118358887</a>.
+Song, X.-Y., &amp; Lee, S.-Y. (2012). <em>Basic and advanced <span>Bayesian</span> structural equation modeling: <span>With</span> applications in the medical and behavioral sciences</em>. Wiley. <a href="https://doi.org/10.1002/9781118358887">https://doi.org/10.1002/9781118358887</a>
+</div>
+<div id="ref-tierney1989fully" class="csl-entry" role="listitem">
+Tierney, L., Kass, R. E., &amp; Kadane, J. B. (1989). Fully exponential <span>Laplace</span> approximations to expectations and variances of nonpositive functions. <em>Journal of the American Statistical Association</em>, <em>84</em>(407), 710–716. <a href="https://doi.org/10.1080/01621459.1989.10478824">https://doi.org/10.1080/01621459.1989.10478824</a>
+</div>
+<div id="ref-vandervaart1998asymptotic" class="csl-entry" role="listitem">
+van der Vaart, A. W. (1998). <em>Asymptotic statistics</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511802256">https://doi.org/10.1017/CBO9780511802256</a>
+</div>
+<div id="ref-vanniekerk2024lowrank" class="csl-entry" role="listitem">
+van Niekerk, J., &amp; Rue, H. (2024). Low-rank variational <span>Bayes</span> correction to the <span>Laplace</span> method. <em>Journal of Machine Learning Research</em>, <em>25</em>(62), 1–25. <a href="https://jmlr.org/papers/v25/21-1405.html">https://jmlr.org/papers/v25/21-1405.html</a>
+</div>
+<div id="ref-zellner1988optimal" class="csl-entry" role="listitem">
+Zellner, A. (1988). Optimal information processing and <span>Bayes</span>’s theorem. <em>The American Statistician</em>, <em>42</em>(4), 278–280. <a href="https://doi.org/10.2307/2685143">https://doi.org/10.2307/2685143</a>
 </div>
 </div>
 </section></section>

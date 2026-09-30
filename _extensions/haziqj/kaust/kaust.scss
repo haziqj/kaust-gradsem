@@ -10,7 +10,7 @@ $kaust: (
   sat: (
     pur: #9C6FAE, blu: #5284C4, tur: #00A6AA,
     grn: #adbf04, yel: #F0B500, org: #F18F00,
-    bla: #131516, mer: #b10f2e, grnn: #C8DE00
+    bla: #131516, mer: #b10f2e, grnn: #a1b204
   ),
   satsh: (
     pur: #6D2463, blu: #003B75, tur: #004C59,
@@ -373,7 +373,7 @@ $selection-bg: kaust(tur) !default;
   bottom: 11px !important;
   left: 8px !important;
   color: mix(white, kaust(gry, neu), 30%) !important;
-  font-size: 70%;
+  font-size: 60%;
 }
 
 // Hide logo and slide number on the title slide
@@ -633,6 +633,10 @@ div.figure {
 
 .nudge-up-small {
   transform: translateY(-12.5px);
+}
+
+.nudge-up-xs {
+  transform: translateY(-5px);
 }
 
 .nudge-down {

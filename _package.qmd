@@ -1,0 +1,210 @@
+## The R/INLAvaan package
+
+::: {.absolute top=-38 left=600}
+![](https://img.shields.io/badge/lifecycle-experimental-orange.svg){height=30px}
+![](figures/INLAvaan.svg){height=30px}
+:::
+
+::: {.columns}
+
+::: {.column width=48%}
+::: {.nudge-down-xs}
+```{r}
+#| include: false
+#| cache: false
+options(width = 40)
+```
+```{r}
+#| echo: true
+#| message: false
+# Check data set
+glimpse(Kidney)
+library(INLAvaan)
+mod <- "
+  # Measurement model
+  GlyCon =~ y1 + y2 + y3
+  KdnHlt =~ y4 + y5 + y6
+
+  # Structural model
+  KdnHlt ~ GlyCon
+"
+```
+```{r}
+#| include: false
+#| cache: false
+options(width = 80)
+```
+:::
+:::
+
+::: {.column width=52%}
+
+<!-- Cast call: -->
+<!-- agg --theme nord --font-family "Fira Code" --font-size 35 --cols 49 --rows 12 inlavaan-kidney.cast inlavaan.gif -->
+::: {.content-visible unless-meta="params.nogif"}
+::: {.nudge-up-small}
+![](figures/INLAvaan.gif){width=100% fig-align='center'}
+:::
+:::
+
+::: {.content-hidden unless-meta="params.nogif"}
+```{r}
+#| label: inlavaan-demo
+#| echo: false
+#| message: true
+#| eval: true
+fit <- INLAvaan::asem(
+  model = mod,
+  data = Kidney,
+  meanstructure = TRUE,
+  std.lv = TRUE
+)
+timing(fit)
+```
+:::
+
+::: {.nudge-up}
+```{r, engine = "tikz", code = dag_tikz(5, psi_fixed = TRUE)}
+#| eval: true
+#| fig-align: center
+#| out-width: 95%
+```
+:::
+
+:::
+
+:::
+
+## (b)lavaan S4 methods
+
+```{r}
+#| include: false
+options(width = 60)
+fit <- INLAvaan::asem(
+  model = mod,
+  data = Kidney,
+  meanstructure = TRUE,
+  std.lv = TRUE
+)
+```
+
+::: {.columns}
+
+::: {.column width=65%}
+```{r}
+#| echo: true
+print(fit)
+```
+:::
+
+::: {.column width=25%}
+Also available:
+
+- `fitmeasures()`
+- `fitted()`
+- `predict()`
+- `standardisedsolution()`
+- `vcov()`
+- `plot()`
+:::
+:::
+
+
+```{r}
+#| include: false
+options(width = 80)
+```
+
+::: {.nudge-down}
+```{r}
+#| echo: true
+coef(fit)
+```
+:::
+
+## Summary {.scrollable}
+
+```r
+summary(fit)
+```
+
+```{r}
+#| label: demo-summary
+summ <- capture.output(summary(fit))
+summ <- c("<output truncated>", summ[-(1:12)])
+cat(paste0(summ, collapse = "\n"))
+```
+
+## Comparison to MCMC
+
+- Interchangeable commands (c.f. `bsem()`) with `blavaan` [@merkle2021efficient] which interfaces with `Stan` [@carpenter2017stan].
+
+![](figures/blavaan-single.gif){fig-align="center" width="90%"}
+
+
+## Comparison to MCMC *(cont.)*
+
+::: {.nudge-up}
+```{r}
+#| label: comparison
+#| out-width: 100%
+#| fig-width: 8.5
+#| fig-height: 4.9
+#| cache: true
+load("R/p_compare.RData")
+p_compare
+```
+:::
+
+::: aside
+MCMC: 3 chains of 1,000 draws each, after 500 burn-in. % are 1 minus Jensen–Shannon divergences.
+:::
+
+
+## Parameter recovery from simulated data
+
+```{r}
+#| label: simulations
+#| out-width: 100%
+#| fig-width: 8
+#| fig-height: 4.7
+#| cache: true
+load("R/p_simulations.RData") #
+library(patchwork)
+p1 + p2 + p3 + p4 + p5 + plot_layout(axes = "collect", nrow = 1)
+```
+
+
+## Effects of prior distributions
+
+- Loadings: $\lambda \sim \operatorname{N}(0,10^2) \mapsto \lambda \sim \operatorname{N}(2,0.1^2)$
+
+```{r}
+#| label: priorlambda
+#| out-width: 100%
+#| fig-width: 8
+#| fig-height: 1.6
+load("R/p_priors.RData")
+p1
+```
+
+- Residual variances: $\theta^{1/2} \sim \Gamma(1,0.5) \mapsto \theta \sim \Gamma(100,50)$
+
+```{r}
+#| label: priortheta
+#| out-width: 100%
+#| fig-width: 8
+#| fig-height: 1.6
+load("R/p_priors.RData")
+p2
+```
+
+## Refit-free Leave-One-Out Cross-Validation
+
+```{r}
+#| echo: true
+tictoc::tic()
+loo(fit)
+tictoc::toc()
+```
+

@@ -1,111 +1,85 @@
 ---
-title: 'Bias-reduced estimation of structural equation models'
-# subtitle: A statistical perspective
+title: 'Approximate Bayesian inference for Structural Equation Models (SEM)'
+subtitle: The INLA approach
 format:
-  kaust-revealjs:
+  kaust-revealjs:  
+    embed-resources: false
     slide-level: 2
     transition: fade
     auto-stretch: false
     width: 1250  # 1050
     height: 760  # 700
-    self-contained: false
     chalkboard: true
     toc: false
     toc-depth: 1
     # multiplex: true
     code-block-height: 700px
-    # html-table-processing: none
+    html-table-processing: none
 author:
   - name: Haziq Jamil
     orcid: 0000-0003-3298-1010
     affiliations: 
-      - 'Research Specialist, BAYESCOMP @ CEMSE-KAUST'
-      - '<span style="font-style:normal;">[`https://haziqj.ml/sembias-gradsem/`](https://haziqj.ml/sembias-gradsem/)</span>'
-date: 2025-10-16
+      - 'Research Specialist<br>BAYESCOMP @ CEMSE-KAUST'
+      - '<span style="font-style:normal;">[``r params$url``](`r params$url`)  |  [📥 PDF](https://haziqj.ml/imps26/slides.pdf)</span> '
+date: 2026-10-08
 bibliography: refs.bib
+csl: https://raw.githubusercontent.com/citation-style-language/styles/refs/heads/master/apa.csl
 execute:
+  eval: true
   echo: false
   freeze: auto
   cache: true
+params:
+  url: 'https://haziqj.ml/kaust-gradsem'
+  nogif: false  
 ---
-
-## 
-
-```{r}
-#| include: false
-source("R/sigma2.R")
-source("R/score.R")
-source("R/adjscore.R")
-source("R/erbm.R")
-source("R/results.R")
-```
-
 
 ::: {.columns}
 
-::: {.column width="33%"}
-<figure class="quarto-figure quarto-figure-center" style="text-align:center;">
-  <a href="https://lavaan.org" target="_blank">
-    <img
-      src="https://science-academy.ugent.be/sites/acugain/files/styles/medium_1_1/public/teachers/rosseel_yves.jpg?h=04d92ac6&itok=GUYp9IIm"
-      alt="Yves Rosseel"
-      style="--size:220px; width:var(--size); height:var(--size);
-             object-fit:cover; object-position:top;"
-    >
-  </a>
-  <figcaption>
-    Yves Rosseel<br><em>Universiteit Gent</em> | R/<code>{lavaan}</code>
-  </figcaption>
-</figure>
+::: {.column width=50%}
+::: {.nudge-up-large}
+![](figures/BAYESCOMP-group-2025-v2.JPG)
+:::
 :::
 
-::: {.column width="33%"}
-<figure class="quarto-figure quarto-figure-center" style="text-align:center;">
-  <img
-    src="https://warwick.ac.uk/fac/sci/statistics/staff/research_students/kemp/img_warwick.jpg"
-    style="--size:220px; width:var(--size); height:var(--size);
-           object-fit:cover; object-position:top;"
-  >
-  <figcaption>Ollie Kemp<br><em>University of Warwick</em></figcaption>
-</figure>
-:::
+::: {.column width=50%}
+> Bayesian Computational Statistics and Modeling Research Group (BAYESCOMP)
 
-::: {.column width="33%"}
-<figure class="quarto-figure quarto-figure-center" style="text-align:center;">
-  <a href="https://www.ikosmidis.com" target="_blank">
-    <img
-      src="https://www.ikosmidis.com/img/me.jpg"
-      style="--size:220px; width:var(--size); height:var(--size);
-             object-fit:cover; object-position:top;"
-    >
-  </a>
-  <figcaption>Ioannis Kosmidis<br><em>University of Warwick</em></figcaption>
-</figure>
+::: {.small-text}
+Led by Prof. Håvard Rue---*Integrated Nested Laplace Approximation [INLA, @rue2009approximate]*
+:::
 :::
 
 :::
 
-::: {.nudge-up}
+. . .
 
-> **Jamil, H.**, Rosseel, Y., Kemp, O., & Kosmidis, I. (2025). Bias-Reduced Estimation of Structural Equation Models. *Manuscript in Submission*. [`arXiv:2509.25419`](https://doi.org/10.48550/arXiv.2509.25419).
-
-::: {.nudge-down-small}
-- Source: <https://github.com/haziqj/sembias-gradsem>
-- Slides: <https://haziqj.ml/sembias-gradsem/slides.pdf>
-- R Package: <https://github.com/haziqj/brlavaan>
+::: {.nudge-up-large}
+```{r}
+#| eval: true
+#| out-width: 100%
+#| fig-align: center
+knitr::include_graphics("figures/BAYESCOMP-applications-wordcloud.png")
+```
 :::
 
+```{r}
+#| include: false
+#| eval: true
+library(tidyverse)
+library(gt)
+library(INLAvaan)
+library(lavaan)
+source("R/kidney.R")
+```
+
+## Data context
+
+::: {.callout-note icon=false title="Structural equation models (SEM) in a nutshell"}
+Analyse multivariate data $\mathbf y=(y_1,\dots,y_p)^\top$ to [**measure**]{.text-org} and [**relate**]{.text-grnn} *hidden* variables $\boldsymbol\eta=(\eta_1,\dots,\eta_q)^\top$, $q \ll p$, and uncover complex patterns.
 :::
 
-[![](figures/qr.svg){height=245 width=245}]{.absolute bottom=-10 right=0}
-
-[[**poll**]{.bg-yel}]{.absolute bottom=210 right=235}
-
-## Context
-
-::: {.callout-note icon=false title="SEM in a nutshell"}
-Analyse multivariate data $\mathbf y=(y_1,\dots,y_p)^\top$ to measure and relate hidden variables $\boldsymbol\eta=(\eta_1,\dots,\eta_q)^\top$, $q \ll p$, and uncover complex patterns.
-:::
+. . .
 
 ::: {.nudge-up-small}
 In the social sciences, latent variables are used to represent **constructs**---the *theoretical, unobserved* concepts of interest.
@@ -141,53 +115,216 @@ Photo credits: Unsplash
 [\@benmullins](https://unsplash.com/photos/person-using-pencil-oXV3bzR7jxI).
 :::
 
-## Key issue
+## European Social Survey (ESS) Round 5
 
-[*"Using SEMs in empirical research is often challenged by small sample sizes."*]{.text-tur}
-
-- Why? Data collection is expensive, time-consuming, or difficult, or all of these!
-
-. . .
-
-- Rare populations:
-    - **@quezada2016explanatory:** Identifying factors of adjustment in pediatric burn patients to facilitate appropriate mental health interventions postinjury ($n=51$).
-    - **@figueroa2021structural:** Studying functional connectivity network on individuals with rare genetic disorders ($n=22$).
-    - **@fabbricatore2023componentbased**: Assessment of psycho-social aspects and performance of elite swimmers ($n=161$).
-    - **@manuela2013pacific**: Validating self-report measures of identity on a unique cultural group ($n=143$).
-
-. . .
-
-- SEM is desirable, but small $n \Rightarrow$ poor finite-sample performance (esp. bias). 
-
-## Outline
+Total $n=52,458$ respondents from 27 countries. Example of items measuring the construct *"Trust in Police Effectiveness"*:
 
 ::: {.columns}
+
 ::: {.column width=60%}
 
-1. **Brief overview of SEMs**
-    - Motivating example
-    - ML estimation and inference
-    - Examples of SEMs
-      - Two-factor SEM
-      - Latent growth models
-2. **Bias reducing methods**
-    - What is bias?
-    - A review of bias reduction methods
-    - Reduced-Bias $M$-estimation (RBM)
-      - Implicit correction
-      - Explicit correction
-3. **Simulation studies and results**
+```{r}
+#| eval: true
+tribble(
+  ~"Ser.", ~"Question", ~"Label",
+  "D12",	"Based on what you have heard or your own experience how successful do you think the police are at preventing crimes in [country] where violence is used or threatened?",	"y1",
+"D13", "How successful do you think the police are at catching people who commit house burglaries in [country]?",	"y2",
+"D14",	"If a violent crime were to occur near to where you live and the police were called, how slowly or quickly do you think they would arrive at the scene?",	"y3"
+) |>
+  select(-Label) |>
+  gt() |>
+  cols_width(
+    1 ~ px(65)
+  ) |>
+  tab_options(
+    table.font.size = "85%",
+    quarto.disable_processing = TRUE
+  )
+```
 
 :::
 
 ::: {.column width=40%}
 <br>
-<br>
-<center>
-[[**poll**]{.bg-yel}]{.center}
-</center>
+![](figures/scale.png)
+:::
 
-![](figures/qr.svg){height=350 fig-align=center}
+:::
+
+::: {.aside}
+Data available from @ess2023ess5.
+:::
+
+## European Social Survey (ESS) Round 5 *(cont.)*
+
+
+```{r, engine = "tikz"}
+#| out-width: 65%
+#| fig-align: center
+#| eval: true
+\usetikzlibrary{arrows.meta}
+\definecolor{kaustblu}{RGB}{82, 132, 196}
+\definecolor{kausttur}{RGB}{0, 166, 170}
+\definecolor{kaustmer}{RGB}{177, 15, 46}
+\definecolor{kaustbla}{RGB}{19, 21, 22}
+\begin{tikzpicture}[
+  font=\sffamily,
+  latent/.style={circle, draw=none, minimum size=2.9cm, inner sep=0pt,
+    align=center, text=white, font=\sffamily\bfseries\large},
+  trust/.style={latent, fill=kaustblu},
+  legit/.style={latent, fill=kausttur},
+  coop/.style={latent, fill=kaustmer},
+  path/.style={-{Latex[length=3.5mm, width=3mm]}, line width=1.3pt, draw=kaustbla!85},
+  corr/.style={{Latex[length=3mm, width=2.6mm]}-{Latex[length=3mm, width=2.6mm]},
+    line width=1.3pt, draw=kaustbla!35}
+]
+
+% Latent variables
+\node[trust] (tpe) at (0, 0)       {Trust in\\police\\effective-\\ness};
+\node[trust] (tpf) at (0, -3.5)    {Trust\\in police\\procedural\\fairness};
+\node[legit] (obl) at (6.8, 0)     {Obligation\\to obey the\\police};
+\node[legit] (mor) at (6.8, -3.5)  {Moral\\alignment\\with the\\police};
+\node[coop]  (wil) at (13.6, 0)    {Willing-\\ness to\\cooperate};
+
+% Structural paths
+\draw[path] (tpe) -- (obl);
+\draw[path] (tpe) -- (mor);
+\draw[path] (tpf) -- (obl);
+\draw[path] (tpf) -- (mor);
+\draw[path] (obl) -- (wil);
+\draw[path] (mor) -- (wil);
+\draw[path] (tpe) to[bend left=22] (wil);
+\draw[path] (tpf.-40) to[out=-35, in=-115] (wil.-120);
+
+% Correlations
+\draw[corr] (tpe.200) to[bend right=40] (tpf.160);
+\draw[corr] (obl.-42) to[bend left=30] (mor.42);
+
+% Trim the bounding box (curve control points otherwise add white space)
+\pgfresetboundingbox
+\path[use as bounding box] (-2.0, 1.85) rectangle (15.1, -5.9);
+\end{tikzpicture}
+```
+
+::: {.nudge-up}
+- Modelling procedural fairness theory linking trust, legitimacy, and compliance with authorities [@jackson2011developing; @jackson2011trust].
+
+- Big and layered data suited for Bayesian approaches. But model fit and evaluation can be computationally challenging or time-consuming.
+
+- Often, country-level effects are ignored, but they can be crucial in understanding the variability in the latent constructs across countries.
+:::
+
+## Programme for International Student Assessment (PISA)
+
+::: {.columns}
+
+::: {.column width=3.33%}
+:::
+
+::: {.column width=55%}
+![](figures/pisa2025.jpeg)
+:::
+
+::: {.column width=3.33%}
+:::
+
+::: {.column width=35%}
+[![](figures/economist.png)](https://www.youtube.com/shorts/hIzX6r3IQbg)
+:::
+
+::: {.column width=3.33%}
+:::
+
+
+:::
+
+
+## PISA *(cont.)*
+
+```{r, engine = "tikz"}
+#| out-width: 75%
+#| fig-align: center
+#| eval: true
+\usetikzlibrary{arrows.meta,calc}
+\definecolor{kausttur}{RGB}{0, 166, 170}
+\definecolor{kaustyel}{RGB}{240, 181, 0}
+\definecolor{kaustpur}{RGB}{156, 111, 174}
+\definecolor{kaustbla}{RGB}{19, 21, 22}
+\begin{tikzpicture}[
+  font=\sffamily,
+  latent/.style={circle, draw=none, minimum size=2.2cm, inner sep=0pt,
+    align=center, text=white, font=\sffamily\bfseries\large},
+  item/.style={rectangle, draw=#1, line width=1pt, fill=#1!15, minimum size=5.5mm},
+  missing/.style={dash pattern=on 2pt off 1.5pt, fill=white},
+  % Items not answered (planned missingness)
+  miss/sci2/.style={missing}, miss/sci5/.style={missing},
+  miss/mat1/.style={missing}, miss/mat4/.style={missing}, miss/mat5/.style={missing},
+  miss/rea3/.style={missing},
+  load/.style={-{Latex[length=2.5mm, width=2mm]}, line width=0.9pt, draw=kaustbla!70},
+  corr/.style={{Latex[length=3mm, width=2.6mm]}-{Latex[length=3mm, width=2.6mm]},
+    line width=1.3pt, draw=kaustbla!35}
+]
+
+% Latent abilities
+\node[latent, fill=kausttur] (sci) at (0, 0)  {Science};
+\node[latent, fill=kaustyel, text=kaustbla] (mat) at (6, 0)  {Math};
+\node[latent, fill=kaustpur] (rea) at (12, 0) {Reading};
+
+% Test items (six per domain), fanning out above each ability
+\foreach \lv/\col in {sci/kausttur, mat/kaustyel, rea/kaustpur} {
+  \foreach \k in {1,...,6} {
+    \node[item=\col, miss/\lv\k/.try] (\lv\k) at ($(\lv) + (-2.25 + 0.9*\k - 0.9, 3)$) {};
+    \draw[load] (\lv) -- (\lv\k);
+  }
+}
+
+% Correlations between abilities
+\draw[corr] (sci.-20) to[bend right=30] (mat.-160);
+\draw[corr] (mat.-20) to[bend right=30] (rea.-160);
+\draw[corr] (sci.-80) to[bend right=25] (rea.-100);
+\end{tikzpicture}
+```
+
+
+::: {.nudge-up}
+- PISA uses 2PL *item response theory (IRT)* models to measure unobserved proficiency from item responses.
+
+- **Estimation involves large-scale, multi-group calibration and latent population modelling**, with incomplete forms and complex survey sampling. 
+
+- Population inference uses *plausible values* (draws from students' conditional proficiency posteriors), given fitted item and population parameters.
+:::
+
+## Advancing scalable Bayesian methods for latent variable modelling
+
+### Håvard Rue (PI) + Haziq Jamil (co-I)
+
+::: {.nudge-down}
+::: {.small-text}
+>  - **Jamil, H.**, & Rue, H. (2026a). *Approximate Bayesian inference for structural equation models using integrated nested Laplace approximations* ([`arXiv:2603.25690 [stat.ME]`](https://doi.org/10.48550/arXiv.2603.25690)).^[Under review at Psychometrika ([Q1, Applied Mathematics](https://www.scimagojr.com/journalsearch.php?q=14061&tip=sid&clean=0)).]
+> - **Jamil, H.**, & Rue, H. (2026b). *Implementation and workflows for INLA-based approximate Bayesian structural equation modelling*([`arXiv:2604.00671 [stat.CO]`](https://doi.org/10.48550/arXiv.2604.00671)).^1^
+>  - Alhyari, M., **Jamil, H.**, Montcho, H., & Rue, H. (2026). *Deterministic Leave-One-Cluster-Out Cross-Validation for Multilevel Bayesian Structural Equation Models* ([`arXiv:2609.00670 [stat.ME]`](https://doi.org/10.48550/arXiv.2609.00670)).^1^
+> - R Package: <https://github.com/haziqj/INLAvaan>
+:::
+
+Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp.kaust.edu.sa/articles/2026/03/10/bayescomp-group-secures-crg-funding-revolutionize-latent-variable-modeling>].
+
+:::
+
+
+## Outline
+
+::: {.columns}
+::: {.column width=80%}
+
+1. **Brief overview of SEMs**
+    - Motivating example
+    - Bayesian inference
+    - Marginal likelihood
+2. **INLA-based inference**
+    - Joint Gaussian approximation with variational mean correction
+    - Skew-normal Laplace profiling of posterior marginals
+    - Gaussian copula sampling
+3. **The INLAvaan R package**
 
 :::
 
@@ -275,7 +412,7 @@ tbl |>
 ::: {.column width=50%}
 ::: {.fragment}
 ::: {.nudge-down}
-"*casewise*" thinking leads to
+"*piecemeal*" thinking leads to
 $$
 \small
 \begin{align*}
@@ -310,13 +447,29 @@ Example adapted from @song2012basic.
 ::: {.nudge-up-small}
 Sample correlation matrix looks like this^[Simulated data, from a two-factor SEM ($n=1000$).]:
 
+::: {.nudge-up-small}
 ```{r}
 #| fig-align: center
 #| out-width: 100%
 #| fig-height: 4.5
 #| fig-width: 4.5
-library(brlavaan)
-dat <- gen_data_twofac(n = 1000)
+dat <- lavaan::simulateData(
+  model = "
+    fx =~ 1*x1 + 0.7*x2 + 0.6*x3
+    fy =~ 1*y1 + 0.7*y2 + 0.6*y3
+    fy ~ 0.25*fx
+
+    x1 ~~ 1*x1
+    x2 ~~ 0.49*x2
+    x3 ~~ 0.36*x3
+
+    y1 ~~ 1*y1
+    y2 ~~ 0.49*y2
+    y3 ~~ 0.36*y3
+    ", 
+    sample_nobs = 1000L
+)
+
 z <- cor(dat)
 colnames(z) <- rownames(z) <- c("y[1]","y[2]","y[3]","y[4]","y[5]","y[6]")
 
@@ -338,14 +491,15 @@ ggcorrplot(
 ```
 :::
 :::
+:::
 
 ::: {.column width=55%}
-::: {.nudge-down-medium}
+::: {.nudge-down}
 - The data suggests clustering of variables
    - [$y_1$,$y_2$,$y_3$]{.text-blu} measure *glycemic control* ([$\texttt{GlyCon}$]{.text-blu})
    - [$y_4$,$y_5$,$y_6$]{.text-mer} measure *kidney health* ([$\texttt{KdnHlt}$]{.text-mer})
 
-- There is an element of dimension-reduction; much needed for analysing (correlated) multivariate data.
+<!-- - There is an element of dimension-reduction; much needed for analysing (correlated) multivariate data. -->
 
 ::: {.fragment}
 - Easier to hypothesize relationships, e.g.
@@ -353,22 +507,165 @@ ggcorrplot(
   {\color{kaustmer}\texttt{KdnHlt}} = \alpha + \beta \,  {\color{kaustblu}\texttt{GlyCon}} + \texttt{error}
   $$
 
+- But these are unobserved---we only see their *footprint* on the correlations: items in a cluster share a latent cause, and cross-cluster correlation flows through $\beta$.
+:::
+
+::: {.fragment}
+::: {.nudge-up-xs}
 - SEM is about modelling the <u>covariance structure</u> of the data, 
 $$
-\boldsymbol\Sigma = \boldsymbol\Sigma(\vartheta).
+\boldsymbol\Sigma = \boldsymbol\Sigma(\boldsymbol\vartheta),
 $$
-:::
+where $\boldsymbol\vartheta$ are model parameters.
 :::
 :::
 
+:::
+:::
+
+:::
+
+## Directed acyclic graph (DAG)
+
+```{r}
+#| include: false
+#| eval: true
+# TikZ template for the step-by-step DAG slide; \dagstep controls what is shown
+dag_tmpl <- r"---(
+\usetikzlibrary{backgrounds,shapes.geometric,calc}
+\definecolor{kaustorg}{RGB}{241, 143, 0}
+\definecolor{kausttur}{RGB}{0, 166, 170}
+\definecolor{kaustgrn}{RGB}{173, 191, 4}
+\definecolor{kaustpur}{RGB}{156, 111, 174}
+% Latent-variance labels: free parameters by default, or fixed to 1 (std.lv = TRUE)
+% when \dagpsifixed is defined (see dag_tikz(..., psi_fixed = TRUE))
+\ifdefined\dagpsifixed
+  \newcommand{\psiA}{$\psi_{11} = 1$}\newcommand{\psiB}{$\psi_{22} = 1$}
+\else
+  \newcommand{\psiA}{$\psi_{11}$}\newcommand{\psiB}{$\psi_{22}$}
+\fi
+\begin{tikzpicture}[%
+  >=stealth,
+  line width=0.6pt,
+  % Slightly heavier text: outline each glyph with a thin stroke in its own colour
+  every node/.style={font=\large,
+    execute at begin node={\pdfliteral{q 2 Tr 0.18 w}},
+    execute at end node={\pdfliteral{Q}}},
+  show background rectangle,
+  background rectangle/.style={fill=white},
+  latent/.style={circle, draw, minimum size=17mm, inner sep=0mm, font=\large\ttfamily},
+  obs/.style={rectangle, draw, minimum height=8mm, minimum width=17mm, inner sep=1mm,
+    font=\normalsize\ttfamily},
+  intercept/.style={regular polygon, regular polygon sides=3, draw, inner sep=0pt,
+    minimum size=8mm, font=\small},
+  % Everything is drawn at every step (so all images share one size);
+  % elements belonging to a later step are made invisible.
+  step/.code={\ifnum\dagstep<#1\relax\tikzset{opacity=0}\fi}
+]
+
+% Variables
+\node[latent] (eta1) at (-2.1, -2.6) {GlyCon};
+\node[latent] (eta2) at ( 5.0, -2.6) {KdnHlt};
+\foreach \i/\x/\lab in {1/-4.2/HbA1c, 2/-2.1/FPG, 3/0/Insulin,
+                        4/2.9/PCr, 5/5.0/ACR, 6/7.1/BUN}
+  \node[obs] (y\i) at (\x, 0) {\lab};
+\foreach \i in {1,2,3} \draw[->] (eta1) -- (y\i);
+\foreach \i in {4,5,6} \draw[->] (eta2) -- (y\i);
+
+% Step 1: loadings
+\begin{scope}[step=1]
+  \path (eta1) -- node[pos=0.55, right] {\color{kaustpur}$\lambda_{11}$} (y1);
+  \path (eta1) -- node[pos=0.5, right] {\color{kaustpur}$\lambda_{21}$} (y2);
+  \path (eta1) -- node[pos=0.55, right] {\color{kaustpur}$\lambda_{31}$} (y3);
+  \path (eta2) -- node[pos=0.55, right] {\color{kaustpur}$\lambda_{42}$} (y4);
+  \path (eta2) -- node[pos=0.5, right] {\color{kaustpur}$\lambda_{52}$} (y5);
+  \path (eta2) -- node[pos=0.55, right] {\color{kaustpur}$\lambda_{62}$} (y6);
+\end{scope}
+
+% Step 2: observed intercepts
+\begin{scope}[step=2, black!55]
+  \foreach \i in {1,...,6} {
+    \node[intercept, black!55] (t\i) at ($(y\i.north) + (-0.4, 1.3)$) {$1$};
+    \draw[->] (t\i) -- node[left] {$\nu_{\i}$} (t\i |- y\i.north);
+  }
+\end{scope}
+
+% Step 3: residual variances (loop on top of each item)
+\begin{scope}[step=3]
+  \foreach \i in {1,...,6}
+    \draw[<->, kaustorg] ([xshift=0.5mm]y\i.north) to[out=90, in=90, looseness=2.2]
+      node[above] {$\theta_{\i\i}$} ([xshift=6.5mm]y\i.north);
+\end{scope}
+
+% Step 4: latent regression
+\draw[->, kaustgrn, step=4] (eta1) -- node[midway, above] {$\beta$} (eta2);
+
+% Step 5: latent variances
+\begin{scope}[step=5, kausttur]
+  \draw[<->] (eta1) to[out=200, in=240, looseness=4] node[below left] {\psiA} (eta1);
+  \draw[<->] (eta2) to[out=-60, in=-20, looseness=4] node[below right] {\psiB} (eta2);
+\end{scope}
+\end{tikzpicture}
+)---"
+dag_tikz <- function(step, psi_fixed = FALSE) {
+  paste0("\\def\\dagstep{", step, "}", if (psi_fixed) "\\def\\dagpsifixed{1}", dag_tmpl)
+}
+```
+
+::: {.r-stack style="width: 980px; margin: 0 auto;"}
+```{r, engine = "tikz", code = dag_tikz(0)}
+#| eval: true
+```
+
+::: {.fragment fragment-index=1}
+```{r, engine = "tikz", code = dag_tikz(1)}
+#| eval: true
+```
+:::
+
+::: {.fragment fragment-index=2}
+```{r, engine = "tikz", code = dag_tikz(2)}
+#| eval: true
+```
+:::
+
+::: {.fragment fragment-index=3}
+```{r, engine = "tikz", code = dag_tikz(3)}
+#| eval: true
+```
+:::
+
+::: {.fragment fragment-index=4}
+```{r, engine = "tikz", code = dag_tikz(4)}
+#| eval: true
+```
+:::
+
+::: {.fragment fragment-index=5}
+```{r, engine = "tikz", code = dag_tikz(5)}
+#| eval: true
+```
+:::
+:::
+
+::: {.nudge-up}
+::: {.fragment fragment-index=1}
+- **Measurement model:** loadings $\color{kaustpur}\lambda$, intercepts $\color{Gray}\nu$, residual (co)variances $\color{kaustorg}\theta$.
+:::
+::: {.fragment fragment-index=4}
+- **Structural model:** regression coefficients $\color{kaustgrn}\beta$, latent (co)variances $\color{kausttur}\psi$.
+:::
+::: {.fragment fragment-index=6}
+- Collect free parameters in $\boldsymbol\vartheta \in\mathbb R^m$, where $m < p(p+1)/2 + p$.
+:::
 :::
 
 ## SEM equations
 
 ::: {.columns}
 
-::: {.column width=50%}
-::: {.nudge-up}
+::: {.column width=48%}
+::: {style="font-size: 90%;"}
 $$
 \small
 \begin{gathered}
@@ -382,6 +679,15 @@ y_6
 \end{pmatrix}
 = 
 \begin{pmatrix}
+\nu_1 \\
+\nu_2 \\
+\nu_3 \\
+\nu_4 \\
+\nu_5 \\
+\nu_6
+\end{pmatrix}
++
+\begin{pmatrix}
 \textcolor{kaustpur}{\lambda_{11}} & 0 \\
 \textcolor{kaustpur}{\lambda_{21}} & 0 \\
 \textcolor{kaustpur}{\lambda_{31}} & 0 \\
@@ -394,6 +700,7 @@ y_6
 \eta_2
 \end{pmatrix}
 + 
+{\color{Gray}
 \begin{pmatrix}
 \epsilon_1 \\
 \epsilon_2 \\
@@ -401,12 +708,17 @@ y_6
 \epsilon_4 \\
 \epsilon_5 \\
 \epsilon_6
-\end{pmatrix} \\[1em]
+\end{pmatrix}} \\[1.1em]
 \begin{pmatrix}
 \eta_1 \\
 \eta_2
 \end{pmatrix}
 =
+\begin{pmatrix}
+\alpha_1 \\
+\alpha_2
+\end{pmatrix}
++
 \begin{pmatrix}
 0 & 0 \\
 {\color{kaustgrn}\beta} & 0 \\
@@ -416,39 +728,40 @@ y_6
 \eta_2
 \end{pmatrix}
 +
+{\color{Gray}
 \begin{pmatrix}
 \zeta_1 \\
 \zeta_2
-\end{pmatrix}
+\end{pmatrix}}
 \end{gathered}
 $$
+:::
 
 ::: {.fragment}
 
 ::: {.nudge-up-small}
 Or, more compactly as
 
-::: {.nudge-up}
+::: {.nudge-up-small}
 $$
 \begin{gathered}
-\mathbf y = {\color{Gray}\boldsymbol\nu +\,}  {\color{kaustpur}\boldsymbol\Lambda} \boldsymbol\eta + \boldsymbol\epsilon \\
-\boldsymbol\eta = {\color{Gray}\boldsymbol\alpha +\,} {\color{kaustgrn}\mathbf B} \boldsymbol\eta + \boldsymbol\zeta
+\mathbf y = \boldsymbol\nu + {\color{kaustpur}\boldsymbol\Lambda} \boldsymbol\eta + {\color{Gray}\boldsymbol\epsilon} \\
+\boldsymbol\eta = \boldsymbol\alpha + {\color{kaustgrn}\mathbf B} \boldsymbol\eta + {\color{Gray}\boldsymbol\zeta}
 \end{gathered}
 $$
 
-with assumptions $\boldsymbol\epsilon\sim\operatorname{N}_p(\mathbf 0, {\color{kaustorg}\boldsymbol\Theta})$, $\boldsymbol\zeta\sim\operatorname{N}_q(\mathbf 0, {\color{kausttur}\boldsymbol\Psi})$, and $\operatorname{cov}(\boldsymbol\epsilon, \boldsymbol\zeta)=\mathbf 0$.
-
-:::
-:::
-:::
+with assumptions ${\color{Gray}\boldsymbol\epsilon}\sim\operatorname{N}_p(\mathbf 0, {\color{kaustorg}\boldsymbol\Theta})$, ${\color{Gray}\boldsymbol\zeta}\sim\operatorname{N}_q(\mathbf 0, {\color{kausttur}\boldsymbol\Psi})$, and $\operatorname{Cov}({\color{Gray}\boldsymbol\epsilon}, {\color{Gray}\boldsymbol\zeta})=\mathbf 0$.
 
 :::
 :::
 
-::: {.column width=50%}
+:::
+:::
+
+::: {.column width=52%}
 ```{r, engine = "tikz"}
 #| fig-align: center
-#| out-width: 100%
+#| out-width: 80%
 \definecolor{kaustorg}{RGB}{241, 143, 0}
 \definecolor{kausttur}{RGB}{0, 166, 170}
 \definecolor{kaustmer}{RGB}{177, 15, 46}
@@ -463,14 +776,20 @@ with assumptions $\boldsymbol\epsilon\sim\operatorname{N}_p(\mathbf 0, {\color{k
   every node/.style={font=\small},
   latent/.style={font=\normalsize,circle, draw, minimum size=9mm, inner sep=0mm},
   obs/.style={font=\normalsize,rectangle, draw, minimum size=6mm, inner sep=0mm},
-  error/.style={font=\normalsize,circle, draw, minimum size=5mm, inner sep=0mm}
+  error/.style={font=\normalsize,circle, draw=gray, text=gray, minimum size=5mm, inner sep=0mm}
 ]
 
 % --------------------------------------------------------
 % 1) LATENT VARIABLES
 % --------------------------------------------------------
 \node[latent] (eta1) at (-1.5, -2) {$\eta_{1}$};
-\node[latent] (eta2) at ( 3.5, -2) {$\eta_{2}$};
+\node[latent] (eta2) at ( 3.1, -2) {$\eta_{2}$};
+
+% Disturbance terms at 225 and -45 degrees from each latent variable
+\node[error] (z1) at ([shift={(200:1.2)}]eta1) {$\zeta_{1}$};
+\node[error] (z2) at ([shift={(-20:1.2)}]eta2) {$\zeta_{2}$};
+\draw[->, gray] (z1) -- (eta1);
+\draw[->, gray] (z2) -- (eta2);
 
 % --------------------------------------------------------
 % 2) OBSERVED VARIABLES + ERROR TERMS
@@ -480,38 +799,38 @@ with assumptions $\boldsymbol\epsilon\sim\operatorname{N}_p(\mathbf 0, {\color{k
 \node[obs] (y2) at (-1.5, 0) {$y_{2}$};
 \node[obs] (y3) at ( -0.2, 0) {$y_{3}$};
 
-\node[obs] (y4) at ( 2.2, 0) {$y_{4}$};
-\node[obs] (y5) at ( 3.5, 0) {$y_{5}$};
-\node[obs] (y6) at ( 4.8, 0) {$y_{6}$};
+\node[obs] (y4) at ( 1.8, 0) {$y_{4}$};
+\node[obs] (y5) at ( 3.1, 0) {$y_{5}$};
+\node[obs] (y6) at ( 4.4, 0) {$y_{6}$};
 
 % Error terms above each observed variable
 \node[error] (e1) at (-2.8, 1) {$\epsilon_{1}$};
 \node[error] (e2) at (-1.5, 1) {$\epsilon_{2}$};
 \node[error] (e3) at ( -0.2, 1) {$\epsilon_{3}$};
-\node[error] (e4) at ( 2.2, 1) {$\epsilon_{4}$};
-\node[error] (e5) at ( 3.5, 1) {$\epsilon_{5}$};
-\node[error] (e6) at ( 4.8, 1) {$\epsilon_{6}$};
+\node[error] (e4) at ( 1.8, 1) {$\epsilon_{4}$};
+\node[error] (e5) at ( 3.1, 1) {$\epsilon_{5}$};
+\node[error] (e6) at ( 4.4, 1) {$\epsilon_{6}$};
 
 % --------------------------------------------------------
 % 3) PATHS FROM ERROR TERMS TO OBSERVED VARIABLES
 % --------------------------------------------------------
-\draw[->] (e1) -- (y1);
-\draw[->] (e2) -- (y2);
-\draw[->] (e3) -- (y3);
-\draw[->] (e4) -- (y4);
-\draw[->] (e5) -- (y5);
-\draw[->] (e6) -- (y6);
+\draw[->, gray] (e1) -- (y1);
+\draw[->, gray] (e2) -- (y2);
+\draw[->, gray] (e3) -- (y3);
+\draw[->, gray] (e4) -- (y4);
+\draw[->, gray] (e5) -- (y5);
+\draw[->, gray] (e6) -- (y6);
 
 % --------------------------------------------------------
 % 4) FACTOR LOADINGS
 %    \eta_{i1} -> y1, y2, y3
 %    \eta_{i2} -> y4, y5, y6
 % --------------------------------------------------------
-\draw[->] (eta1) -- node[pos=0.5, right] {$1$} (y1);
+\draw[->] (eta1) -- node[pos=0.5, right] {\color{kaustpur}$\lambda_{11}$} (y1);
 \draw[->] (eta1) -- node[pos=0.5, right] {\color{kaustpur}$\lambda_{21}$} (y2);
 \draw[->] (eta1) -- node[pos=0.5, right] {\color{kaustpur}$\lambda_{31}$} (y3);
 
-\draw[->] (eta2) -- node[pos=0.5, right] {$1$} (y4);
+\draw[->] (eta2) -- node[pos=0.5, right] {\color{kaustpur}$\lambda_{42}$} (y4);
 \draw[->] (eta2) -- node[pos=0.5, right] {\color{kaustpur}$\lambda_{52}$} (y5);
 \draw[->] (eta2) -- node[pos=0.5, right] {\color{kaustpur}$\lambda_{62}$} (y6);
 
@@ -522,14 +841,15 @@ with assumptions $\boldsymbol\epsilon\sim\operatorname{N}_p(\mathbf 0, {\color{k
 \draw[->] (eta1) -- node[midway, above] {\color{kaustgrn}$\beta$} (eta2);
 
 % --------------------------------------------------------
-% 6) VARIANCES OF LATENT VARIABLES
-%    Double-headed arrows for psi_{11} and psi_{22}
+% 6) VARIANCES OF DISTURBANCES AND ERRORS
+%    Double-headed arrows for psi_{11}, psi_{22} and theta_{ii}
 % --------------------------------------------------------
-\draw[<->] (eta1) to[out=200, in=230, looseness=4] 
-  node[left] {\color{kausttur}$\psi_{11}$} (eta1);
-
-\draw[<->] (eta2) to[out=-50, in=-20, looseness=4] 
-  node[right] {\color{kausttur}$\psi_{22}$} (eta2);
+\foreach \i in {1,2}{
+  \draw[<->] (z\i)
+    to[out=-65, in=-115, looseness=5]
+    node[below] {\color{kausttur}$\psi_{\i\i}$}
+    (z\i);
+}
 
 \foreach \i in {1,...,6}{
   \draw[<->] (e\i)
@@ -542,658 +862,201 @@ with assumptions $\boldsymbol\epsilon\sim\operatorname{N}_p(\mathbf 0, {\color{k
 ```
 
 ::: {.fragment}
+::: {.nudge-up}
+- NB: Per person structure, assumed independent for each $s=1,\dots,n$.
 
-- SEM parameters include the free entries of $\color{Gray}\boldsymbol\nu$, $\color{kaustpur}\boldsymbol\Lambda$, $\color{kaustorg}\boldsymbol\Theta$, $\color{Gray}\boldsymbol\alpha$, $\color{kaustgrn}\mathbf B$, and $\color{kausttur}\boldsymbol\Psi$. 
-
-- Dump all in $\vartheta \in\mathbb R^m$, where $m < p(p+1)/2 {\color{Gray} \,+\, p}$.
-
-- Sometimes, not interested in mean structure, so $\color{Gray}\boldsymbol\nu$ and $\color{Gray}\boldsymbol\alpha$ are dropped.
-
+- Additionally, assume prior distributions
+  - $\nu_i \sim \operatorname{N}(0, 32^2)$, $\alpha_j \sim \operatorname{N}(0, 10^2)$
+  - ${\color{kaustpur}\lambda_{ij}}, {\color{kaustgrn}\beta} \sim \operatorname{N}(0, 10^2)$
+  - $\sqrt{\color{kaustorg}\theta_{ii}}, \sqrt{\color{kausttur}\psi_{jj}} \sim \Gamma(1, 0.5)$, i.e. on the SDs
 :::
-
 :::
-
-:::
-
-## ML estimation
-
-
-
-- It can be shown that the normal SEM reduces to $\mathbf y\sim \text{N}_p\big(\boldsymbol\mu(\vartheta), \boldsymbol\Sigma(\vartheta)\big)$, where
-$$
-\begin{align}
-\boldsymbol\mu(\vartheta) &= \boldsymbol\nu + \boldsymbol\Lambda (\mathbf I - \mathbf B)^{-1} \boldsymbol\alpha  \\
-\boldsymbol\Sigma(\vartheta) &= 
-\underbrace{\boldsymbol\Lambda (\mathbf I - \mathbf B)^{-1} \boldsymbol\Psi (\mathbf I - \mathbf B)^{-\top} \boldsymbol\Lambda^\top}_{\boldsymbol\Sigma^*(\vartheta)} + \boldsymbol\Theta
-\end{align}
-$${#eq-margsem}
-
-::: {.fragment}
-- Suppose we observe $\mathcal Y= \{\mathbf y_1,\dots,\mathbf y_n\}$. ML estimation maximises (up to a constant) the log-likelihood
-  $$
-  \ell(\vartheta)
-  = -\frac{n}{2}\Bigl[
-  \log \bigl|\boldsymbol\Sigma(\vartheta)\bigr|
-  + \operatorname{tr} \bigl(\boldsymbol\Sigma(\vartheta)^{-1} \mathbf S\bigr)
-  {\color{Gray}+ \bigl(\bar {\mathbf y} - \boldsymbol\mu(\vartheta)\bigr)^{\top}
-    \boldsymbol\Sigma(\vartheta)^{-1}
-    \bigl(\bar {\mathbf y} - \boldsymbol\mu(\vartheta)\bigr)}
-  \Bigr]
-  $${#eq-margloglik}
-  where 
-    - $\mathbf S = \frac{1}{n}\sum_{i=1}^n (\mathbf y_i - \bar{\mathbf y})(\mathbf y_i - \bar{\mathbf y})^\top$ is the (biased) sample covariance matrix; and
-    - $\bar{\mathbf y} = \frac{1}{n}\sum_{i=1}^n \mathbf y_i$ is the sample mean.
-
-::: {.nudge-down-small}
-- Clearly, the MLE aims to minimise the discrepancy between $\mathbf S$ and $\boldsymbol\Sigma(\vartheta)$.
 :::
 :::
 
-## Properties of MLE
-
-- Let $\bar{\vartheta}$ be the true parameter value.
-Subject to standard regularity conditions [@cox1979theoretical], as $n\to\infty$,
-$$
-\sqrt n (\hat\vartheta - \bar\vartheta) \xrightarrow{\;\;\text D\;\;} 
-\text N_m\left(\mathbf 0, \big[ U(\bar\vartheta)V(\bar\vartheta)^{-1} U(\bar\vartheta) \big]^{-1} \right)
-$${#eq-asympmle}
-  where
-  
-  - $U(\vartheta) = -\mathbb{E}\left[ \nabla\nabla^\top \ell_1(\vartheta) \right]$ is the *sensitivity matrix*; and
-  - $V(\vartheta) = \operatorname{var}\left[ \nabla\ell_1(\vartheta) \right]$ is the *variability matrix*.
-
-::: {.nudge-down}
-- Calculation of SEs are based off <u>estimates</u> of these matrices.
-The Godambe or "sandwich" matrix gives robust SEs [@satorra1994corrections;@savalei2014understanding] in cases of model misspecification.
-
-::: {.nudge-down-small}
-- *If* model is correctly specified, $U(\vartheta) = V(\vartheta) = I(\vartheta)$, the Fisher information.
-:::
-:::
-
-## Latent growth curve model (GCM)
-
-- **Longitudinal data:** repeated measurements on individuals $i$ over time, e.g. $\mathbf y_i = (y_{i1},y_{i2},\dots,y_{i10})^\top$, $i=1,\dots,n$ [@rabe2008multilevel].
-
-- Usually, linear mixed effects models are used, where
-$$
-\begin{gathered}
-y_{it} = \overbrace{(\alpha_1 + \eta_{1i})}^{\text{random int.}} +  \overbrace{(\alpha_2 + \eta_{2i})}^{\text{random slope}} \cdot (t-1) + \epsilon_{it} \quad\quad t=1,\dots,10 \\[0.5em]
-\begin{pmatrix}
-\eta_{1i} \\
-\eta_{2i}
-\end{pmatrix}
-\sim \text{N}_2\left(\mathbf 0,
-\begin{pmatrix}
-\psi_{11} & \psi_{12} \\
-\cdot & \psi_{22}
-\end{pmatrix}\right) \\
-\end{gathered}
-$$
-
-  ::: {.nudge-down-small}
-
-  - $\alpha_1$ and $\alpha_2$ are fixed effects (intercept and slope);
-  - $\eta_{1i}$ and $\eta_{2i}$ are correlated random effects (individual deviations);
-  - $\epsilon_{it}\sim\text{N}(0,\theta)$ are measurement errors.
-
-  :::
-
-::: {.nudge-down-small}
-- Restricted ML is a popular method to estimate such models, with good parameter recovery for variance components [@corbeil1976restricted].
-:::
-
-## Latent GCM as SEM
+## MCMC-based estimation
 
 ```{r, engine = "tikz"}
-#| out-width: 85%
-\usetikzlibrary{shapes.geometric,arrows,calc,positioning}
-\begin{tikzpicture}[%
-  >=stealth,              % for arrow tips
-  auto,                   % automatic label positioning
-  node distance=1.6cm,
-  every node/.style={font=\small},
-  latent/.style={circle, draw, minimum size=8mm, inner sep=0mm},
-  obs/.style={rectangle, draw, minimum size=7mm, inner sep=0mm},
-  error/.style={circle, draw, minimum size=6mm, inner sep=0mm},
-intercept/.style={regular polygon, regular polygon sides=3, draw, inner sep=0pt, minimum size=6mm}
-  ]
+#| eval: true
+#| fig-align: center
+#| out-width: 100%
+\definecolor{kaustblu}{RGB}{82, 132, 196}
+\definecolor{kaustlik}{RGB}{241, 143, 0}
+\definecolor{kaustmer}{RGB}{177, 15, 46}
+\definecolor{kaustyel}{RGB}{240, 181, 0}
+\definecolor{kaustlik}{HTML}{00A6AA}  % likelihood: KAUST turquoise
+\begin{tikzpicture}[
+  x=1.1cm, y=5cm,
+  >=stealth,
+  line width=0.8pt,
+  declare function={npdf(\x,\m,\s) = exp(-((\x-\m)^2)/(2*\s^2))/(\s*sqrt(2*pi));},
+  % Slightly heavier text: outline each glyph with a thin stroke in its own colour
+  every node/.style={font=\large, align=center,
+    execute at begin node={\pdfliteral{q 2 Tr 0.18 w}},
+    execute at end node={\pdfliteral{Q}}},
+  density/.style={line width=1.6pt},
+  label/.style={->, shorten >=2pt},
+  gauss/.style={text=black!30, rounded corners=4pt, %fill=kaustlik!15,
+    inner xsep=4pt, inner ysep=3pt, font=\normalsize}
+]
+% Normal-normal update: prior N(0, 1.6^2), likelihood N(3, 0.8^2) => posterior N(2.4, 0.7155^2)
+\def\pm{0}   \def\ps{1.6}
+\def\lm{3}   \def\ls{0.8}
+\def\qm{2.4} \def\qs{0.7155}
 
-%-------------------------------------------------------
-% 1) LATENT FACTORS (intercept i, slope s)
-%-------------------------------------------------------
-\node[latent] (i) at (-2,-3) {$\eta_{1}$};
-\node[latent] (s) at ( 2,-3) {$\eta_{2}$};
-\node[intercept] (int1) at (-2,-4.2) {\footnotesize 1};
-\node[intercept] (int2) at (2,-4.2) {\footnotesize 1};
+% Shaded densities
+\foreach \m/\s/\col in {\pm/\ps/kaustblu, \lm/\ls/kaustlik, \qm/\qs/kaustmer}
+  \fill[\col, opacity=0.12] plot[domain=-4.8:6.6, samples=120] (\x, {npdf(\x,\m,\s)}) -- (6.6,0) -- (-4.8,0) -- cycle;
+\draw[density, kaustblu] plot[domain=-4.8:6.6, samples=120] (\x, {npdf(\x,\pm,\ps)});
+\draw[density, kaustlik] plot[domain=-4.8:6.6, samples=120] (\x, {npdf(\x,\lm,\ls)});
+\draw[density, kaustmer] plot[domain=-4.8:6.6, samples=120] (\x, {npdf(\x,\qm,\qs)});
 
-%-------------------------------------------------------
-% 2) COVARIANCES AMONG LATENT FACTORS
-%    - psi_{11} on i
-%    - psi_{22} on s
-%    - psi_{21} between i and s
-%-------------------------------------------------------
-% i <-> s
-\draw[<->] (i) to[out=-45, in=225,looseness=0.9] node[below] {$\psi_{12}$} (s);
+% Parameter axis
+\draw[->] (-5.2,0) -- (7.2,0) node[right] {$\boldsymbol\vartheta$};
 
-% Variance of i
-\draw[<->] (i) to[out=190, in=220, looseness=4] 
-  node[left] {$\psi_{11}$} (i);
+% Prior (label sits on the left shoulder of the prior)
+\node[kaustblu, anchor=south east] (pri) at (-1.55, 0.17) {\textbf{Prior}\\ $\pi(\boldsymbol\vartheta)$};
 
-% Variance of s
-\draw[<->] (s) to[out=-40, in=-10, looseness=4] 
-  node[right] {$\psi_{22}$} (s);
+% Likelihood (label sits on the right shoulder of the likelihood), built from
+% separate nodes so the Gaussian annotations can point at each factor
+\node[kaustlik, anchor=west, inner xsep=1pt] (lA) at (4.1, 0.3)
+  {$\pi(\mathcal Y \mid \boldsymbol\vartheta) = \displaystyle\prod_{s=1}^n \int$};
+\node[kaustlik, anchor=base west, inner xsep=1pt] (lB) at (lA.base east)
+  {$\pi(\mathbf y_s \mid \boldsymbol\eta_s, \boldsymbol\vartheta)$};
+\node[kaustlik, anchor=base west, inner xsep=2pt] (lC) at (lB.base east)
+  {$\pi(\boldsymbol\eta_s \mid \boldsymbol\vartheta)$};
+\node[kaustlik, anchor=base west, inner xsep=1pt] (lD) at (lC.base east)
+  {$\mathrm d\boldsymbol\eta_s$};
+\path (lA.north west) -- (lD.north east |- lA.north)
+  node[midway, above, kaustlik] {\textbf{Likelihood}};
 
-\draw[->] (int1) -- node[right,pos=0.3] {$\alpha_1$} (i);
-\draw[->] (int2) -- node[right,pos=0.3] {$\alpha_2$} (s);
+% Floating annotations: both factors are Gaussian, so the integral has a closed form
+\node[gauss, anchor=west] (nB) at ([shift={(4mm,-5mm)}]lB.south)
+  {$\operatorname{N}_p(\boldsymbol\nu + \boldsymbol\Lambda\boldsymbol\eta_s, \boldsymbol\Theta)$};
+\node[gauss, anchor=west] (nC) at ([shift={(4mm,5mm)}]lC.north)
+  {$\operatorname{N}_q\big((\mathbf I - \mathbf B)^{-1}\boldsymbol\alpha, \boldsymbol\Phi\big)$};
+\draw[kaustlik, line width=0.8pt, line cap=round, dash pattern=on 0pt off 2.5pt]
+  (lB.south) to[out=-90, in=180] (nB.west);
+\draw[kaustlik, line width=0.8pt, line cap=round, dash pattern=on 0pt off 2.5pt]
+  (lC.north) to[out=90, in=180] (nC.west);
 
-%-------------------------------------------------------
-% 3) OBSERVED VARIABLES (y1..y10) + ERRORS (eps1..eps10)
-%    Arrange them in a horizontal row above i and s.
-%-------------------------------------------------------
-\foreach \j in {1,...,10} {
-  % X-position for y_j (shift them so they are roughly centred)
-  \pgfmathsetmacro{\x}{(\j*1.3 - 6.5)}
+% Posterior (above its density), built from separate nodes so the arrows can
+% start from the highlighted prior and likelihood terms
+\node[kaustmer, anchor=base west, inner xsep=1pt] (pA) at (-0.5, 0.66)
+  {$\pi(\boldsymbol\vartheta \mid \mathcal Y) \propto$};
+\node[kaustmer, anchor=base west, fill=kaustblu!20, inner sep=2pt, xshift=4pt] (pB) at (pA.base east)
+  {$\pi(\boldsymbol\vartheta)$};
+\node[kaustmer, anchor=base west, inner xsep=4pt] (pC) at (pB.base east) {$\times$};
+\node[kaustmer, anchor=base west, fill=kaustlik!20, inner sep=2pt] (pD) at (pC.base east)
+  {$\pi(\mathcal Y \mid \boldsymbol\vartheta)$};
+\path (pA.north west) -- (pD.north east |- pA.north)
+  node[midway, above, kaustmer] {\textbf{Posterior}};
 
-  % Observed variable y_j
-  \node[obs] (y\j) at (\x,0) {$y_{\j}$};
-
-  % Error term epsilon_j above y_j
-  \node[error] (e\j) at (\x,1.2) {$\epsilon_{\j}$};
-
-  % Arrow from error to observed
-  \draw[->] (e\j) -- (y\j);
-
-  % Intercept factor loadings: all = 1
-  \draw[->] (i) -- node[pos=0.45,right] {\footnotesize 1} (y\j);
-
-  % Slope factor loadings: 0..9
-  \pgfmathtruncatemacro{\loading}{\j - 1}
-  \draw[->] (s) -- node[pos=0.7,right] {\footnotesize\loading} (y\j);
-}
-
-\foreach \i in {1,...,10}{
-  \draw[<->] (e\i)
-    to[out=110, in=140, looseness=5]
-    node[above] {$\theta$}
-    (e\i);
-}
-
+% Arrows from the highlighted terms to their densities
+\draw[label, kaustblu] (pB.south) ++(-0.3,0) to[out=-110, in=110] (0.5, {npdf(0.5,\pm,\ps)});
+\draw[label, kaustlik] (pD.south) to[out=-70, in=30] (3.65, {npdf(3.65,\lm,\ls)});
 \end{tikzpicture}
 ```
 
-
-
-::: {.absolute bottom=2% right=1%}
-
-$$
-\begin{gathered}
-\boldsymbol\Lambda = \begin{bmatrix}
-1 & 0 \\
-1 & 1 \\
-\vdots & \vdots \\
-1 & 9 \\
-\end{bmatrix} 
-\\
-\\
-\mathbf y = \boldsymbol\Lambda \boldsymbol\eta + \boldsymbol\epsilon \\
-\boldsymbol\epsilon \sim \operatorname{N}_{10}(\mathbf 0, \theta \mathbf I) \\
-\boldsymbol\eta \sim \operatorname{N}_2 (\boldsymbol\alpha, \boldsymbol\Psi) 
-\end{gathered}
-$$
-:::
-
-
-
-
-
-# Bias reduction methods {.transition-slide}
-
-## Poll
-
-<br>
-
-<iframe name="opinionstage-widget" src="https://www.opinionstage.com/api/v2/widgets/4a6d1509-d5fb-41bc-b956-7a8fe5e49750/iframe?em=1" data-opinionstage-iframe="4a6d1509-d5fb-41bc-b956-7a8fe5e49750" width="100%" height="60%" scrolling="auto" style="border:none;box-shadow:0px 0px 12px rgba(0,0,0,0.25);border-radius:12px" frameBorder="0" allow="fullscreen" webkitallowfullscreen="true" mozallowfullscreen="true" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-## What is bias?
-
-::: {.callout-tip icon=false}
-#### Bias of an estimator
-$$
-\mathcal B_{\bar\vartheta}(\hat\vartheta) = \mathbb E\left[\hat\vartheta - \bar\vartheta\right] 
-$${#eq-bias}
-:::
-
-. . .
-
-Consider the stochastic Taylor expansion of $s(\hat\vartheta)=\nabla\ell(\hat\vartheta)=0$ around $\bar\vartheta$.
-For many common estimators including MLE, the bias function is:
-$$
-\mathcal B_{\bar\vartheta} = \frac{b_1(\bar\vartheta)}{n} +  \frac{b_2(\bar\vartheta)}{n^2} + \frac{b_3(\bar\vartheta)}{n^3} +O(n^{-4}).
-$${#eq-biasseries}
-
-::: {.nudge-up}
-Bias arises because the roots of the score equations are **not exactly centred at $\bar\vartheta$**, due to:
-
-::: {.nudge-up-small}
-a. The curvature of the score $s(\vartheta)$ creating asymmetry; and
-b. The randomness of the score itself.
-:::
-:::
-
-
-## Illustration
-
-### Biased MLE estimator for $\sigma^2$ 
-
-Consider $X_1,\dots,X_n \sim \text N(0, \sigma^2)$. The MLE for $\sigma^2$ is $\hat\sigma^2 = \frac{1}{n}\sum_{i=1}^n X_i^2$.
-
-::: {.panel-tabset}
-
-### $n=10$
-
-```{r}
-#| out-width: 100%
-#| fig-height: 2.9
-#| fig-width: 7.4
-#| fig-align: center
-plot_sigma2_bias(n = 5, showbias = TRUE)
-```
-
-### $n=25$
-
-```{r}
-#| out-width: 100%
-#| fig-height: 2.9
-#| fig-width: 7.4
-#| fig-align: center
-plot_sigma2_bias(n = 25)
-```
-
-### $n=1000$
-
-```{r}
-#| out-width: 100%
-#| fig-height: 2.9
-#| fig-width: 7.4
-#| fig-align: center
-plot_sigma2_bias(n = 1000)
-```
-
-:::
-
-## Illustration (cont.)
-
-### Score functions are random too
-
-The score function is $s(\sigma^2)=\ell'(\sigma^2) = -\frac{n}{2\sigma^2} + \frac{1}{2\sigma^4}\sum_{i=1}^n X_i^2$.
-
-::: {.panel-tabset}
-
-### $n=10$
-
-```{r}
-#| out-width: 100%
-#| fig-height: 2.9
-#| fig-width: 7.4
-#| fig-align: center
-plot_sigma2_score(n = 15) + coord_cartesian(ylim = c(-8, 28))
-```
-
-### $n=25$
-
-```{r}
-#| out-width: 100%
-#| fig-height: 2.9
-#| fig-width: 7.4
-plot_sigma2_score(n = 50, showbias = !TRUE) + coord_cartesian(ylim = c(-8, 300))
-```
-
-### $n=1000$
-
-```{r}
-#| out-width: 100%
-#| fig-height: 2.9
-#| fig-width: 7.4
-plot_sigma2_score(n = 1000, showbias = FALSE)
-```
-
-:::
-
-## If you're interested... 
-
-### ...and love differentiation ️❤️🤓
-
-For a comprehensive treatment of bias-reduction methods,
-
-- Start here: @cox1968general
-- Follow up with: @firth1993bias; @kosmidis2009bias; @kosmidis2014bias
-
-
-::: {.fragment}
-::: {.nudge-down}
-By the way, the $O(n^{-1})$ bias term $b_1(\bar\vartheta)/n = -I(\bar\vartheta)^{-1} C(\bar\vartheta)$, where
-$$
-\begin{gathered}
-C_a(\vartheta) = \frac{1}{2} \operatorname{tr} \left[
-I(\vartheta)^{-1}\big( G_a(\vartheta) + H_a(\vartheta) \big)
-\right]\\ 
-G_a(\vartheta)=\mathbb E[s(\vartheta)s(\vartheta)^\top s_a(\vartheta)] 
-\quad\quad 
-H_a(\vartheta)=-\mathbb E[I(\vartheta)s_a(\vartheta)] \\
-a=1,\dots,m
-\end{gathered}
-$$
-
-where $s(\vartheta) = \nabla\ell(\vartheta)$ is the score function.
-:::
-:::
-
-## A review
-
-::: {.nudge-up-large}
-![](figures/bias.png){fig-align=center width=67%}
-:::
-
-::: {.nudge-up-small}
-::: {.nudge-up-large}
-```{r}
-#| html-table-processing: none
-library(gt)
-library(dplyr)
-
-df <- tribble(
-  ~Method, ~Model, ~BG_theta0, ~Type, ~E, ~d, ~theta_hat,
-  "Asymptotic bias correction", "full", "analytical", "explicit", "✓","✓","✓",
-  "Adjusted score functions", "full", "analytical", "implicit", "✓","✓","✗",
-  "Bootstrap", "partial", "simulation", "explicit", "✗","✗","✓",
-  "Jackknife", "partial", "simulation", "explicit", "✗","✗","✓",
-  "Indirect inference", "full", "simulation", "implicit", "✗","✗","✓",
-  "Explicit RBM", "partial", "analytical", "explicit", "✗","✓","✓",
-  "Implicit RBM", "partial", "analytical", "implicit", "✗","✓","✗"
-)
-
-gt(df, rownames_to_stub = TRUE) |>
-  text_transform(
-    locations = cells_body(columns = c(E, d, theta_hat)),
-    fn = \(x) {
-      x |>
-        str_replace("✓", '<span style="color:#004C59">✓</span>') |>
-        str_replace("✗", '<span style="color:#b10f2e">✗</span>')
-      # gt::html(out) 
-  }) |>
-  tab_spanner(md("**Requirements**"), columns = c(E, d, theta_hat)) |>
-  cols_label(
-    BG_theta0 = md("$\\mathcal{B}(\\bar\\vartheta)$"),
-    E = md("$\\mathbb{E}(\\cdot)$"),
-    d = md("$\\hspace{2pt} \\partial \\cdot \\hspace{2pt}$"),
-    theta_hat = md("$\\hspace{4pt} \\hat\\vartheta \\hspace{4pt}$")
-  ) |>
-  cols_align(
-    align = "center",
-    columns = c(E, d, theta_hat)
-  ) |>
-  tab_style(
-    style = "font-weight: bold",
-    locations = cells_column_labels()
-  ) |>
-  tab_options(
-    table.font.size = px(25),
-    table.width = pct(95)
-    # data_row.padding = px(4)
-  ) |>
-  opt_table_font(
-    font = list(
-      google_font("Raleway"),  # loads the font for the table
-      default_fonts()          # sensible fallbacks
-    )
-  )
-```
-:::
-:::
-
-::: aside
-::: {.footnotesize-text}
-1--@efron1975defining, @cordeiro1991bias; 2--@firth1993bias, @kosmidis2009bias; 3--@efron1994introduction, @hall1988bootstrap; 4--@quenouille1956notes, @efron1982jackknife; 5--@gourieroux1993indirect, @mackinnon1998approximate
-:::
-:::
-
-## Firth's adjusted scores methods
-
-::: {.nudge-up}
-Instead of solving [$s(\vartheta)=0$]{.text-org}, solve [$s(\vartheta) + \overbrace{A(\vartheta)}^{\mathcal B(\vartheta) I(\vartheta)}=0$]{.text-tur}.
-:::
-
-<!-- ```{r} -->
-<!-- #| out-width: 100% -->
-<!-- #| fig-align: center -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-width: 8 -->
-<!-- plot_adjusted_score() -->
-<!-- ``` -->
-
-::: {.nudge-up}
-![](figures/adjusted_score.gif){fig-align=center width=100%}
-:::
-
-## Implicit RBM estimator
-
-Computing $\mathcal B(\vartheta)$ and $I(\vartheta)$ can be difficult. 
-Consider
-
-$$
-s(\vartheta) + A(\vartheta) = 0 \ \Leftrightarrow \ \underset{\vartheta}{\text{arg max}} \left \{ \ell(\vartheta) + P(\vartheta) \right\}
-$${#eq-irbm}
-
-::: {.nudge-up-small}
-where $P(\vartheta)$ is a penalty term constructed such that $A(\vartheta) = \nabla P(\vartheta)$. 
-@kosmidis2024empirical show that
-$$
-P(\vartheta) = -\frac{1}{2} \operatorname{tr} \Big\{ j(\vartheta)^{-1} e(\vartheta) \Big\}
-$${#eq-penaltyterm}
-where
-
-::: {.nudge-up-small}
-- $j(\vartheta) = \sum_{i=1}^n \nabla\nabla^\top \ell_i(\vartheta)$ is the observed information;
-- $e(\vartheta) = \sum_{i=1}^n \nabla\ell_i(\vartheta)\nabla^\top\ell_i(\vartheta)$ is the outer-product of scores.
-
-::: {.nudge-up-small}
-The solution $\tilde\vartheta$ to (-@eq-irbm) is called the [*implicit* RBM estimator (iRBM)]{}.
-:::
-:::
-:::
-
-## Explicit RBM estimator
-
-Intuitively, by thinking in terms of a Newton-style update, an *explicit* estimator is obtained via
-
-::: {.nudge-up-small}
-$$
-\vartheta^*= \hat\vartheta + j(\hat\vartheta)^{-1} A(\hat\vartheta).
-$$
-
-This moves $\hat\theta$ in the direction [$A(\hat\vartheta)$]{.text-mer} away from the bias, with step length governed by the curvature $j(\hat\vartheta)^{-1}$.
-
 ::: {.columns}
 
-::: {.column width=55%}
-```{r}
-#| out-width: 100%
-#| fig-align: center
-#| fig-height: 3
-#| fig-width: 6
-p_erbm
-```
-:::
+::: {.column width="48%"}
+::: {.fragment}
+#### Data augmentation Gibbs
+$$
+\small
+\pi(\boldsymbol\vartheta, \boldsymbol\eta \mid \mathcal Y) \propto \pi(\boldsymbol\vartheta) \prod_{s=1}^n \pi(\mathbf y_s \mid \boldsymbol\eta_s, \boldsymbol\vartheta)\, \pi(\boldsymbol\eta_s \mid \boldsymbol\vartheta)
+$$
 
-::: {.column width=45%}
-- Operationally, eRBM is simpler and quicker to compute than iRBM---no re-optimisation needed if $\hat\theta$ is available.
+- Treat $\boldsymbol\eta$ as unknowns to be sampled; likelihood simplifies.
 
-- However, unlike iRBM, no guarantees that bias correction stays inside the parameter space.
-:::
+- But dimension scales with $n$.
+
 
 :::
-
 :::
 
-<!-- ## Resampling-based methods -->
+::: {.column width="4%"}
+:::
 
-# Simulation studies {.transition-slide}
+::: {.column width="48%"}
+::: {.fragment}
+#### Marginal likelihood
+$$
+\small
+\pi(\mathcal Y \mid \boldsymbol\vartheta) = \prod_{s=1}^n \mathcal N_p\big(\mathbf y_s \mid \boldsymbol\mu(\boldsymbol\vartheta), \boldsymbol\Sigma(\boldsymbol\vartheta)\big)
+$$
 
-## Simulation design
+::: {.small-text}
+where
+$$
+\begin{align}
+\boldsymbol\mu(\boldsymbol\vartheta) &= \boldsymbol\nu + \boldsymbol\Lambda (\mathbf I - \mathbf B)^{-1} \boldsymbol\alpha \\
+\boldsymbol\Sigma(\boldsymbol\vartheta) &= \boldsymbol\Lambda \boldsymbol\Phi \boldsymbol\Lambda^\top + \boldsymbol\Theta \\
+\boldsymbol\Phi &:= (\mathbf I - \mathbf B)^{-1} \boldsymbol\Psi (\mathbf I - \mathbf B)^{-\top} 
+\end{align}
+$$
 
-<!-- - Data generating models: -->
-<!--    1. Two-factor SEM ($m=13$ estimable params). -->
-<!--    2. Latent growth curve model ($m=6$ estimable params). -->
-   
-- **Sample size:** $n\in \{15,20,50,100,1000\}$
-
-- **Item reliability:** Low or High ($\operatorname{Rel} = p^{-1}\sum_{j=1}^p \boldsymbol\Sigma_{jj}^* / \boldsymbol\Sigma_{jj}$)
-
-- **Distributional assumption:** Normal or Non-normal
-
-```{r}
-#| fig-height: 3.6
-#| fig-width: 9
-#| fig-align: center
-#| out-width: 100%
-n <- 1000
-rho <- 0.3
-Sigma <- matrix(c(1, rho, rho, 1), nrow = 2)
-dat <- list()
-dat$Normal <-
-  covsim::rIG(n, Sigma, skewness = rep(0, 2), excesskurtosis = rep(0, 2))[[1]]
-## dat$Kurtosis <-  # kurtosis
-##   covsim::rIG(n, Sigma, skewness = rep(0, 2), excesskurtosis = rep(6, 2))[[1]]
-dat$`Non-normal` <-  # non-normal
-  covsim::rIG(n, Sigma, skewness = rep(-2, 2), excesskurtosis = rep(6, 2))[[1]]
-
-# get max and min for x and y axes
-xyminmax <- 
-  map(dat, as.data.frame) |>
-  bind_rows() |>
-  summarise(
-    x_min = min(V1),
-    x_max = max(V1),
-    y_min = min(V2),
-    y_max = max(V2)
-  ) |> 
-  unlist() 
-
-allplots <- imap(dat, \(x, idx) {
-  # mycols <- rev(RColorBrewer::brewer.pal(3, "Set1"))
-  mycols <- c("#00A6AA",  "#F18F00", "black")
-  names(mycols) <- names(dat)
-  
-  p <-
-    as.data.frame(x) |>
-    ggplot(aes(x = V1, y = V2)) +
-    geom_point(alpha = 0.5, size = 1, col = mycols[idx]) +
-    geom_density_2d(col = "black") +
-    theme_minimal() +
-    theme(
-      legend.position = "none",
-      axis.text = element_blank(),
-      axis.ticks = element_blank()
-    ) +
-    scale_x_continuous(limits = c(xyminmax["x_min"], xyminmax["x_max"])) +
-    scale_y_continuous(limits = c(xyminmax["y_min"], xyminmax["y_max"])) +
-    labs(title = glue::glue("{idx}"), x = NULL, y = NULL)
-  ggExtra:::ggMarginal(p, fill = mycols[idx], alpha = 0.5, size = 10, 
-                       trim = idx != "Non-normal") 
-})
-cowplot::plot_grid(plotlist = allplots, nrow = 1)
-```
-
-
-## Results: Two-factor SEM 
-
-::: {.nudge-up-small}
-
-```{r}
-#| out-width: 100%
-#| fig-align: center
-#| fig-height: 5.5
-#| fig-width: 9
-p1
-```
+:::
+:::
+:::
 
 :::
 
+## MCMC-based estimation *(cont.)*
 
-## Results: Two-factor SEM (cont.)
+![](figures/samp_v_approx_900425.gif){width=100% fig-align='center'}
 
-```{r}
-#| out-width: 100%
-#| fig-align: center
-#| fig-height: 5.4
-#| fig-width: 9
-p2
-```
-
-## Results: Latent GCM
-
-::: {.nudge-up}
-
-```{r}
-#| out-width: 100%
-#| fig-align: center
-#| fig-height: 5.4
-#| fig-width: 9
-p3
-```
-
+::: {.nudge-up-large}
+::: {style="font-size: 90%;"}
+Many software choices to perform MCMC-based inference, e.g. `blavaan` [@merkle2021efficient], `Stan` [@carpenter2017stan], `Mplus` [@muthen2017mplus].
 :::
+:::
+
+# INLA-based posterior approximation {.transition-slide}
+
+{{< include _recipe.qmd >}}
+
+# R/INLAvaan {.transition-slide}
+
+{{< include _package.qmd >}}
 
 # Conclusion {.transition-slide}
 
-## Summary & future work
 
-RBM applied to small sample estimation of SEM show key advantages:
+## Summary
 
-- 🚀 Improved estimator performances (mean & median bias, RMSE, coverage).
+- 🚀 INLA methodology offers a rapid alternative for SEM, delivering Bayesian results at near the speed of frequentist estimators. 
+   - Not aiming to replace MCMC; use case is model development, testing, and exploratory analysis.
 
-- 💻 Computationally efficient (c.f. resampling methods).
+::: {.columns}
 
-- 🤖 Robust to model misspecification.
+::: {.column width=58%}
+- Forward looking
+  - Non-Gaussian outcomes (e.g. categorical, count)
+  - Better prior support [priors for correlation matrices @freni2026informative; penalised complexity priors @simpson2017penalising]
+  - Dynamic SEM, including continuous-time SEM [@driver2017continuous]
+  - Spatiotemporal extensions  [@krainski2018advanced]
+:::
 
-Future work include
+::: {.column width=2%}
+:::
 
-1. Computational improvements for iRBM.
+::: {.column width=40%}
+[![](https://raw.githubusercontent.com/haziqj/INLAvaan/refs/heads/main/inst/hexSticker/hex_inlavaan.png){width=60% fig-align=center}](https://inlavaan.haziqj.ml/)
 
-2. Plugin penalties to limit exploration of ill-conditioned regions.
+<center>[]{.small-text}</center>
 
-3. Extension to other SEM families, e.g.
-   - Path models, mediation models, latent interactions, etc.
-   - Alternative to ML estimation e.g. WLS, DWLS, etc.
+:::
 
-## Software 
+:::
 
-```{r}
-#| include: false
-library(brlavaan)
-dat <- brlavaan::gen_data_twofac(n = 50)
-colnames(dat) <- paste0("y", 1:6)
-options(width = 180)
-```
+- Vignettes and tutorials available on <https://inlavaan.haziqj.ml/>:
+Equality constraints, defined parameters, multigroup, multilevel, and missing data.
 
-
-```{r}
-#| echo: true
-#| cache: true
-# pak::pak("haziqj/brlavaan")
-library(brlavaan)
-
-mod <- "
-  eta1 =~ y1 + y2 + y3
-  eta2 =~ y4 + y5 + y6
-"
-fit <- brsem(model = mod, data = dat, estimator.args = list(rbm = "implicit"))
-summary(fit)
-```
 
 # شكراً جزيلاً {.thanks-slide  background-image="_extensions/haziqj/kaust/KAUST-Thank-you.jpg" style="padding-top:0.5em;padding-bottom:0em"}
 
-[`https://haziqj.ml/sembias-gradsem`](https://haziqj.ml/sembias-gradsem)
+[``r params$url``](`r params$url`)
 
 ## References
