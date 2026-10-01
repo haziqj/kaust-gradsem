@@ -123,12 +123,19 @@ Also available:
 ```{r}
 #| include: false
 options(width = 80)
+x <- capture.output(coef(fit))
+x <- x[1:6]
+x[length(x) - 1] <- sub("\\S+(\\s*)$", "\\1", x[length(x) - 1])
+x[length(x)]     <- sub("\\S+(\\s*)$", "...\\1", x[length(x)])
+coef_print <- x
 ```
 
 ::: {.nudge-down}
-```{r}
-#| echo: true
+```r
 coef(fit)
+```
+```{r}
+cat(paste0(coef_print, collapse = "\n"))
 ```
 :::
 
@@ -149,8 +156,6 @@ cat(paste0(summ, collapse = "\n"))
 
 - Interchangeable commands (c.f. `bsem()`) with `blavaan` [@merkle2021efficient] which interfaces with `Stan` [@carpenter2017stan].
 
-
-
 ::: {.content-visible unless-meta="nogif"}
 ![](figures/blavaan-single.gif){fig-align="center" width="90%"}
 :::
@@ -158,9 +163,6 @@ cat(paste0(summ, collapse = "\n"))
 ::: {.content-hidden unless-meta="nogif"}
 ![](figures/blavaan-single.jpg){fig-align="center" width="90%"}
 :::
-
-
-
 
 ## Comparison to MCMC *(cont.)*
 
@@ -180,7 +182,6 @@ p_compare
 MCMC: 3 chains of 1,000 draws each, after 500 burn-in. % are 1 minus Jensen–Shannon divergences.
 :::
 
-
 ## Parameter recovery from simulated data
 
 ```{r}
@@ -193,7 +194,6 @@ load("R/p_simulations.RData") #
 library(patchwork)
 p1 + p2 + p3 + p4 + p5 + plot_layout(axes = "collect", nrow = 1)
 ```
-
 
 ## Effects of prior distributions
 
@@ -218,6 +218,76 @@ p1
 load("R/p_priors.RData")
 p2
 ```
+
+## Factor scores and latent regression
+
+```{r}
+#| include: false
+load("R/p_latent.RData")
+eta <- predict(fit, type = "lv")
+x <- capture.output(print((eta), n = 5))
+eta_print <- x[-(1:2)]
+```
+
+::: {.columns}
+
+::: {.column width=50%}
+```r
+eta <- predict(fit, type = "lv")
+print(eta)
+```
+```{r}
+cat(paste0(eta_print, collapse = "\n"))
+```
+
+- Posterior of $\boldsymbol\eta_i$ for all $n=250$ patients.
+
+::: {.fragment fragment-index=1}
+- **Halo**: 95% posterior region (SD $\approx$ `r sprintf("%.2f", lv_stats$post_sd[1])` for $\eta_1$, `r sprintf("%.2f", lv_stats$post_sd[2])` for $\eta_2$).
+:::
+
+::: {.fragment fragment-index=2}
+- [**Line**]{.text-mer}: SEM's $\beta =$ `r sprintf("%.2f", lv_stats$beta)` [`r sprintf("%.2f", lv_stats$beta_lo)`, `r sprintf("%.2f", lv_stats$beta_hi)`], estimated *jointly*.
+:::
+:::
+
+::: {.column width=50%}
+::: {.r-stack}
+
+:::: {.fragment .fade-out fragment-index=1}
+```{r}
+#| fig-width: 5.6
+#| fig-height: 5.8
+#| fig-align: center
+#| out-width: 88%
+p_lv1 #
+```
+::::
+
+:::: {.fragment .fade-in-then-out fragment-index=1}
+```{r}
+#| fig-width: 5.6
+#| fig-height: 5.8
+#| fig-align: center
+#| out-width: 88%
+p_lv2 #
+```
+::::
+
+:::: {.fragment .fade-in fragment-index=2}
+```{r}
+#| fig-width: 5.6
+#| fig-height: 5.8
+#| fig-align: center
+#| out-width: 88%
+p_lv3 #
+```
+::::
+
+:::
+:::
+
+:::
 
 ## Refit-free Leave-One-Out Cross-Validation
 

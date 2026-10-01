@@ -73,19 +73,14 @@ Led by Prof. Håvard Rue---*Integrated Nested Laplace Approximation [INLA, @rue2
 
 . . .
 
-::: {.nudge-up-large}
-```{r}
-#| eval: true
-#| out-width: 100%
-#| fig-align: center
-knitr::include_graphics("figures/BAYESCOMP-applications-wordcloud.png")
-```
+::: {.nudge-up-xl}
+![](figures/BAYESCOMP-applications-wordcloud.png){width=100% fig-align='center'}
 :::
 
 ## Data context
 
 ::: {.callout-note icon=false title="Structural equation models (SEM) in a nutshell"}
-Analyse multivariate data $\mathbf y=(y_1,\dots,y_p)^\top$ to [**measure**]{.text-org} and [**relate**]{.text-grnn} *hidden* variables $\boldsymbol\eta=(\eta_1,\dots,\eta_q)^\top$, $q \ll p$, and uncover complex patterns.
+Analyse multivariate data $\mathbf y=(y_1,\dots,y_p)^\top$ to [**measure**]{.text-org} and [**relate**]{.text-tur} *hidden* variables $\boldsymbol\eta=(\eta_1,\dots,\eta_q)^\top$, $q \ll p$, and uncover complex patterns.
 :::
 
 . . .
@@ -351,7 +346,6 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 {{< include _package.qmd >}}
 
 # Conclusion {.transition-slide}
-
 
 ## Summary
 

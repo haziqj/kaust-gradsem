@@ -4,7 +4,7 @@ library(INLAvaan)
 # Song & Lee (2004) inspired example: glycemic control and kidney health
 #
 # Observed variables (y1-y6), in the units shown on the slides:
-#   y1: HbA1c (%)                            -- mean ~6.5, SD ~1.04
+#   y1: HbA1c (%)                            -- mean ~6.5, SD ~1.3
 #   y2: Fasting plasma glucose (mmol/L)      -- mean ~6.1, SD ~1.38
 #   y3: Fasting insulin level (µU/mL)        -- mean ~12,  SD ~6
 #   y4: Plasma creatinine (µmol/L)           -- mean ~88,  SD ~34
@@ -25,7 +25,7 @@ n <- 250
 mod_tru <- "
   # -- Measurement model --
   # eta1: Glycemic Control
-  eta1 =~ 0.87*y1 + 1.1*y2 + 5*y3
+  eta1 =~ 1.08*y1 + 1.1*y2 + 5*y3
 
   # eta2: Kidney Dysfunction
   eta2 =~ 22*y4 + 20*y5 + 1.8*y6
@@ -41,7 +41,7 @@ mod_tru <- "
   # var(yi) = lambda^2 + theta  =>  theta = var(yi) - lambda^2
   # (y4-y6 set assuming var(KdnHlt) = 1; it is now 1.36, so their SDs are
   # ~34, ~28, ~2.74 and R^2 ~0.58, 0.71, 0.59)
-  y1 ~~ 0.33*y1   # 1.04^2 - 0.87^2
+  y1 ~~ 0.52*y1   #  1.3^2 - 1.08^2
   y2 ~~ 0.70*y2   # 1.38^2 - 1.1^2
   y3 ~~   11*y3   #    6^2 -   5^2
   y4 ~~  477*y4   #   31^2 -  22^2

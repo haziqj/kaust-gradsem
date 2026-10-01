@@ -5,7 +5,8 @@ mod <- "
   KdnHlt ~ GlyCon
 "
 code <- 'library(blavaan)
-fit_blav <- bsem(mod, Kidney, meanstructure = TRUE, std.lv = TRUE)'
+fit_blav <- bsem(mod, Kidney, meanstructure = TRUE, std.lv = TRUE)
+print(fit_blav)'
 source(textConnection(code), echo = TRUE, keep.source = TRUE, spaced = FALSE,
        prompt.echo = "> ", continue.echo = "+ ", max.deparse.length = Inf)
 cat("> ")

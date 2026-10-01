@@ -119,7 +119,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-e896485200e0f9e2c809f9345588e3a1.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-c503f67bf4960bbc1fa0078861997ca2.css">
   <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -262,15 +262,11 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 </div>
 </div></div>
 <div class="fragment">
-<div class="nudge-up-large">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
+<div class="nudge-up-xl">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/BAYESCOMP-applications-wordcloud.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -284,7 +280,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <p><strong>Structural equation models (SEM) in a nutshell</strong></p>
 </div>
 <div class="callout-content">
-<p>Analyse multivariate data <span class="math inline">\(\mathbf y=(y_1,\dots,y_p)^\top\)</span> to <span class="text-org"><strong>measure</strong></span> and <span class="text-grnn"><strong>relate</strong></span> <em>hidden</em> variables <span class="math inline">\(\boldsymbol\eta=(\eta_1,\dots,\eta_q)^\top\)</span>, <span class="math inline">\(q \ll p\)</span>, and uncover complex patterns.</p>
+<p>Analyse multivariate data <span class="math inline">\(\mathbf y=(y_1,\dots,y_p)^\top\)</span> to <span class="text-org"><strong>measure</strong></span> and <span class="text-tur"><strong>relate</strong></span> <em>hidden</em> variables <span class="math inline">\(\boldsymbol\eta=(\eta_1,\dots,\eta_q)^\top\)</span>, <span class="math inline">\(q \ll p\)</span>, and uncover complex patterns.</p>
 </div>
 </div>
 </div>
@@ -823,7 +819,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
 </figure>
 </div>
 </div>
@@ -857,7 +853,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center" style="width:75.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" style="width:75.0%"></p>
 </figure>
 </div>
 </div>
@@ -1451,7 +1447,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1459,7 +1455,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 </div>
 </div>
 </div><div class="column" style="width:55%;">
-<div class="nudge-down">
+<div class="nudge-down-small">
 <ul>
 <li>The data suggests clustering of variables
 <ul>
@@ -1473,13 +1469,17 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <li><p>Easier to hypothesize relationships, e.g. <span class="math display">\[
 {\color{kaustmer}\texttt{KdnHlt}} = \alpha + \beta \,  {\color{kaustblu}\texttt{GlyCon}} + \texttt{error}
 \]</span></p></li>
-<li><p>But these are unobserved—we only see their <em>footprint</em> on the correlations: items in a cluster share a latent cause, and cross-cluster correlation flows through <span class="math inline">\(\beta\)</span>.</p></li>
+<li><p>But these are <u>unobserved</u>—we only see their <em>footprint</em> on the correlation structure:</p>
+<ul>
+<li>Items in a cluster share a latent cause, and</li>
+<li>Cross-cluster correlation flows through <span class="math inline">\(\beta\)</span>.</li>
+</ul></li>
 </ul>
 </div>
 <div class="fragment">
 <div class="nudge-up-xs">
 <ul>
-<li>SEM is about modelling the <u>covariance structure</u> of the data, <span class="math display">\[
+<li>SEM models the <strong>covariance structure</strong> <span class="math display">\[
 \boldsymbol\Sigma = \boldsymbol\Sigma(\boldsymbol\vartheta),
 \]</span> where <span class="math inline">\(\boldsymbol\vartheta\)</span> are model parameters.</li>
 </ul>
@@ -1487,7 +1487,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 </div>
 </div>
 </div></div>
-<aside><ol class="aside-footnotes"><li id="fn3"><p>Simulated data, from a two-factor SEM (<span class="math inline">\(n=1000\)</span>).</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>Simulated data from a two-factor SEM (<span class="math inline">\(n=250\)</span>).</p></li></ol></aside></section>
 <section id="directed-acyclic-graph-dag" class="slide level2">
 <h2>Directed acyclic graph (DAG)</h2>
 <div class="r-stack" style="width: 980px; margin: 0 auto;">
@@ -1495,7 +1495,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1505,7 +1505,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1516,7 +1516,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1527,7 +1527,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1538,7 +1538,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1549,7 +1549,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1668,7 +1668,7 @@ y_6
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
 </figure>
 </div>
 </div>
@@ -1694,7 +1694,7 @@ y_6
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1758,7 +1758,7 @@ y_6
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1768,7 +1768,7 @@ y_6
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1779,7 +1779,7 @@ y_6
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1790,7 +1790,7 @@ y_6
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1799,7 +1799,7 @@ y_6
 </div>
 <div class="fragment" data-fragment-index="4">
 <ul>
-<li><p>Not quite R-INLA: This is a “bespoke” INLA for SEM, keeping only the ideas that carry over (Laplace, skew-normal marginals, VB correction).</p></li>
+<li><p>Not quite R-INLA: This is a ✨<em>bespoke</em>✨ INLA for SEM, keeping only key relevant ideas (Laplace, skew-normal marginals, VB correction).</p></li>
 <li><p>Works because the exact posterior is cheap. For normal SEM, <span class="math inline">\(\pi(\mathbf y \mid \boldsymbol\vartheta)\)</span> is closed form, so <span class="math inline">\(\pi(\boldsymbol\vartheta \mid \mathbf y)\)</span> and its gradients are cheap to evaluate.</p></li>
 </ul>
 </div>
@@ -1846,7 +1846,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1857,7 +1857,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-24-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1868,7 +1868,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-24-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1879,7 +1879,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-26-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -2059,8 +2059,8 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <li>Consider the paired points <span class="math inline">\(\{\vartheta_j(t_k), h_{kj}\}_{k=1}^K\)</span>, where
 <ul>
 <li><span class="math inline">\(t_k\in[-4,4]\)</span> are standardised grid points,</li>
-<li><span class="math inline">\(\vartheta_j(t_k) = \boldsymbol\vartheta^* + t_k  \mathbf v_j\)</span> from the CMP, and</li>
-<li><span class="math inline">\(h_{kj} := h_j(t_k) = \log \pi(\vartheta_j(t_k) \mid y ) + t \gamma_j'\)</span> are unnormalised ordinates.</li>
+<li><span class="math inline">\(\boldsymbol\vartheta(t_k) = \boldsymbol\vartheta^* + t_k  \mathbf v_j\)</span> from the CMP, and</li>
+<li><span class="math inline">\(h_{kj} := h_j(t_k) = \log \pi(\boldsymbol\vartheta(t_k) \mid y ) + t_k \gamma_j'\)</span> are unnormalised ordinates.</li>
 </ul></li>
 </ul>
 <div class="fragment" data-fragment-index="2">
@@ -2132,12 +2132,12 @@ h_{kj}-\big\{\log f_{\mathrm{SN}}(\vartheta_j(t_k);\xi,\omega,\alpha)+c\big\}
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 250
 Columns: 6
-$ y1 &lt;dbl&gt; 6.068916, 6.245611, 8.29265…
-$ y2 &lt;dbl&gt; 5.849979, 6.869373, 7.71571…
-$ y3 &lt;dbl&gt; 7.4694193, 14.1171527, 18.8…
-$ y4 &lt;dbl&gt; 135.180599, 84.681048, 102.…
-$ y5 &lt;dbl&gt; 46.316038, 86.787743, 64.94…
-$ y6 &lt;dbl&gt; 7.510040, 6.820942, 11.0478…</code></pre>
+$ y1 &lt;dbl&gt; 6.026417, 6.329234, 8.72426…
+$ y2 &lt;dbl&gt; 5.846124, 7.058977, 7.45847…
+$ y3 &lt;dbl&gt; 7.4570227, 14.1056444, 18.8…
+$ y4 &lt;dbl&gt; 135.182976, 84.680012, 102.…
+$ y5 &lt;dbl&gt; 46.320196, 86.786647, 64.94…
+$ y6 &lt;dbl&gt; 7.506613, 6.818328, 11.0433…</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(INLAvaan)</span>
 <span id="cb3-2"><a href=""></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
@@ -2165,7 +2165,7 @@ $ y6 &lt;dbl&gt; 7.510040, 6.820942, 11.0478…</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-30-1.png" class="quarto-figure quarto-figure-center" style="width:95.0%"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-29-1.png" class="quarto-figure quarto-figure-center" style="width:95.0%"></p>
 </figure>
 </div>
 </div>
@@ -2180,7 +2180,7 @@ $ y6 &lt;dbl&gt; 7.510040, 6.820942, 11.0478…</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">print</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>INLAvaan 0.3.1.9015 ended normally after 65 iterations
+<pre><code>INLAvaan 0.3.1.9015 ended normally after 61 iterations
 
   Estimator                                      BAYES
   Optimization method                           NLMINB
@@ -2190,8 +2190,8 @@ $ y6 &lt;dbl&gt; 7.510040, 6.820942, 11.0478…</code></pre>
 
 Model Test (User Model):
 
-   Marginal log-likelihood                   -4398.811 
-   PPP (Chi-square)                              0.626 </code></pre>
+   Marginal log-likelihood                   -4454.186 
+   PPP (Chi-square)                              0.620 </code></pre>
 </div>
 </div>
 </div><div class="column" style="width:25%;">
@@ -2206,17 +2206,15 @@ Model Test (User Model):
 </ul>
 </div></div>
 <div class="nudge-down">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">coef</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">coef</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   GlyCon=~y1    GlyCon=~y2    GlyCon=~y3    KdnHlt=~y4    KdnHlt=~y5 
-        0.819         1.004         4.784        25.113        20.321 
+        0.978         0.987         4.921        25.158        20.368 
    KdnHlt=~y6 KdnHlt~GlyCon        y1~~y1        y2~~y2        y3~~y3 
-        1.801         0.460         0.401         0.578        11.400 
-       y4~~y4        y5~~y5        y6~~y6          y1~1          y2~1 
-      434.022       238.120         3.698         6.515         5.976 
-         y3~1          y4~1          y5~1          y6~1 
-       11.703        84.934        59.687         7.599 </code></pre>
+        1.809         0.452         0.658         0.620        10.106 
+       y4~~y4        y5~~y5        y6~~y6          y1~1           
+      435.108       238.337         3.686         6.497         ... </code></pre>
 </div>
 </div>
 </div>
@@ -2230,8 +2228,8 @@ Model Test (User Model):
 
 Information Criteria:
 
-   Deviance (DIC)                             8625.430 
-   Effective parameters (pD)                    18.954 
+   Deviance (DIC)                             8737.509 
+   Effective parameters (pD)                    18.968 
 
 Parameter Estimates:
 
@@ -2241,38 +2239,38 @@ Parameter Estimates:
 Latent Variables:
                    Estimate       SD     2.5%    97.5%     NMAD    Prior       
   GlyCon =~                                                                    
-    y1                0.819    0.059    0.705    0.938    0.002    normal(0,10)
-    y2                1.004    0.072    0.866    1.149    0.002    normal(0,10)
-    y3                4.784    0.333    4.147    5.455    0.002    normal(0,10)
+    y1                0.978    0.074    0.837    1.126    0.002    normal(0,10)
+    y2                0.987    0.073    0.848    1.134    0.002    normal(0,10)
+    y3                4.921    0.333    4.284    5.591    0.002    normal(0,10)
   KdnHlt =~                                                                    
-    y4               25.113    1.856   21.557   28.842    0.002    normal(0,10)
-    y5               20.321    1.465   17.516   23.267    0.002    normal(0,10)
-    y6                1.801    0.149    1.516    2.101    0.002    normal(0,10)
+    y4               25.158    1.859   21.594   28.894    0.002    normal(0,10)
+    y5               20.368    1.467   17.559   23.318    0.002    normal(0,10)
+    y6                1.809    0.149    1.523    2.109    0.002    normal(0,10)
 
 Regressions:
                    Estimate       SD     2.5%    97.5%     NMAD    Prior       
   KdnHlt ~                                                                     
-    GlyCon            0.460    0.087    0.294    0.635    0.002    normal(0,10)
+    GlyCon            0.452    0.086    0.287    0.627    0.002    normal(0,10)
 
 Intercepts:
                    Estimate       SD     2.5%    97.5%     NMAD    Prior       
-   .y1                6.515    0.065    6.388    6.641    0.000    normal(0,32)
-   .y2                5.976    0.079    5.822    6.130    0.000    normal(0,32)
-   .y3               11.703    0.366   10.986   12.421    0.000    normal(0,32)
-   .y4               84.934    2.164   80.693   89.176    0.000    normal(0,32)
-   .y5               59.687    1.699   56.357   63.018    0.000    normal(0,32)
+   .y1                6.497    0.080    6.341    6.653    0.000    normal(0,32)
+   .y2                5.954    0.079    5.799    6.108    0.000    normal(0,32)
+   .y3               11.706    0.366   10.988   12.424    0.000    normal(0,32)
+   .y4               84.934    2.164   80.693   89.175    0.000    normal(0,32)
+   .y5               59.688    1.699   56.357   63.018    0.000    normal(0,32)
    .y6                7.599    0.173    7.260    7.938    0.000    normal(0,32)
     GlyCon            0.000                                                    
    .KdnHlt            0.000                                                    
 
 Variances:
                    Estimate       SD     2.5%    97.5%     NMAD    Prior       
-   .y1                0.401    0.054    0.302    0.513    0.004 gamma(1,.5)[sd]
-   .y2                0.578    0.078    0.434    0.741    0.004 gamma(1,.5)[sd]
-   .y3               11.400    1.676    8.286   14.854    0.006 gamma(1,.5)[sd]
-   .y4              434.022   63.700  314.447  564.175    0.009 gamma(1,.5)[sd]
-   .y5              238.120   39.403  163.572  317.856    0.015 gamma(1,.5)[sd]
-   .y6                3.698    0.429    2.919    4.598    0.002 gamma(1,.5)[sd]
+   .y1                0.658    0.084    0.505    0.833    0.003 gamma(1,.5)[sd]
+   .y2                0.620    0.081    0.471    0.788    0.003 gamma(1,.5)[sd]
+   .y3               10.106    1.700    6.910   13.566    0.014 gamma(1,.5)[sd]
+   .y4              435.108   63.625  315.695  565.133    0.009 gamma(1,.5)[sd]
+   .y5              238.337   39.382  163.812  318.015    0.015 gamma(1,.5)[sd]
+   .y6                3.686    0.429    2.907    4.586    0.002 gamma(1,.5)[sd]
     GlyCon            1.000                                                    
    .KdnHlt            1.000                                                    </code></pre>
 </div>
@@ -2345,31 +2343,101 @@ Variances:
 </div>
 </div>
 </section>
+<section id="factor-scores-and-latent-regression" class="slide level2">
+<h2>Factor scores and latent regression</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>eta <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">type =</span> <span class="st">"lv"</span>)</span>
+<span id="cb10-2"><a href=""></a><span class="fu">print</span>(eta)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>First sample:
+   GlyCon  KdnHlt
+1 -0.2267  0.0931
+2  0.0965  0.0321
+3  2.4064  0.7394
+4 -2.2825 -3.4344
+5  0.3618  2.2391
+# ℹ 245 more rows
+# ℹ Use `summary()` to see summary statistics</code></pre>
+</div>
+</div>
+<ul>
+<li>Posterior of <span class="math inline">\(\boldsymbol\eta_i\)</span> for all <span class="math inline">\(n=250\)</span> patients.</li>
+</ul>
+<div class="fragment" data-fragment-index="1">
+<ul>
+<li><strong>Halo</strong>: 95% posterior region (SD <span class="math inline">\(\approx\)</span> 0.40 for <span class="math inline">\(\eta_1\)</span>, 0.45 for <span class="math inline">\(\eta_2\)</span>).</li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li><span class="text-mer"><strong>Line</strong></span>: SEM’s <span class="math inline">\(\beta =\)</span> 0.45 [0.29, 0.61], estimated <em>jointly</em>.</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="r-stack">
+<div class="fragment fade-out" data-fragment-index="1">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-37-1.png" class="quarto-figure quarto-figure-center" style="width:88.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment fade-in-then-out" data-fragment-index="1">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-38-1.png" class="quarto-figure quarto-figure-center" style="width:88.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment fade-in" data-fragment-index="2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-39-1.png" class="quarto-figure quarto-figure-center" style="width:88.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
 <section id="refit-free-leave-one-out-cross-validation" class="slide level2">
 <h2>Refit-free Leave-One-Out Cross-Validation</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>tictoc<span class="sc">::</span><span class="fu">tic</span>()</span>
-<span id="cb10-2"><a href=""></a><span class="fu">loo</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>tictoc<span class="sc">::</span><span class="fu">tic</span>()</span>
+<span id="cb12-2"><a href=""></a><span class="fu">loo</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>── Leave-one-subject-out ───────────────────────── 250 subjects, second-order ──
 
          Estimate   SE
-elpd_loo  -4313.0 28.9
-p_loo        19.3  1.4
-looic      8626.0 57.8
+elpd_loo  -4369.0 28.9
+p_loo        19.2  1.4
+looic      8737.9 57.8
 
 ── Curvature check ─────────────────────────────────────────────────────────────
 
   first-to-second-order gap         9.7
   pD/2 (trace)                      9.3
-  excess over pD/2 (trace)        +5.1%
+  excess over pD/2 (trace)        +5.0%
 
 ℹ The gap approaches pD/2 (trace) from above. A large excess says the
   second-order expansion has not settled over the sample.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.047 sec elapsed</code></pre>
+<pre><code>0.038 sec elapsed</code></pre>
 </div>
 </div>
 </section></section>

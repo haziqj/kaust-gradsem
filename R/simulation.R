@@ -13,7 +13,7 @@ gen_data <- function(n = 100) {
   true_model <- "
     # -- Measurement model --
     # GlyCon: Glycemic control; HbA1c (%), FPG (mmol/L), insulin (µU/mL)
-    GlyCon =~ 0.87*y1 + 1.1*y2 + 5*y3
+    GlyCon =~ 1.08*y1 + 1.1*y2 + 5*y3
 
     # KdnHlt: Kidney dysfunction; PCr (µmol/L), ACR (mg/g), BUN (mmol/L)
     KdnHlt =~ 22*y4 + 20*y5 + 1.8*y6
@@ -31,7 +31,7 @@ gen_data <- function(n = 100) {
     # var(yi) = lambda^2 + theta  =>  theta = var(yi) - lambda^2
     # (y4-y6 set assuming var(KdnHlt) = 1; it is now 1.36, so their SDs are
     # ~34, ~28, ~2.74 and R^2 ~0.58, 0.71, 0.59)
-    y1 ~~ 0.33*y1   # 1.04^2 - 0.87^2
+    y1 ~~ 0.52*y1   #  1.3^2 - 1.08^2
     y2 ~~ 0.70*y2   # 1.38^2 - 1.1^2
     y3 ~~   11*y3   #    6^2 -   5^2
     y4 ~~  477*y4   #   31^2 -  22^2
@@ -80,7 +80,7 @@ true_params <- tribble(
   "y5~1"         , 60          ,
   "y6~1"         , 7.9         ,
   # Factor loadings
-  "GlyCon=~y1"   , 0.87        ,
+  "GlyCon=~y1"   , 1.08        ,
   "GlyCon=~y2"   , 1.1         ,
   "GlyCon=~y3"   , 5           ,
   "KdnHlt=~y4"   , 22          ,
@@ -89,7 +89,7 @@ true_params <- tribble(
   # Regressions
   "KdnHlt~GlyCon", 0.60        ,
   # Residual variances
-  "y1~~y1"       , 0.33        ,
+  "y1~~y1"       , 0.52        ,
   "y2~~y2"       , 0.70        ,
   "y3~~y3"       , 11          ,
   "y4~~y4"       , 477         ,

@@ -237,14 +237,20 @@ $selection-bg: kaust(tur) !default;
   padding: 0;
   margin-bottom: 0;
   
+  // Draw the hollow circle with CSS rather than the $whitecircle glyph: Raleway
+  // lacks U+25CB, and iOS's fallback font renders it huge.
   li:before {
-    content: $whitecircle;
-    // color: mix($ubdblue, white, 60%);
-    color: kaust(gry, nshd);
+    content: "";
+    box-sizing: border-box;
     display: inline-block;
-    width: 0.3em;
-    margin-left: -1.2em;
-    margin-right: 0.8em;
+    width: 0.36em;
+    height: 0.36em;
+    // border: 0.065em solid mix($ubdblue, white, 60%);
+    border: 0.065em solid kaust(gry, nshd);
+    border-radius: 50%;
+    vertical-align: 0.1em;
+    margin-left: -1.1em;
+    margin-right: 0.64em;
   }
 }
 

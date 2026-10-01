@@ -146,7 +146,7 @@ flow_tikz <- function(step) paste0("\\def\\flowstep{", step, "}", flow_tmpl)
 :::
 
 ::: {.fragment fragment-index=4}
-- Not quite R-INLA: This is a "bespoke" INLA for SEM, keeping only the ideas that carry over (Laplace, skew-normal marginals, VB correction).
+- Not quite R-INLA: This is a ✨*bespoke*✨ INLA for SEM, keeping only key relevant ideas (Laplace, skew-normal marginals, VB correction).
 
 - Works because the exact posterior is cheap. For normal SEM, $\pi(\mathbf y \mid \boldsymbol\vartheta)$ is closed form, so $\pi(\boldsymbol\vartheta \mid \mathbf y)$ and its gradients are cheap to evaluate.
 :::
@@ -416,8 +416,8 @@ where $\small\mathbf{g}(\boldsymbol\vartheta) = -\nabla \log \pi(\boldsymbol\var
 ::: {.column width=55%}
 - Consider the paired points $\{\vartheta_j(t_k), h_{kj}\}_{k=1}^K$, where
   - $t_k\in[-4,4]$ are standardised grid points,
-  - $\vartheta_j(t_k) = \boldsymbol\vartheta^* + t_k  \mathbf v_j$ from the CMP, and
-  - $h_{kj} := h_j(t_k) = \log \pi(\vartheta_j(t_k) \mid y ) + t \gamma_j'$ are unnormalised ordinates.
+  - $\boldsymbol\vartheta(t_k) = \boldsymbol\vartheta^* + t_k  \mathbf v_j$ from the CMP, and
+  - $h_{kj} := h_j(t_k) = \log \pi(\boldsymbol\vartheta(t_k) \mid y ) + t_k \gamma_j'$ are unnormalised ordinates.
 
 ::: {.fragment fragment-index=2}
 - Fit a skew normal pdf to these points via weighted least squares. A convenient default is $w_{kj} \propto \exp(h_{kj})$, for $j=1,\dots m$.

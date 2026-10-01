@@ -1,8 +1,11 @@
-# Turn a raw `asciinema rec` of blavaan-*-rec.R into a presentation cast:
-# each command is shown in full, then held before "Enter" (1s for library(),
-# 1.5s for the fit, as in inlavaan-kidney.cast); all output keeps real timings.
+# Turn a raw `asciinema rec` of blavaan-*-rec.R into a presentation cast,
+# matching the style of inlavaan-kidney.cast:
+#   - library() and the model fit are shown in full, then held before "Enter"
+#     (1s and 1.5s);
+#   - later commands (e.g. print()) are typed out after an empty prompt line;
+#   - all output keeps its real timings.
 #
-# Usage: python3 splice.py raw.cast out.cast COLS ROWS
+# Usage (from the repo root): python3 splice.py raw.cast out.cast COLS ROWS
 import json
 import sys
 
@@ -11,24 +14,34 @@ raw = [json.loads(l) for l in open(raw_path, encoding="utf-8").read().splitlines
 txt = [e[2] if e[1] == "o" else "" for e in raw]
 
 i_lib = txt.index("> library(blavaan)\r\n")
-i_cmd = next(i for i, t in enumerate(txt) if t.startswith("> fit_blav"))
-i_end = next(i for i, t in enumerate(txt) if t.endswith("> ") and i > i_cmd)
+i_cmds = [i for i, t in enumerate(txt) if i > i_lib and t.startswith("> ") and t.strip() != ">"]
+i_end = next(i for i, t in enumerate(txt) if i > i_cmds[-1] and t.endswith("> "))
 
-# Theme etc. from the INLAvaan cast so both GIFs match
+# Keystroke gaps borrowed from `timing(fit)` in inlavaan-kidney.cast
+KEYS = [0.141, 0.285, 0.133, 0.143, 0.282, 0.203, 0.337, 0.091, 0.167, 0.230]
+
+# Theme etc. from the INLAvaan cast so the GIFs match
 hdr = json.loads(open("figures/inlavaan-cast/inlavaan-kidney.cast", encoding="utf-8").readline())
 hdr["term"]["cols"], hdr["term"]["rows"] = cols, rows
 
 ev = [
     [0.000, "o", "> library(blavaan)"],
     [1.000, "o", "\r\n"],
-    *raw[i_lib + 1 : i_cmd],                      # startup messages
-    [0.003, "o", "> \r\n"],                        # empty prompt line
-    [0.001, "o", "> "],
-    [1.000, "o", txt[i_cmd][2:].removesuffix("\r\n")],
-    [1.500, "o", "\r\n"],
-    *raw[i_cmd + 1 : i_end + 1],                  # sampler output, final prompt
-    [0.005, "x", "0"],
 ]
+prev = i_lib
+for k, i in enumerate(i_cmds):
+    cmd = txt[i][2:].removesuffix("\r\n")
+    ev += raw[prev + 1 : i]                         # output of previous command
+    ev += [[raw[i][0], "o", "> \r\n"],              # empty prompt line (keeps real delay)
+           [0.001, "o", "> "]]
+    if k == 0:                                      # model fit: shown in full
+        ev += [[1.000, "o", cmd], [1.500, "o", "\r\n"]]
+    else:                                           # follow-ups: typed out
+        ev += [[1.000 if j == 0 else KEYS[(j - 1) % len(KEYS)], "o", ch] for j, ch in enumerate(cmd)]
+        ev += [[0.500, "o", "\r\n"]]
+    prev = i
+ev += raw[prev + 1 : i_end + 1]                     # last output and final prompt
+ev += [[0.005, "x", "0"]]
 
 
 def fmt(e):

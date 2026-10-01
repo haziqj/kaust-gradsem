@@ -6,7 +6,8 @@ mod <- "
 "
 code <- 'library(blavaan)
 fit_blav <- bsem(mod, Kidney, meanstructure = TRUE, std.lv = TRUE,
-                 bcontrol = list(cores = 3))'
+                 bcontrol = list(cores = 3))
+print(fit_blav)'
 source(textConnection(code), echo = TRUE, keep.source = TRUE, spaced = FALSE,
        prompt.echo = "> ", continue.echo = "+ ", max.deparse.length = Inf)
 cat("> ")
