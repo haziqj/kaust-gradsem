@@ -490,3 +490,10 @@ Equality constraints, defined parameters, multigroup, multilevel, and missing da
 [``r params$url``](`r params$url`)
 
 ## References
+
+::: {.content-hidden unless-meta="nogif"}
+<style>
+#refs { column-count: 3; column-gap: 1.5em; font-size: 0.55em; line-height: 1.25; }
+#refs .csl-entry { break-inside: avoid; }
+</style>
+:::
