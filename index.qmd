@@ -315,10 +315,14 @@ Data available from @ess2023ess5.
 :::
 
 ::: {.column width=30%}
+::: {.nudge-up}
+::: {.crg-text}
 Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp.kaust.edu.sa/articles/2026/03/10/bayescomp-group-secures-crg-funding-revolutionize-latent-variable-modeling>].
+:::
 
 ```{=html}
 <style>
+.crg-text { font-size: 85%; }
 .wp-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
 .wp-card { border-left: 7px solid var(--c); border-radius: 6px; background: #f6f6f6; padding: 8px 12px; }
 .wp-card .wp-title { font-size: 0.55em; font-weight: 700; color: var(--d); line-height: 1.15; }
@@ -345,6 +349,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 </div>
 ```
 
+:::
 :::
 
 :::
