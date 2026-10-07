@@ -11,8 +11,8 @@ library(patchwork)
 # estimated numerically exactly as the method would.
 # Run from the project root; writes figures/cmp_gaussian.png and figures/cmp_trumpet.png.
 
-col_cmp   <- "#9C6FAE"  # CMP (KAUST purple)
-col_true  <- "#F18F00"  # true conditional-mode path (KAUST orange)
+col_cmp   <- "#00A6AA"  # CMP (KAUST turquoise)
+col_true  <- "#E07B00"  # true conditional-mode path (KAUST orange, darkened)
 col_h     <- "#b10f2e"  # height only (KAUST red, as the spine in R/slices.R)
 col_hw    <- "#5284C4"  # height x width (KAUST blue, as the marginal in R/slices.R)
 col_width <- "gray30"   # conditional width intervals
