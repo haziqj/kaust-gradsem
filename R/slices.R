@@ -90,8 +90,7 @@ ggplot() +
     data = marginal_data,
     aes(x = x2, y = y_plot),
     color = "#5284C4",
-    linewidth = 1.4,
-    linetype = "dotted"
+    linewidth = 1.2
   ) +
 
   # # Layer 3: The Peak Points
