@@ -36,7 +36,7 @@ p2 <- INLAvaan:::visual_debug(fit, params = "y1~~y1", logscale = TRUE, points = 
     size = 3.5,
     hjust = -0.025,
     vjust = 0.15
-  ) + coord_cartesian(ylim = c(0.2,-4.1))
+  ) + coord_cartesian(ylim = c(0.2,-4.5))
 
 ## ----- Points and SN fit only ------------------------------------------------
 # visual_debug() joins the evaluated ordinates with lines, which suggests a
