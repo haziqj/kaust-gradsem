@@ -396,8 +396,8 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 
 ::: {.lv-text}
 [[🌾 Food]{.lv-tag} [[Cafiero et al. (2018)](https://doi.org/10.1016/j.measurement.2017.10.065)]{.lv-src}]{.lv-top}
-[The UN measures food insecurity with a Rasch model]{.lv-title}
-[Eight yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.]{.lv-body}
+[The UN food insecurity measure]{.lv-title}
+[A Rasch model on eight yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.]{.lv-body}
 :::
 :::
 
