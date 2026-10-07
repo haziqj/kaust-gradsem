@@ -301,6 +301,9 @@ Data available from @ess2023ess5.
 
 ### Håvard Rue (PI) + Haziq Jamil (co-I)
 
+::: {.columns}
+
+::: {.column width=70%}
 ::: {.nudge-down}
 ::: {.small-text}
 >  - **Jamil, H.**, & Rue, H. (2026a). *Approximate Bayesian inference for structural equation models using integrated nested Laplace approximations* ([`arXiv:2603.25690 [stat.ME]`](https://doi.org/10.48550/arXiv.2603.25690)).^[Under review at Psychometrika ([Q1, Applied Mathematics](https://www.scimagojr.com/journalsearch.php?q=14061&tip=sid&clean=0)).]
@@ -308,10 +311,46 @@ Data available from @ess2023ess5.
 >  - Alhyari, M., **Jamil, H.**, Montcho, H., & Rue, H. (2026). *Deterministic Leave-One-Cluster-Out Cross-Validation for Multilevel Bayesian Structural Equation Models* ([`arXiv:2609.00670 [stat.ME]`](https://doi.org/10.48550/arXiv.2609.00670)).^1^
 > - R Package: <https://github.com/haziqj/INLAvaan>
 :::
+:::
+:::
 
+::: {.column width=30%}
 Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp.kaust.edu.sa/articles/2026/03/10/bayescomp-group-secures-crg-funding-revolutionize-latent-variable-modeling>].
 
+```{=html}
+<style>
+.wp-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+.wp-card { border-left: 7px solid var(--c); border-radius: 6px; background: #f6f6f6; padding: 8px 12px; }
+.wp-card .wp-title { font-size: 0.55em; font-weight: 700; color: var(--d); line-height: 1.15; }
+.wp-card .wp-tag { font-size: 0.75em; color: var(--c); margin-right: 4px; }
+.wp-card .wp-text { font-size: 0.45em; font-weight: 300; line-height: 1.3; margin-top: 2px; }
+</style>
+<div class="wp-stack">
+  <div class="wp-card" style="--c:#9C6FAE; --d:#6D2463;">
+    <div class="wp-title"><span class="wp-tag">WP1</span> Teach INLA to speak SEM</div>
+    <div class="wp-text">Fast Bayesian SEM for continuous, binary &amp; ordinal items</div>
+  </div>
+  <div class="wp-card" style="--c:#00A6AA; --d:#004C59;">
+    <div class="wp-title"><span class="wp-tag">WP2</span> Latent traits on a map</div>
+    <div class="wp-text">Spatial SEM &amp; IRT with SPDE random fields</div>
+  </div>
+  <div class="wp-card" style="--c:#adbf04; --d:#595403;">
+    <div class="wp-title"><span class="wp-tag">WP3</span> Latent traits in time</div>
+    <div class="wp-text">Growth curves &amp; dynamic SEM</div>
+  </div>
+  <div class="wp-card" style="--c:#F18F00; --d:#804900;">
+    <div class="wp-title"><span class="wp-tag">WP4</span> Make it usable</div>
+    <div class="wp-text">Open-source R package: INLAvaan</div>
+  </div>
+</div>
+```
+
 :::
+
+:::
+
+
+
 
 
 ## Outline
