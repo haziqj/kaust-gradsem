@@ -28,15 +28,14 @@ gen_data <- function(n = 100) {
     KdnHlt ~~ 1*KdnHlt
 
     # -- Residual variances (theta) --
-    # var(yi) = lambda^2 + theta  =>  theta = var(yi) - lambda^2
-    # (y4-y6 set assuming var(KdnHlt) = 1; it is now 1.36, so their SDs are
-    # ~34, ~28, ~2.74 and R^2 ~0.58, 0.71, 0.59)
-    y1 ~~ 0.52*y1   #  1.3^2 - 1.08^2
-    y2 ~~ 0.70*y2   # 1.38^2 - 1.1^2
-    y3 ~~   11*y3   #    6^2 -   5^2
-    y4 ~~  477*y4   #   31^2 -  22^2
-    y5 ~~  225*y5   #   25^2 -  20^2
-    y6 ~~  3.1*y6   # 2.52^2 - 1.8^2
+    # theta = 0.25 * lambda^2 * var(eta), so reliability = 1 / 1.25 = 0.8
+    # (var(GlyCon) = 1, var(KdnHlt) = 1.36)
+    y1 ~~ 0.29*y1   # 0.25 * 1.08^2
+    y2 ~~ 0.30*y2   # 0.25 * 1.1^2
+    y3 ~~ 6.25*y3   # 0.25 * 5^2
+    y4 ~~  165*y4   # 0.25 * 22^2  * 1.36
+    y5 ~~  136*y5   # 0.25 * 20^2  * 1.36
+    y6 ~~  1.1*y6   # 0.25 * 1.8^2 * 1.36
 
     # -- Intercepts --
     y1 ~ 6.5*1
@@ -89,12 +88,12 @@ true_params <- tribble(
   # Regressions
   "KdnHlt~GlyCon", 0.60        ,
   # Residual variances
-  "y1~~y1"       , 0.52        ,
-  "y2~~y2"       , 0.70        ,
-  "y3~~y3"       , 11          ,
-  "y4~~y4"       , 477         ,
-  "y5~~y5"       , 225         ,
-  "y6~~y6"       , 3.1
+  "y1~~y1"       , 0.29        ,
+  "y2~~y2"       , 0.30        ,
+  "y3~~y3"       , 6.25        ,
+  "y4~~y4"       , 165         ,
+  "y5~~y5"       , 136         ,
+  "y6~~y6"       , 1.1
 )
 
 # Function to run one simulation
