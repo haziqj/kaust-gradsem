@@ -37,6 +37,21 @@ p2 <- INLAvaan:::visual_debug(fit, params = "y1~~y1", logscale = TRUE, points = 
     hjust = -0.025,
     vjust = 0.15
   ) + coord_cartesian(ylim = c(0.2,-4.1))
+
+## ----- Points and SN fit only ------------------------------------------------
+# visual_debug() joins the evaluated ordinates with lines, which suggests a
+# curve that was never evaluated. Keep the points and draw the fit solid red.
+points_and_fit <- function(p) {
+  is_grid_line <- \(l) {
+    inherits(l$geom, "GeomLine") && !all(l$data$type == "Skew-normal fit")
+  }
+  p$layers <- discard(p$layers, is_grid_line)
+  suppressMessages(
+    p + scale_linetype_manual(values = c("solid", "solid"))
+  )
+}
+p1 <- points_and_fit(p1)
+p2 <- points_and_fit(p2)
 p_skewnorm <- p2 / p1 + plot_layout(guides = "collect") &
   theme(legend.position = "bottom", legend.direction = "horizontal")
 
