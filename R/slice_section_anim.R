@@ -6,7 +6,8 @@
 # tails turn turquoise and pour into the empty corners of the rectangle, which
 # ends up as one orange block of the same area. The block then collapses onto a
 # single point above the red dot, the marginal's height, as on the dashed curve
-# in R/slices.R. Run from the project root. Writes figures/slice_section.gif.
+# in R/slices.R. The height arrow extends up to it and becomes the marginal
+# height. Run from the project root. Writes figures/slice_section.gif.
 #
 ################################################################################
 
@@ -57,6 +58,8 @@ timeline <- tribble(
   "merge",    0.9,  # corners turn orange, outline fades
   "pause",    0.5,
   "collapse", 1.2,  # rectangle collapses onto the marginal
+  "pause",    0.3,
+  "extend",   0.8,  # height arrow extends up to the marginal
   "hold",     3     # rest on the marginal before looping
 ) |>
   mutate(start = cumsum(secs) - secs)
@@ -303,7 +306,7 @@ draw_frame <- function(f) {
         x = 0,
         xend = 0,
         y = 0,
-        yend = f$height * (peak - 0.012),
+        yend = f$height * (peak - 0.012) + f$extend * (marginal_y - peak),
         colour = col_ink,
         linewidth = 0.7,
         arrow = arrow_both
@@ -311,12 +314,26 @@ draw_frame <- function(f) {
       annotate(
         "text",
         x = -0.08,
-        y = 0.3 * peak,
+        y = 0.05,
         label = "height",
         colour = col_ink,
         size = 6.5,
         hjust = 1,
         alpha = f$height
+      )
+  }
+  # Low on the arrow, so "marginal" clears the faded outline
+  if (f$extend > 0) {
+    p <- p +
+      annotate(
+        "text",
+        x = -0.08,
+        y = 0.105,
+        label = "marginal",
+        colour = col_ink,
+        size = 6.5,
+        hjust = 1,
+        alpha = f$extend
       )
   }
   if (f$dot > 0) {
