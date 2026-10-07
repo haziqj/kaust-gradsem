@@ -56,7 +56,7 @@ timeline <- tribble(
   "pour",     1.8,  # tails drain into the corners
   "pause",    0.5,
   "merge",    0.9,  # corners turn orange, outline fades
-  "pause",    0.5,
+  "pause",    2,    # rest on the orange box
   "collapse", 1.2,  # rectangle collapses onto the marginal
   "pause",    0.3,
   "extend",   0.8,  # height arrow extends up to the marginal
