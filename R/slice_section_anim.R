@@ -4,8 +4,9 @@
 # point, as if lifted from the posterior in R/slices.R. Its peak height and
 # width are then marked out, sweeping out the height x width rectangle. The two
 # tails turn turquoise and pour into the empty corners of the rectangle, which
-# ends up as one orange block of the same area. Run from the project root.
-# Writes figures/slice_section.gif.
+# ends up as one orange block of the same area. The block then collapses onto a
+# single point above the red dot, the marginal's height, as on the dashed curve
+# in R/slices.R. Run from the project root. Writes figures/slice_section.gif.
 #
 ################################################################################
 
@@ -15,6 +16,7 @@ library(tidyverse)
 col_fill <- "#f1a700" # the slice, peak colour of R/slices.R
 col_swap <- "#3ca9a1" # tails and corners, tail colour of R/slices.R
 col_peak <- "#b10f2e" # red as the spine in R/slices.R
+col_marginal <- "#e07b00" # orange as the dashed marginal in R/slices.R
 col_ink <- "black" # height, width and the rectangle
 col_curve <- "gray30" # outline of the slice, still visible once the tails drain
 col_axis <- "gray40"
@@ -27,6 +29,10 @@ y_width <- -0.045 # baseline offset of the width arrow
 y_lo <- y_width - 0.06 # bottom of the panel
 grow_from <- c(x = zmax, y = y_lo) # bottom right, nearest the 3D plot
 curve_fade <- 0.3 # final opacity of the outline, so the rectangle reads as one
+
+# The marginal sits at the same multiple of the peak height as the dashed curve
+# in R/slices.R: width_mult x cond. SD, with rho = 0.5.
+marginal_y <- peak * 1.6 * sqrt(1 - 0.5^2)
 
 fps <- 25
 gif_file <- "figures/slice_section.gif"
@@ -49,7 +55,9 @@ timeline <- tribble(
   "pour",     1.8,  # tails drain into the corners
   "pause",    0.5,
   "merge",    0.9,  # corners turn orange, outline fades
-  "hold",     3     # rest on the rectangle before looping
+  "pause",    0.5,
+  "collapse", 1.2,  # rectangle collapses onto the marginal
+  "hold",     3     # rest on the marginal before looping
 ) |>
   mutate(start = cumsum(secs) - secs)
 
@@ -151,7 +159,7 @@ draw_frame <- function(f) {
   p <- ggplot() +
     coord_cartesian(
       xlim = c(-zmax, zmax),
-      ylim = c(y_lo, peak + 0.01),
+      ylim = c(y_lo, marginal_y + 0.02),
       expand = FALSE,
       clip = "off"
     ) +
@@ -164,10 +172,30 @@ draw_frame <- function(f) {
     return(p)
   }
 
+  # The rectangle shrinks onto the marginal as it collapses
+  rect <- c(
+    xmin = -half_width * f$width * (1 - f$collapse),
+    xmax = half_width * f$width * (1 - f$collapse),
+    ymin = marginal_y * f$collapse,
+    ymax = peak + (marginal_y - peak) * f$collapse
+  )
+  fade_out <- 1 - pmin(1, 2 * f$collapse) # width arrow and label
+
   ## ----- Fills ---------------------------------------------------------------
   # Orange under the rectangle once it is full, so no white shows through the
-  # anti-aliased edges as the corners turn orange.
-  if (f$pour == 1) {
+  # anti-aliased edges as the corners turn orange. Once it collapses, the block
+  # is a single rectangle.
+  if (f$collapse > 0) {
+    p <- p +
+      annotate(
+        "rect",
+        xmin = rect[["xmin"]],
+        xmax = rect[["xmax"]],
+        ymin = rect[["ymin"]],
+        ymax = rect[["ymax"]],
+        fill = orange
+      )
+  } else if (f$pour == 1) {
     p <- p +
       annotate(
         "rect",
@@ -185,16 +213,18 @@ draw_frame <- function(f) {
     under(-f$x_drain, -half_width, "left"),
     under(half_width, f$x_drain, "right")
   )
-  p <- p +
-    geom_polygon(
-      data = shrink(body, f$grow),
-      aes(x, y, group = id),
-      fill = orange
-    )
+  if (f$collapse == 0) {
+    p <- p +
+      geom_polygon(
+        data = shrink(body, f$grow),
+        aes(x, y, group = id),
+        fill = orange
+      )
+  }
   if (f$recolour > 0 && f$pour < 1) {
     p <- p + geom_polygon(data = tails, aes(x, y, group = id), fill = tail_col)
   }
-  if (f$pour > 0) {
+  if (f$pour > 0 && f$collapse == 0) {
     corners <- bind_rows(
       above(-half_width, -f$x_fill, "left"),
       above(f$x_fill, half_width, "right")
@@ -233,17 +263,17 @@ draw_frame <- function(f) {
     p <- p +
       annotate(
         "rect",
-        xmin = -half_width * f$width,
-        xmax = half_width * f$width,
-        ymin = 0,
-        ymax = peak,
+        xmin = rect[["xmin"]],
+        xmax = rect[["xmax"]],
+        ymin = rect[["ymin"]],
+        ymax = rect[["ymax"]],
         fill = NA,
-        colour = col_ink,
+        colour = alpha(col_ink, 1 - f$collapse),
         linewidth = 0.7
       )
   }
   # Arrows wait until the shaft is longer than its two heads
-  if (f$width > 0.12) {
+  if (f$width > 0.12 && fade_out > 0) {
     p <- p +
       annotate(
         "segment",
@@ -253,6 +283,7 @@ draw_frame <- function(f) {
         yend = y_width,
         colour = col_ink,
         linewidth = 0.7,
+        alpha = fade_out,
         arrow = arrow_both
       ) +
       annotate(
@@ -262,7 +293,7 @@ draw_frame <- function(f) {
         label = "width",
         colour = col_ink,
         size = 6.5,
-        alpha = f$width
+        alpha = f$width * fade_out
       )
   }
   if (f$height > 0.08) {
@@ -291,6 +322,18 @@ draw_frame <- function(f) {
   if (f$dot > 0) {
     p <- p +
       annotate("point", x = 0, y = peak, colour = col_peak, size = 2.6 * f$dot)
+  }
+  # The marginal grows out of the shrinking rectangle's centre and takes over
+  # as the rectangle becomes smaller than it
+  if (f$collapse > 0.8) {
+    p <- p +
+      annotate(
+        "point",
+        x = 0,
+        y = (rect[["ymin"]] + rect[["ymax"]]) / 2,
+        colour = col_marginal,
+        size = 3.2 * (f$collapse - 0.8) / 0.2
+      )
   }
   p
 }
