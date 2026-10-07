@@ -298,12 +298,27 @@ Overlap (area shared by the two densities): $\int \min\{p(\vartheta), q(\varthet
 
 ::: {style="font-size: 90%;"}
 $$
-\pi(\vartheta_j \mid \mathbf y) = \int_{\mathbb R^{m-1}} e^{\log \pi(\vartheta_j, \boldsymbol\vartheta_{-j} \mid \mathbf y)} \, d \boldsymbol\vartheta_{-j}
+\class{marginal-lhs}{\pi(\vartheta_j \mid \mathbf y)} = \int_{\mathbb R^{m-1}} e^{\log \pi(\vartheta_j, \boldsymbol\vartheta_{-j} \mid \mathbf y)} \, d \boldsymbol\vartheta_{-j}
 \approx (2\pi)^{\frac{m-1}{2}} \times 
 \overbrace{\pi\big(\vartheta_j, \boldsymbol\vartheta_{-j}^*(\vartheta_j) \mid \mathbf y\big)}^{\text{height}} \times 
 \overbrace{\left| \mathbf H_{-j}(\vartheta_j) \right|^{-1/2 }}^{\text{(cond.) width}} 
 $$
 :::
+
+<!-- Empty fragment that turns the marginal blue, as in the figures, at step 2 -->
+::: {.fragment fragment-index=2 .marginal-cue}
+:::
+
+```{=html}
+<style>
+.reveal .marginal-lhs {
+  transition: color 0.4s;
+}
+.reveal section:not(.stack):has(.marginal-cue.visible) .marginal-lhs {
+  color: #5284C4;
+}
+</style>
+```
 
 ::: {.fragment fragment-index=1}
 - <u>Geometric intuition</u>: the marginal at each $\vartheta_j$ is the volume of the posterior's slice there, roughly the slice's *peak height* times its *width*.
