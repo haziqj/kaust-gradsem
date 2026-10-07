@@ -85,7 +85,7 @@ timing(fit)
 
 :::
 
-## (b)lavaan S4 methods
+## (b)lavaan S4 methods [@rosseel2012lavaan]
 
 ```{r}
 #| include: false

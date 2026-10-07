@@ -146,7 +146,7 @@ flow_tikz <- function(step) paste0("\\def\\flowstep{", step, "}", flow_tmpl)
 :::
 
 ::: {.fragment fragment-index=4}
-- Not quite R-INLA: This is a ✨*bespoke*✨ INLA for SEM, keeping only key relevant ideas (Laplace, skew-normal marginals, VB correction).
+- Not quite R-INLA: This is a ✨*bespoke*✨ INLA for SEM, making use of relevant key ideas (Laplace, skew-normal marginals, VB correction).
 
 - Works because the exact posterior is cheap. For normal SEM, $\pi(\mathbf y \mid \boldsymbol\vartheta)$ is closed form, so $\pi(\boldsymbol\vartheta \mid \mathbf y)$ and its gradients are cheap to evaluate.
 :::
@@ -166,7 +166,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 - \frac12 (\boldsymbol\vartheta - \boldsymbol\vartheta^*)^\top  \mathbf H (\boldsymbol\vartheta - \boldsymbol\vartheta^*).
 $${#eq-laplace}
 
-Therefore, $\pi(\boldsymbol\vartheta \mid \mathbf y) \approx \mathcal N_m(\boldsymbol\vartheta^*, \boldsymbol\Omega)$, where $\boldsymbol\Omega = \mathbf H^{-1}$
+Therefore, $\pi(\boldsymbol\vartheta \mid \mathbf y) \approx \mathcal N_m(\boldsymbol\vartheta ;\, \boldsymbol\vartheta^*, \boldsymbol\Omega)$, where $\boldsymbol\Omega = \mathbf H^{-1}$
 :::
 
 . . .
@@ -175,7 +175,7 @@ Therefore, $\pi(\boldsymbol\vartheta \mid \mathbf y) \approx \mathcal N_m(\bolds
 
 . . .
 
-- Under standard regularity conditions, the approximation achieves a *relative* error of $\mathcal{O}(n^{-1})$ for the posterior density and marginal likelihood [@rue2017bayesian]---c.f. additive $\mathcal{O}(n^{-1/2})$ error typical of simulation-based methods.
+- Under standard regularity conditions, the approximation achieves a *relative* error of ${O}(n^{-1})$ for the posterior density and marginal likelihood [@rue2017bayesian]---c.f. additive ${O}(n^{-1/2})$ error typical of simulation-based methods.
 
 - By the Bernstein-von Mises theorem, the posterior concentrates at a rate of $n^{-1/2}$ and converges to a Gaussian in total variation [@vandervaart1998asymptotic].
 
@@ -276,7 +276,7 @@ p3
 ::: {.nudge-up-small}
 - @vanniekerk2024lowrank propose a Variational Bayes (VB) correction to the mean of global Laplace:
 $$
-{\hat{\boldsymbol\delta}} = \operatorname{argmin}_{\boldsymbol\delta} \operatorname{D}_{\text{KL}}\big( \mathcal N_m( \boldsymbol\vartheta^* + {\boldsymbol\delta}, \mathbf H^{-1}) \;\big\Vert\; \pi(\cdot \mid \mathbf y) \big).
+{\hat{\boldsymbol\delta}} = \operatorname{argmin}_{\boldsymbol\delta} \operatorname{D}_{\text{KL}}\big( \mathcal N_m(\cdot \,;\, \boldsymbol\vartheta^* + {\boldsymbol\delta}, \mathbf H^{-1}) \;\big\Vert\; \pi(\cdot \mid \mathbf y) \big).
 $$
    - Distribution that minimises *information loss* [@zellner1988optimal].
    - Reuse the Laplace curvature (good locally) and correct only the centre: an $m$-dimensional optimisation instead of re-estimating an $m \times m$ covariance.
@@ -320,18 +320,20 @@ $$
 #| file: "R/slice_section.R"
 #| fig-height: 3.5
 #| fig-width: 5.4
-#| fig-align: center
-#| out-width: 100%
+#| fig-align: right
+#| out-width: 93%
 ```
 :::
 
 ::: {.fragment fragment-index=2 style="width: 100%;"}
+::: {.nudge-up-medium}
 - This is [**expensive**]{.text-mer} to compute, as for every $\vartheta_j$ evaluation, need
 
   1. An optimisation of $\boldsymbol\vartheta_{-j}\in\mathbb R^{m-1}$ at this location; and
   2. The (log) determinant of the Hessian there.
 
 - Next slides: two important results.
+:::
 :::
 ::::
 :::
@@ -353,7 +355,6 @@ $$
 
 ## [Step 2a] Posterior marginals---the "height"
 
-
 ::: {.callout-note icon=false}
 #### Lemma 1 (Conditional Mean Path) [= No need for reoptimisation]{style="color: #f48412;"}
 
@@ -368,7 +369,7 @@ $$
 :::
 
 <!-- Figure first (R/cmp_paths.R); one click swaps it for the bullets -->
-::: {.nudge-up-small}
+::: {}
 :::: {.r-stack}
 ::: {.fragment .fade-out fragment-index=1}
 ![](figures/cmp_gaussian.png){fig-align='center' width=1300px}

@@ -358,7 +358,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ```{=html}
 <style>
 .lv-stack { display: grid; grid-auto-rows: 1fr; gap: 15px; margin-top: 6px; }
-.lv-card { display: grid; grid-template-columns: 1fr 31%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
+.lv-card { display: grid; grid-template-columns: 1fr 33%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
 .lv-card > p { order: 2; position: relative; margin: 0 !important; }
 .reveal .lv-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; max-width: none; max-height: none; }
 .lv-text { display: flex; flex-direction: column; justify-content: center; padding: 9px 16px 11px; }
@@ -373,8 +373,9 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ::: {.columns}
 
 ::: {.column width=50%}
+::: {.nudge-down-small}
 1. **Brief overview of SEMs**
-    - Motivating example
+    - Running example
     - Bayesian inference
     - Marginal likelihood
 2. **INLA-based inference**
@@ -382,9 +383,12 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
     - Skew-normal Laplace profiling of posterior marginals
     - Gaussian copula sampling
 3. **The INLAvaan R package**
+4. **Discussion**
+:::
 :::
 
 ::: {.column width=50%}
+::: {.nudge-up-small}
 ::: {.small-text}
 ::: {.center-h}
 [**Latent variables related to KAUST's agenda**]{.text-org}
@@ -397,7 +401,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ::: {.lv-text}
 [[🌾 Food]{.lv-tag} [@cafiero2018food]{.lv-src}]{.lv-top}
 [The UN food insecurity measure]{.lv-title}
-[A Rasch model on eight yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.]{.lv-body}
+[A Rasch model (1PL IRT) on yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.]{.lv-body}
 :::
 :::
 
@@ -406,7 +410,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 
 ::: {.lv-text}
 [[💧 Water]{.lv-tag} [@young2019household]{.lv-src}]{.lv-top}
-[One scale for household water insecurity]{.lv-title}
+[Household water insecurity measure]{.lv-title}
 [Twelve questions, validated on 8,127 households at 28 sites in 23 countries, and unidimensional in factor analyses.]{.lv-body}
 :::
 :::
@@ -428,6 +432,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 [[🌿 Environment]{.lv-tag} [@grace2016integrative]{.lv-src}]{.lv-top}
 [SEM sees what raw correlations hide]{.lv-title}
 [Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw data pattern.]{.lv-body}
+:::
 :::
 :::
 :::

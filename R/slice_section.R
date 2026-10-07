@@ -11,12 +11,13 @@
 ## ----- Configuration ---------------------------------------------------------
 library(tidyverse)
 
-col_inside <- "#F18F00" # bell inside the rectangle, peak colour of R/slices.R
-col_swap <- "#00A6AA" # tails and corners, tail colour of R/slices.R
+col_inside <- "#f1a700" # bell inside the rectangle, peak colour of R/slices.R
+col_swap <- "#3ca9a1" # tails and corners, tail colour of R/slices.R
 col_peak <- "#b10f2e" # red as the spine in R/slices.R
 col_ink <- "black" # slice, height and width
 col_box <- "gray45"
 col_move <- "gray25" # tails-into-corners arrows
+the_alpha <- 0.79
 
 zmax <- 3.6
 half_width <- sqrt(2 * pi) / 2 # rectangle area = peak x width = 1
@@ -35,9 +36,10 @@ arrow_both <- arrow(ends = "both", length = unit(0.18, "cm"), type = "closed")
 arrow_move <- arrow(length = unit(0.16, "cm"), type = "closed")
 
 ggplot() +
-  geom_area(data = inside, aes(x, y), fill = col_inside) +
-  geom_ribbon(data = inside, aes(x, ymin = y, ymax = peak), fill = col_swap) +
-  geom_area(data = tails, aes(x, y, group = side), fill = col_swap) +
+  geom_area(data = inside, aes(x, y), fill = col_inside, alpha = the_alpha) +
+  geom_ribbon(data = inside, aes(x, ymin = y, ymax = peak), fill = col_swap, alpha = the_alpha) +
+  geom_area(data = tails, aes(x, y, group = side), fill = col_swap, alpha = the_alpha) +
+  geom_line(data = bell, aes(x, y), colour = "white", linewidth = 0.7) +
   annotate(
     "rect",
     xmin = -half_width,
@@ -45,10 +47,9 @@ ggplot() +
     ymin = 0,
     ymax = peak,
     fill = NA,
-    colour = col_box,
+    colour = "black",
     linewidth = 0.7
   ) +
-  geom_line(data = bell, aes(x, y), colour = col_ink, linewidth = 1) +
   annotate(
     "segment",
     x = -zmax,
@@ -105,30 +106,30 @@ ggplot() +
     size = 6,
     hjust = 1
   ) +
-  annotate(
-    "curve",
-    x = -1.85,
-    xend = -0.98,
-    y = 0.035,
-    yend = 0.33,
-    curvature = -0.35,
-    colour = col_move,
-    linewidth = 0.6,
-    linetype = "dashed",
-    arrow = arrow_move
-  ) +
-  annotate(
-    "curve",
-    x = 1.85,
-    xend = 0.98,
-    y = 0.035,
-    yend = 0.33,
-    curvature = 0.35,
-    colour = col_move,
-    linewidth = 0.6,
-    linetype = "dashed",
-    arrow = arrow_move
-  ) +
+  # annotate(
+  #   "curve",
+  #   x = -1.85,
+  #   xend = -0.98,
+  #   y = 0.035,
+  #   yend = 0.33,
+  #   curvature = -0.35,
+  #   colour = col_move,
+  #   linewidth = 0.6,
+  #   linetype = "dashed",
+  #   arrow = arrow_move
+  # ) +
+  # annotate(
+  #   "curve",
+  #   x = 1.85,
+  #   xend = 0.98,
+  #   y = 0.035,
+  #   yend = 0.33,
+  #   curvature = 0.35,
+  #   colour = col_move,
+  #   linewidth = 0.6,
+  #   linetype = "dashed",
+  #   arrow = arrow_move
+  # ) +
   coord_cartesian(
     xlim = c(-zmax, zmax),
     ylim = c(y_width - 0.06, peak + 0.01),

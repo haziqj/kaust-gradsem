@@ -1,4 +1,4 @@
-## Motivating example
+## Running example
 
 ### Glycemic control and kidney health
 
@@ -525,7 +525,7 @@ with assumptions ${\color{Gray}\boldsymbol\epsilon}\sim\operatorname{N}_p(\mathb
 \definecolor{kaustyel}{RGB}{240, 181, 0}
 \definecolor{kaustlik}{HTML}{00A6AA}  % likelihood: KAUST turquoise
 \begin{tikzpicture}[
-  x=1.1cm, y=5cm,
+  x=1.1cm, y=5.4cm,
   >=stealth,
   line width=0.8pt,
   declare function={npdf(\x,\m,\s) = exp(-((\x-\m)^2)/(2*\s^2))/(\s*sqrt(2*pi));},
@@ -597,6 +597,7 @@ with assumptions ${\color{Gray}\boldsymbol\epsilon}\sim\operatorname{N}_p(\mathb
 \end{tikzpicture}
 ```
 
+::: {.nudge-up-small}
 ::: {.columns}
 
 ::: {.column width="48%"}
@@ -609,7 +610,7 @@ $$
 
 - Treat $\boldsymbol\eta$ as unknowns to be sampled; likelihood simplifies.
 
-- But dimension scales with $n$.
+- But problem scales with $n$ (and $m$).
 
 
 :::
@@ -623,7 +624,7 @@ $$
 #### Marginal likelihood
 $$
 \small
-\pi(\mathcal Y \mid \boldsymbol\vartheta) = \prod_{s=1}^n \mathcal N_p\big(\mathbf y_s \mid \boldsymbol\mu(\boldsymbol\vartheta), \boldsymbol\Sigma(\boldsymbol\vartheta)\big)
+\pi(\mathcal Y \mid \boldsymbol\vartheta) = \prod_{s=1}^n \mathcal N_p\big(\mathbf y_s \,;\, \boldsymbol\mu(\boldsymbol\vartheta), \boldsymbol\Sigma(\boldsymbol\vartheta)\big)
 $$
 
 ::: {.small-text}
@@ -640,6 +641,7 @@ $$
 :::
 :::
 
+:::
 :::
 
 ## MCMC-based estimation *(cont.)*
