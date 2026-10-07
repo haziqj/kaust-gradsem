@@ -15,6 +15,7 @@ col_inside <- "#f1a700" # bell inside the rectangle, peak colour of R/slices.R
 col_swap <- "#3ca9a1" # tails and corners, tail colour of R/slices.R
 col_peak <- "#b10f2e" # red as the spine in R/slices.R
 col_ink <- "black" # slice, height and width
+col_curve <- "gray30" # outline of the slice, as in R/slice_section_anim.R
 col_box <- "gray45"
 col_move <- "gray25" # tails-into-corners arrows
 the_alpha <- 0.79
@@ -39,7 +40,7 @@ ggplot() +
   geom_area(data = inside, aes(x, y), fill = col_inside, alpha = the_alpha) +
   geom_ribbon(data = inside, aes(x, ymin = y, ymax = peak), fill = col_swap, alpha = the_alpha) +
   geom_area(data = tails, aes(x, y, group = side), fill = col_swap, alpha = the_alpha) +
-  geom_line(data = bell, aes(x, y), colour = "white", linewidth = 0.7) +
+  geom_line(data = bell, aes(x, y), colour = col_curve, linewidth = 0.7) +
   annotate(
     "rect",
     xmin = -half_width,
