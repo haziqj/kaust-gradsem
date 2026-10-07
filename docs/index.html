@@ -119,7 +119,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-c503f67bf4960bbc1fa0078861997ca2.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-155e0775356a5ec12d125545d9e2a78e.css">
   <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -869,6 +869,8 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <section id="advancing-scalable-bayesian-methods-for-latent-variable-modelling" class="slide level2">
 <h2>Advancing scalable Bayesian methods for latent variable modelling</h2>
 <h3 id="håvard-rue-pi-haziq-jamil-co-i">Håvard Rue (PI) + Haziq Jamil (co-I)</h3>
+<div class="columns">
+<div class="column" style="width:70%;">
 <div class="nudge-down">
 <div class="small-text">
 <blockquote>
@@ -882,17 +884,61 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 
 </blockquote>
 </div>
+</div>
+</div><div class="column" style="width:30%;">
+<div class="nudge-up-small">
+<div style="font-size: 89%;">
 <p>Supported by the 2025 KAUST Competitive Research Grant (CRG)<sup>2</sup>.</p>
 </div>
+<style>
+.wp-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+.wp-card { border-left: 7px solid var(--c); border-radius: 6px; background: #f6f6f6; padding: 8px 12px; }
+.wp-card .wp-title { font-size: 0.55em; font-weight: 700; color: var(--d); line-height: 1.15; }
+.wp-card .wp-tag { font-size: 0.75em; color: var(--c); margin-right: 4px; }
+.wp-card .wp-text { font-size: 0.45em; font-weight: 300; line-height: 1.3; margin-top: 2px; }
+</style>
+<div class="wp-stack">
+  <div class="wp-card" style="--c:#9C6FAE; --d:#6D2463;">
+    <div class="wp-title"><span class="wp-tag">WP1</span> Theory &amp; model mapping</div>
+    <div class="wp-text">Fast Bayesian SEM for continuous, binary &amp; ordinal items</div>
+  </div>
+  <div class="wp-card" style="--c:#00A6AA; --d:#004C59;">
+    <div class="wp-title"><span class="wp-tag">WP2</span> Latent traits on a map</div>
+    <div class="wp-text">Spatial SEM &amp; IRT with SPDE random fields</div>
+  </div>
+  <div class="wp-card" style="--c:#adbf04; --d:#595403;">
+    <div class="wp-title"><span class="wp-tag">WP3</span> Latent traits in time</div>
+    <div class="wp-text">Growth curves &amp; dynamic SEM</div>
+  </div>
+  <div class="wp-card" style="--c:#F18F00; --d:#804900;">
+    <div class="wp-title"><span class="wp-tag">WP4</span> Software &amp; dissemination</div>
+    <div class="wp-text">Open-source R package: INLAvaan</div>
+  </div>
+</div>
+</div>
+</div></div>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>Under review at Psychometrika (<a href="https://www.scimagojr.com/journalsearch.php?q=14061&amp;tip=sid&amp;clean=0">Q1, Applied Mathematics</a>).</p></li><li id="fn2"><p><a href="https://bayescomp.kaust.edu.sa/articles/2026/03/10/bayescomp-group-secures-crg-funding-revolutionize-latent-variable-modeling" class="uri">https://bayescomp.kaust.edu.sa/articles/2026/03/10/bayescomp-group-secures-crg-funding-revolutionize-latent-variable-modeling</a></p></li></ol></aside></section>
 <section id="outline" class="slide level2">
 <h2>Outline</h2>
+<style>
+.lv-stack { display: grid; grid-auto-rows: 1fr; gap: 15px; margin-top: 6px; }
+.lv-card { display: grid; grid-template-columns: 1fr 33%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
+.lv-card > p { order: 2; position: relative; margin: 0 !important; }
+.reveal .lv-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; max-width: none; max-height: none; }
+.lv-text { display: flex; flex-direction: column; justify-content: center; padding: 9px 16px 11px; }
+.lv-text p { margin: 0 !important; }
+.lv-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 12.5px; }
+.lv-tag { font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
+.lv-title { display: block; font-size: 17px; font-weight: 700; line-height: 1.22; margin: 3px 0; text-wrap: balance; }
+.lv-body { display: block; font-size: 15px; line-height: 1.32; color: #27343B; text-wrap: pretty; }
+</style>
 <div class="columns">
-<div class="column" style="width:80%;">
+<div class="column" style="width:50%;">
+<div class="nudge-down-small">
 <ol type="1">
 <li><strong>Brief overview of SEMs</strong>
 <ul>
-<li>Motivating example</li>
+<li>Running example</li>
 <li>Bayesian inference</li>
 <li>Marginal likelihood</li>
 </ul></li>
@@ -903,16 +949,55 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <li>Gaussian copula sampling</li>
 </ul></li>
 <li><strong>The INLAvaan R package</strong></li>
+<li><strong>Discussion</strong></li>
 </ol>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="nudge-up-small">
+<div class="small-text">
+<div class="center-h">
+<p><span class="text-org"><strong>Latent variables related to KAUST’s agenda</strong></span></p>
+</div>
+<div class="lv-stack">
+<div class="lv-card" style="--c:#595403;">
+<p><img data-src="figures/unsplash-food.jpg"></p>
+<div class="lv-text">
+<p><span class="lv-top"><span class="lv-tag">🌾 Food</span> <span class="lv-src"><span class="citation" data-cites="cafiero2018food">Cafiero et al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></span> <span class="lv-title">The UN food insecurity measure</span> <span class="lv-body">A Rasch model (1PL IRT) on yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.</span></p>
+</div>
+</div>
+<div class="lv-card" style="--c:#003B75;">
+<p><img data-src="figures/unsplash-water.jpg"></p>
+<div class="lv-text">
+<p><span class="lv-top"><span class="lv-tag">💧 Water</span> <span class="lv-src"><span class="citation" data-cites="young2019household">Young et al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></span></span> <span class="lv-title">Household water insecurity measure</span> <span class="lv-body">Twelve questions, validated on 8,127 households at 28 sites in 23 countries, and unidimensional in factor analyses.</span></p>
+</div>
+</div>
+<div class="lv-card" style="--c:#6D2463;">
+<p><img data-src="figures/unsplash-ai.jpg"></p>
+<div class="lv-text">
+<p><span class="lv-top"><span class="lv-tag">🤖 AI</span> <span class="lv-src"><span class="citation" data-cites="burnell2023revealing">Burnell et al. (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span> · <span class="citation" data-cites="maiapolo2024tinybenchmarks">Maia Polo et al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span></span></span> <span class="lv-title">LLMs have latent abilities too</span> <span class="lv-body">Factor analysis reveals abilities like reasoning and comprehension. IRT finds a benchmark’s most informative questions, so far fewer are needed.</span></p>
+</div>
+</div>
+<div class="lv-card" style="--c:#004C59;">
+<p><img data-src="figures/unsplash-environment.jpg"></p>
+<div class="lv-text">
+<p><span class="lv-top"><span class="lv-tag">🌿 Environment</span> <span class="lv-src"><span class="citation" data-cites="grace2016integrative">Grace et al. (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span></span></span> <span class="lv-title">SEM sees what raw correlations hide</span> <span class="lv-body">Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw data pattern.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div></div>
-</section>
+
+<aside><div>
+<p>Photo credits: Unsplash <a href="https://unsplash.com/photos/person-holding-stack-of-wheat-zwZusrYAGoM">@pazarando</a>, <a href="https://unsplash.com/photos/pouring-water-on-persons-hands-YpZ2cj4s0oo">@_mrjn_esf</a>, <a href="https://unsplash.com/photos/child-touching-white-robotic-hand-_7ceGXTAtyQ">@katjaano</a>, <a href="https://unsplash.com/photos/hand-touching-grass-in-sunlit-field-cbpbQ1LjAws">@jarlock55</a>.</p>
+</div></aside></section>
 <section>
 <section id="structural-equation-models" class="title-slide slide level1 transition-slide center">
 <h1>Structural equation models</h1>
 
 </section>
-<section id="motivating-example" class="slide level2">
-<h2>Motivating example</h2>
+<section id="running-example" class="slide level2">
+<h2>Running example</h2>
 <h3 id="glycemic-control-and-kidney-health">Glycemic control and kidney health</h3>
 <blockquote>
 <p>Does poorer glycemic control lead to greater severity of kidney disease?</p>
@@ -1699,6 +1784,7 @@ y_6
 </div>
 </div>
 </div>
+<div class="nudge-up-small">
 <div class="columns">
 <div class="column" style="width:48%;">
 <div class="fragment">
@@ -1709,7 +1795,7 @@ y_6
 \]</span></p>
 <ul>
 <li><p>Treat <span class="math inline">\(\boldsymbol\eta\)</span> as unknowns to be sampled; likelihood simplifies.</p></li>
-<li><p>But dimension scales with <span class="math inline">\(n\)</span>.</p></li>
+<li><p>But problem scales with <span class="math inline">\(n\)</span> (and <span class="math inline">\(m\)</span>).</p></li>
 </ul>
 </div>
 </div><div class="column" style="width:4%;">
@@ -1719,7 +1805,7 @@ y_6
 <h4 id="marginal-likelihood">Marginal likelihood</h4>
 <p><span class="math display">\[
 \small
-\pi(\mathcal Y \mid \boldsymbol\vartheta) = \prod_{s=1}^n \mathcal N_p\big(\mathbf y_s \mid \boldsymbol\mu(\boldsymbol\vartheta), \boldsymbol\Sigma(\boldsymbol\vartheta)\big)
+\pi(\mathcal Y \mid \boldsymbol\vartheta) = \prod_{s=1}^n \mathcal N_p\big(\mathbf y_s \,;\, \boldsymbol\mu(\boldsymbol\vartheta), \boldsymbol\Sigma(\boldsymbol\vartheta)\big)
 \]</span></p>
 <div class="small-text">
 <p>where <span class="math display">\[
@@ -1732,6 +1818,7 @@ y_6
 </div>
 </div>
 </div></div>
+</div>
 </section>
 <section id="mcmc-based-estimation-cont." class="slide level2">
 <h2>MCMC-based estimation <em>(cont.)</em></h2>
@@ -1799,7 +1886,7 @@ y_6
 </div>
 <div class="fragment" data-fragment-index="4">
 <ul>
-<li><p>Not quite R-INLA: This is a ✨<em>bespoke</em>✨ INLA for SEM, keeping only key relevant ideas (Laplace, skew-normal marginals, VB correction).</p></li>
+<li><p>Not quite R-INLA: This is a ✨<em>bespoke</em>✨ INLA for SEM, making use of relevant key ideas (Laplace, skew-normal marginals, VB correction).</p></li>
 <li><p>Works because the exact posterior is cheap. For normal SEM, <span class="math inline">\(\pi(\mathbf y \mid \boldsymbol\vartheta)\)</span> is closed form, so <span class="math inline">\(\pi(\boldsymbol\vartheta \mid \mathbf y)\)</span> and its gradients are cheap to evaluate.</p></li>
 </ul>
 </div>
@@ -1821,7 +1908,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 % + \cancel{\nabla f(\boldsymbol\vartheta^*)^\top (\boldsymbol\vartheta - \boldsymbol\vartheta^*)}
 - \frac12 (\boldsymbol\vartheta - \boldsymbol\vartheta^*)^\top  \mathbf H (\boldsymbol\vartheta - \boldsymbol\vartheta^*).
 \tag{1}\]</span></span></p>
-<p>Therefore, <span class="math inline">\(\pi(\boldsymbol\vartheta \mid \mathbf y) \approx \mathcal N_m(\boldsymbol\vartheta^*, \boldsymbol\Omega)\)</span>, where <span class="math inline">\(\boldsymbol\Omega = \mathbf H^{-1}\)</span></p>
+<p>Therefore, <span class="math inline">\(\pi(\boldsymbol\vartheta \mid \mathbf y) \approx \mathcal N_m(\boldsymbol\vartheta ;\, \boldsymbol\vartheta^*, \boldsymbol\Omega)\)</span>, where <span class="math inline">\(\boldsymbol\Omega = \mathbf H^{-1}\)</span></p>
 </div>
 </div>
 </div>
@@ -1832,7 +1919,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 </div>
 <div class="fragment">
 <ul>
-<li><p>Under standard regularity conditions, the approximation achieves a <em>relative</em> error of <span class="math inline">\(\mathcal{O}(n^{-1})\)</span> for the posterior density and marginal likelihood <span class="citation" data-cites="rue2017bayesian">(<a href="#/references" role="doc-biblioref" onclick="">Rue et al., 2017</a>)</span>—c.f. additive <span class="math inline">\(\mathcal{O}(n^{-1/2})\)</span> error typical of simulation-based methods.</p></li>
+<li><p>Under standard regularity conditions, the approximation achieves a <em>relative</em> error of <span class="math inline">\({O}(n^{-1})\)</span> for the posterior density and marginal likelihood <span class="citation" data-cites="rue2017bayesian">(<a href="#/references" role="doc-biblioref" onclick="">Rue et al., 2017</a>)</span>—c.f. additive <span class="math inline">\({O}(n^{-1/2})\)</span> error typical of simulation-based methods.</p></li>
 <li><p>By the Bernstein-von Mises theorem, the posterior concentrates at a rate of <span class="math inline">\(n^{-1/2}\)</span> and converges to a Gaussian in total variation <span class="citation" data-cites="vandervaart1998asymptotic">(<a href="#/references" role="doc-biblioref" onclick="">van der Vaart, 1998</a>)</span>.</p></li>
 </ul>
 </div>
@@ -1908,7 +1995,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <div class="nudge-up-small">
 <ul>
 <li><span class="citation" data-cites="vanniekerk2024lowrank">van Niekerk &amp; Rue (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span> propose a Variational Bayes (VB) correction to the mean of global Laplace: <span class="math display">\[
-{\hat{\boldsymbol\delta}} = \operatorname{argmin}_{\boldsymbol\delta} \operatorname{D}_{\text{KL}}\big( \mathcal N_m( \boldsymbol\vartheta^* + {\boldsymbol\delta}, \mathbf H^{-1}) \;\big\Vert\; \pi(\cdot \mid \mathbf y) \big).
+{\hat{\boldsymbol\delta}} = \operatorname{argmin}_{\boldsymbol\delta} \operatorname{D}_{\text{KL}}\big( \mathcal N_m(\cdot \,;\, \boldsymbol\vartheta^* + {\boldsymbol\delta}, \mathbf H^{-1}) \;\big\Vert\; \pi(\cdot \mid \mathbf y) \big).
 \]</span>
 <ul>
 <li>Distribution that minimises <em>information loss</em> <span class="citation" data-cites="zellner1988optimal">(<a href="#/references" role="doc-biblioref" onclick="">Zellner, 1988</a>)</span>.</li>
@@ -1945,7 +2032,21 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 </div>
 <div class="columns">
 <div class="column" style="width:46%;">
-<div class="fragment" data-fragment-index="2">
+<!-- Cross-section of one slice (R/slice_section.R), then swapped for the text -->
+<div class="r-stack">
+<div class="fragment fade-in-then-out" data-fragment-index="1">
+<div class="cell" data-layout-align="right">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-right">
+<figure>
+<p><img data-src="index_files/figure-revealjs/slice-section-1.png" class="quarto-figure quarto-figure-right" style="width:93.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2" style="width: 100%;">
+<div class="nudge-up-medium">
 <ul>
 <li><p>This is <span class="text-mer"><strong>expensive</strong></span> to compute, as for every <span class="math inline">\(\vartheta_j\)</span> evaluation, need</p>
 <ol type="1">
@@ -1954,6 +2055,8 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 </ol></li>
 <li><p>Next slides: two important results.</p></li>
 </ul>
+</div>
+</div>
 </div>
 </div><div class="column" style="width:54%;">
 <div class="fragment" data-fragment-index="1">
@@ -1974,7 +2077,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <div class="callout callout-note no-icon callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>Lemma 1 (Conditional Mean Path) <span class="text-org">= No need for reoptimisation</span></strong></p>
+<p><strong>Lemma 1 (Conditional Mean Path) <span style="color: #f48412;">= No need for reoptimisation</span></strong></p>
 </div>
 <div class="callout-content">
 <p>Let <span class="math inline">\(\small \boldsymbol\vartheta\sim\operatorname{N}_m(\boldsymbol\vartheta^*,\boldsymbol\Omega)\)</span> with <span class="math inline">\(\small\boldsymbol\Omega \succ \mathbf 0\)</span>. Then the marginal density of the <span class="math inline">\(\small j\)</span>th component, <span class="math inline">\(\small j=1,\dots,m\)</span>, is proportional to the joint density evaluated along its CMP: <span class="math display">\[
@@ -1987,7 +2090,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 </div>
 </div>
 <!-- Figure first (R/cmp_paths.R); one click swaps it for the bullets -->
-<div class="nudge-up-small">
+<div>
 <div class="r-stack">
 <div class="fragment fade-out" data-fragment-index="1">
 <div class="quarto-figure quarto-figure-center">
@@ -2017,7 +2120,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <div class="callout callout-note no-icon callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>Lemma 2 (Efficient volume correction) <span class="text-org">= No need to factor dense Hessian</span></strong></p>
+<p><strong>Lemma 2 (Efficient volume correction) <span style="color: #f48412;">= No need to factor dense Hessian</span></strong></p>
 </div>
 <div class="callout-content">
 <p>For the <span class="math inline">\(\small j\)</span>th component along the CMP, <span class="math inline">\(\small-\frac12 \log | \mathbf H_{-j}(t) | \approx \text{const.} + t\gamma_j'\)</span>. Then <span class="math display">\[
@@ -2070,6 +2173,19 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 </ul>
 </div>
 </div><div class="column" style="width:45%;">
+<!-- Evaluated points only (R/skewnorm.R), then swapped for the SN fit -->
+<div class="r-stack">
+<div class="fragment fade-in-then-out" data-fragment-index="1">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/skewnormfit-points-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 <div class="fragment" data-fragment-index="2">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -2077,6 +2193,7 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <figure>
 <p><img data-src="index_files/figure-revealjs/skewnormfit-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
+</div>
 </div>
 </div>
 </div>
@@ -2132,12 +2249,12 @@ h_{kj}-\big\{\log f_{\mathrm{SN}}(\vartheta_j(t_k);\xi,\omega,\alpha)+c\big\}
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 250
 Columns: 6
-$ y1 &lt;dbl&gt; 6.026417, 6.329234, 8.72426…
-$ y2 &lt;dbl&gt; 5.846124, 7.058977, 7.45847…
-$ y3 &lt;dbl&gt; 7.4570227, 14.1056444, 18.8…
-$ y4 &lt;dbl&gt; 135.182976, 84.680012, 102.…
-$ y5 &lt;dbl&gt; 46.320196, 86.786647, 64.94…
-$ y6 &lt;dbl&gt; 7.506613, 6.818328, 11.0433…</code></pre>
+$ y1 &lt;dbl&gt; 5.960822, 6.129040, 5.97609…
+$ y2 &lt;dbl&gt; 4.767713, 6.616294, 5.64002…
+$ y3 &lt;dbl&gt; 14.469238, 10.517574, 8.725…
+$ y4 &lt;dbl&gt; 84.18186, 59.59659, 126.733…
+$ y5 &lt;dbl&gt; 64.539671, 49.028101, 90.72…
+$ y6 &lt;dbl&gt; 7.758444, 5.232205, 11.5583…</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(INLAvaan)</span>
 <span id="cb3-2"><a href=""></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
@@ -2173,14 +2290,14 @@ $ y6 &lt;dbl&gt; 7.506613, 6.818328, 11.0433…</code></pre>
 </div>
 </div></div>
 </section>
-<section id="blavaan-s4-methods" class="slide level2">
-<h2>(b)lavaan S4 methods</h2>
+<section id="blavaan-s4-methods-rosseel2012lavaan" class="slide level2">
+<h2>(b)lavaan S4 methods <span class="citation" data-cites="rosseel2012lavaan">(<a href="#/references" role="doc-biblioref" onclick="">Rosseel, 2012</a>)</span></h2>
 <div class="columns">
 <div class="column" style="width:65%;">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">print</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>INLAvaan 0.3.1.9015 ended normally after 61 iterations
+<pre><code>INLAvaan 0.3.2.9001 ended normally after 71 iterations
 
   Estimator                                      BAYES
   Optimization method                           NLMINB
@@ -2190,8 +2307,8 @@ $ y6 &lt;dbl&gt; 7.506613, 6.818328, 11.0433…</code></pre>
 
 Model Test (User Model):
 
-   Marginal log-likelihood                   -4454.186 
-   PPP (Chi-square)                              0.620 </code></pre>
+   Marginal log-likelihood                   -4029.054 
+   PPP (Chi-square)                              0.569 </code></pre>
 </div>
 </div>
 </div><div class="column" style="width:25%;">
@@ -2210,11 +2327,11 @@ Model Test (User Model):
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>   GlyCon=~y1    GlyCon=~y2    GlyCon=~y3    KdnHlt=~y4    KdnHlt=~y5 
-        0.978         0.987         4.921        25.158        20.368 
+        1.090         1.161         5.027        21.610        19.651 
    KdnHlt=~y6 KdnHlt~GlyCon        y1~~y1        y2~~y2        y3~~y3 
-        1.809         0.452         0.658         0.620        10.106 
+        1.773         0.656         0.322         0.254         7.435 
        y4~~y4        y5~~y5        y6~~y6          y1~1           
-      435.108       238.337         3.686         6.497         ... </code></pre>
+      206.240        91.076         1.285         6.542         ... </code></pre>
 </div>
 </div>
 </div>
@@ -2228,8 +2345,8 @@ Model Test (User Model):
 
 Information Criteria:
 
-   Deviance (DIC)                             8737.509 
-   Effective parameters (pD)                    18.968 
+   Deviance (DIC)                             7910.072 
+   Effective parameters (pD)                    19.026 
 
 Parameter Estimates:
 
@@ -2239,38 +2356,38 @@ Parameter Estimates:
 Latent Variables:
                    Estimate       SD     2.5%    97.5%     NMAD    Prior       
   GlyCon =~                                                                    
-    y1                0.978    0.074    0.837    1.126    0.002    normal(0,10)
-    y2                0.987    0.073    0.848    1.134    0.002    normal(0,10)
-    y3                4.921    0.333    4.284    5.591    0.002    normal(0,10)
+    y1                1.090    0.063    0.972    1.218    0.005    normal(0,10)
+    y2                1.161    0.063    1.042    1.290    0.005    normal(0,10)
+    y3                5.027    0.292    4.476    5.625    0.005    normal(0,10)
   KdnHlt =~                                                                    
-    y4               25.158    1.859   21.594   28.894    0.002    normal(0,10)
-    y5               20.368    1.467   17.559   23.318    0.002    normal(0,10)
-    y6                1.809    0.149    1.523    2.109    0.002    normal(0,10)
+    y4               21.610    1.281   19.188   24.221    0.005    normal(0,10)
+    y5               19.651    1.075   17.622   21.843    0.005    normal(0,10)
+    y6                1.773    0.104    1.576    1.986    0.005    normal(0,10)
 
 Regressions:
                    Estimate       SD     2.5%    97.5%     NMAD    Prior       
   KdnHlt ~                                                                     
-    GlyCon            0.452    0.086    0.287    0.627    0.002    normal(0,10)
+    GlyCon            0.656    0.084    0.496    0.827    0.003    normal(0,10)
 
 Intercepts:
                    Estimate       SD     2.5%    97.5%     NMAD    Prior       
-   .y1                6.497    0.080    6.341    6.653    0.000    normal(0,32)
-   .y2                5.954    0.079    5.799    6.108    0.000    normal(0,32)
-   .y3               11.706    0.366   10.988   12.424    0.000    normal(0,32)
-   .y4               84.934    2.164   80.693   89.175    0.000    normal(0,32)
-   .y5               59.688    1.699   56.357   63.018    0.000    normal(0,32)
-   .y6                7.599    0.173    7.260    7.938    0.000    normal(0,32)
+   .y1                6.542    0.077    6.392    6.693    0.000    normal(0,32)
+   .y2                6.161    0.079    6.007    6.316    0.000    normal(0,32)
+   .y3               12.064    0.357   11.364   12.764    0.000    normal(0,32)
+   .y4               84.700    1.846   81.081   88.319    0.000    normal(0,32)
+   .y5               57.807    1.584   54.703   60.910    0.000    normal(0,32)
+   .y6                7.862    0.150    7.568    8.156    0.000    normal(0,32)
     GlyCon            0.000                                                    
    .KdnHlt            0.000                                                    
 
 Variances:
                    Estimate       SD     2.5%    97.5%     NMAD    Prior       
-   .y1                0.658    0.084    0.505    0.833    0.003 gamma(1,.5)[sd]
-   .y2                0.620    0.081    0.471    0.788    0.003 gamma(1,.5)[sd]
-   .y3               10.106    1.700    6.910   13.566    0.014 gamma(1,.5)[sd]
-   .y4              435.108   63.625  315.695  565.133    0.009 gamma(1,.5)[sd]
-   .y5              238.337   39.382  163.812  318.015    0.015 gamma(1,.5)[sd]
-   .y6                3.686    0.429    2.907    4.586    0.002 gamma(1,.5)[sd]
+   .y1                0.322    0.043    0.244    0.411    0.002 gamma(1,.5)[sd]
+   .y2                0.254    0.041    0.178    0.339    0.007 gamma(1,.5)[sd]
+   .y3                7.435    0.938    5.728    9.404    0.002 gamma(1,.5)[sd]
+   .y4              206.240   25.311  160.183  259.341    0.001 gamma(1,.5)[sd]
+   .y5               91.076   16.419   60.419  124.678    0.014 gamma(1,.5)[sd]
+   .y6                1.285    0.165    0.984    1.632    0.002 gamma(1,.5)[sd]
     GlyCon            1.000                                                    
    .KdnHlt            1.000                                                    </code></pre>
 </div>
@@ -2352,12 +2469,12 @@ Variances:
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>First sample:
-   GlyCon  KdnHlt
-1 -0.2267  0.0931
-2  0.0965  0.0321
-3  2.4064  0.7394
-4 -2.2825 -3.4344
-5  0.3618  2.2391
+  GlyCon  KdnHlt
+1 -0.370 -0.0255
+2 -0.274 -1.1595
+3  0.253  1.6439
+4  1.311 -1.8157
+5  0.431  1.0514
 # ℹ 245 more rows
 # ℹ Use `summary()` to see summary statistics</code></pre>
 </div>
@@ -2367,12 +2484,12 @@ Variances:
 </ul>
 <div class="fragment" data-fragment-index="1">
 <ul>
-<li><strong>Halo</strong>: 95% posterior region (SD <span class="math inline">\(\approx\)</span> 0.40 for <span class="math inline">\(\eta_1\)</span>, 0.45 for <span class="math inline">\(\eta_2\)</span>).</li>
+<li><strong>Halo</strong>: 95% posterior region (SD <span class="math inline">\(\approx\)</span> 0.28 for <span class="math inline">\(\eta_1\)</span>, 0.33 for <span class="math inline">\(\eta_2\)</span>).</li>
 </ul>
 </div>
 <div class="fragment" data-fragment-index="2">
 <ul>
-<li><span class="text-mer"><strong>Line</strong></span>: SEM’s <span class="math inline">\(\beta =\)</span> 0.45 [0.29, 0.61], estimated <em>jointly</em>.</li>
+<li><span class="text-mer"><strong>Line</strong></span>: SEM’s <span class="math inline">\(\beta =\)</span> 0.66 [0.49, 0.82], estimated <em>jointly</em>.</li>
 </ul>
 </div>
 </div><div class="column" style="width:50%;">
@@ -2422,22 +2539,22 @@ Variances:
 <pre><code>── Leave-one-subject-out ───────────────────────── 250 subjects, second-order ──
 
          Estimate   SE
-elpd_loo  -4369.0 28.9
-p_loo        19.2  1.4
-looic      8737.9 57.8
+elpd_loo  -3955.0 28.7
+p_loo        18.8  1.3
+looic      7909.9 57.3
 
 ── Curvature check ─────────────────────────────────────────────────────────────
 
   first-to-second-order gap         9.7
   pD/2 (trace)                      9.3
-  excess over pD/2 (trace)        +5.0%
+  excess over pD/2 (trace)        +4.7%
 
 ℹ The gap approaches pD/2 (trace) from above. A large excess says the
   second-order expansion has not settled over the sample.</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.038 sec elapsed</code></pre>
+<pre><code>0.04 sec elapsed</code></pre>
 </div>
 </div>
 </section></section>
@@ -2490,6 +2607,12 @@ looic      8737.9 57.8
 <h2>References</h2>
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-burnell2023revealing" class="csl-entry" role="listitem">
+Burnell, R., Hao, H., Conway, A. R. A., &amp; Orallo, J. H. (2023). <em>Revealing the structure of language model capabilities</em>. <a href="https://doi.org/10.48550/arXiv.2306.10062">https://doi.org/10.48550/arXiv.2306.10062</a>
+</div>
+<div id="ref-cafiero2018food" class="csl-entry" role="listitem">
+Cafiero, C., Viviani, S., &amp; Nord, M. (2018). Food security measurement in a global context: <span>The</span> food insecurity experience scale. <em>Measurement</em>, <em>116</em>, 146–152. <a href="https://doi.org/10.1016/j.measurement.2017.10.065">https://doi.org/10.1016/j.measurement.2017.10.065</a>
+</div>
 <div id="ref-carpenter2017stan" class="csl-entry" role="listitem">
 Carpenter, B., Gelman, A., Hoffman, M. D., Lee, D., Goodrich, B., Betancourt, M., Brubaker, M., Guo, J., Li, P., &amp; Riddell, A. (2017). <span><em>Stan</em></span>: <span>A</span> probabilistic programming language. <em>Journal of Statistical Software</em>, <em>76</em>(1), 1–32. <a href="https://doi.org/10.18637/jss.v076.i01">https://doi.org/10.18637/jss.v076.i01</a>
 </div>
@@ -2497,10 +2620,13 @@ Carpenter, B., Gelman, A., Hoffman, M. D., Lee, D., Goodrich, B., Betancourt, M.
 Driver, C. C., Oud, J. H. L., &amp; Voelkle, M. C. (2017). Continuous <span>Time Structural Equation Modeling</span> with <span><span><em>R</em></span></span> <span>Package</span> <span class="nocase">ctsem</span>. <em>Journal of Statistical Software</em>, <em>77</em>(5). <a href="https://doi.org/10.18637/jss.v077.i05">https://doi.org/10.18637/jss.v077.i05</a>
 </div>
 <div id="ref-ess2023ess5" class="csl-entry" role="listitem">
-European Social Survey European Research Infrastructure (ESS ERIC). (2023). <em><span>ESS5</span> - integrated file, edition 3.5 (<span>Austria</span> not included)</em> (Version 1) [Dataset]. <span>Sikt - Norwegian Agency for Shared Services in Education and Research</span>. <a href="https://doi.org/10.21338/ESS5E03_5">https://doi.org/10.21338/ESS5E03_5</a>
+European Social Survey European Research Infrastructure (ESS ERIC). (2023). <em><span>ESS5</span> - integrated file, edition 3.5 (<span>Austria</span> not included)</em> (Version 1) [Data set]. <span>Sikt - Norwegian Agency for Shared Services in Education and Research</span>. <a href="https://doi.org/10.21338/ESS5E03_5">https://doi.org/10.21338/ESS5E03_5</a>
 </div>
 <div id="ref-freni2026informative" class="csl-entry" role="listitem">
 Freni-Sterrantino, A., van Niekerk, J., Krainski, E., Rustand, D., Jamil, H., &amp; Rue, H. (2026). <em>Informative distance-based priors for correlation matrices centred on a target reference</em>. <a href="https://doi.org/10.48550/arXiv.2607.18926">https://doi.org/10.48550/arXiv.2607.18926</a>
+</div>
+<div id="ref-grace2016integrative" class="csl-entry" role="listitem">
+Grace, J. B., Anderson, T. M., Seabloom, E. W., Borer, E. T., Adler, P. B., Harpole, W. S., Hautier, Y., Hillebrand, H., Lind, E. M., Pärtel, M., Bakker, J. D., Buckley, Y. M., Crawley, M. J., Damschen, E. I., Davies, K. F., Fay, P. A., Firn, J., Gruner, D. S., Hector, A., … Smith, M. D. (2016). Integrative modelling reveals mechanisms linking productivity and plant species richness. <em>Nature</em>, <em>529</em>(7586), 390–393. <a href="https://doi.org/10.1038/nature16524">https://doi.org/10.1038/nature16524</a>
 </div>
 <div id="ref-jackson2011developing" class="csl-entry" role="listitem">
 Jackson, J., Bradford, B., Hough, M., Kuha, J., Stares, S., Widdop, S., Fitzgerald, R., Yordanova, M., &amp; Galev, T. (2011). Developing <span>European</span> indicators of trust in justice. <em>European Journal of Criminology</em>, <em>8</em>(4), 267–285. <a href="https://doi.org/10.1177/1477370811411458">https://doi.org/10.1177/1477370811411458</a>
@@ -2514,6 +2640,9 @@ Kass, R. E., &amp; Raftery, A. E. (1995). Bayes factors. <em>Journal of the Amer
 <div id="ref-krainski2018advanced" class="csl-entry" role="listitem">
 Krainski, E., Gómez-Rubio, V., Bakka, H., Lenzi, A., Castro-Camilo, D., Simpson, D. P., Lindgren, F., &amp; Rue, H. (2018). <em>Advanced spatial modeling with stochastic partial differential equations using <span>R</span> and <span>INLA</span></em>. <span>Chapman and Hall/CRC</span>. <a href="https://doi.org/10.1201/9780429031892">https://doi.org/10.1201/9780429031892</a>
 </div>
+<div id="ref-maiapolo2024tinybenchmarks" class="csl-entry" role="listitem">
+Maia Polo, F., Weber, L., Choshen, L., Sun, Y., Xu, G., &amp; Yurochkin, M. (2024). <span class="nocase">tinyBenchmarks</span>: Evaluating <span>LLMs</span> with fewer examples. In R. Salakhutdinov, Z. Kolter, K. Heller, A. Weller, N. Oliver, J. Scarlett, &amp; F. Berkenkamp (Eds.), <em>Proceedings of the 41st international conference on machine learning</em> (Vol. 235, pp. 34303–34326). PMLR. <a href="https://proceedings.mlr.press/v235/maia-polo24a.html">https://proceedings.mlr.press/v235/maia-polo24a.html</a>
+</div>
 <div id="ref-merkle2021efficient" class="csl-entry" role="listitem">
 Merkle, E. C., Fitzsimmons, E., Uanhoro, J., &amp; Goodrich, B. (2021). Efficient <span>Bayesian</span> structural equation modeling in <span>Stan</span>. <em>Journal of Statistical Software</em>, <em>100</em>(6), 1–22. <a href="https://doi.org/10.18637/jss.v100.i06">https://doi.org/10.18637/jss.v100.i06</a>
 </div>
@@ -2522,6 +2651,9 @@ Muthén, B., &amp; Muthén, L. (2017). <em>Mplus user’s guide version 8.1</em>
 </div>
 <div id="ref-nelsen2006introduction" class="csl-entry" role="listitem">
 Nelsen, R. B. (2006). <em>An introduction to copulas</em> (2nd ed.). Springer.
+</div>
+<div id="ref-rosseel2012lavaan" class="csl-entry" role="listitem">
+Rosseel, Y. (2012). <span class="nocase">lavaan</span>: <span>An R</span> package for structural equation modeling. <em>Journal of Statistical Software</em>, <em>48</em>(2), 1–36. <a href="https://doi.org/10.18637/jss.v048.i02">https://doi.org/10.18637/jss.v048.i02</a>
 </div>
 <div id="ref-rue2009approximate" class="csl-entry" role="listitem">
 Rue, H., Martino, S., &amp; Chopin, N. (2009). Approximate <span>Bayesian</span> inference for latent <span>Gaussian</span> models by using integrated nested <span>Laplace</span> approximations. <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em>, <em>71</em>(2), 319–392. <a href="https://doi.org/10.1111/j.1467-9868.2008.00700.x">https://doi.org/10.1111/j.1467-9868.2008.00700.x</a>
@@ -2543,6 +2675,9 @@ van der Vaart, A. W. (1998). <em>Asymptotic statistics</em>. Cambridge Universit
 </div>
 <div id="ref-vanniekerk2024lowrank" class="csl-entry" role="listitem">
 van Niekerk, J., &amp; Rue, H. (2024). Low-rank variational <span>Bayes</span> correction to the <span>Laplace</span> method. <em>Journal of Machine Learning Research</em>, <em>25</em>(62), 1–25. <a href="https://jmlr.org/papers/v25/21-1405.html">https://jmlr.org/papers/v25/21-1405.html</a>
+</div>
+<div id="ref-young2019household" class="csl-entry" role="listitem">
+Young, S. L., Boateng, G. O., Jamaluddine, Z., Miller, J. D., Frongillo, E. A., Neilands, T. B., Collins, S. M., Wutich, A., Jepson, W. E., &amp; Stoler, J. (2019). The <span>Household Water InSecurity Experiences</span> (<span>HWISE</span>) <span>Scale</span>: Development and validation of a household water insecurity measure for low-income and middle-income countries. <em>BMJ Global Health</em>, <em>4</em>(5), e001750. <a href="https://doi.org/10.1136/bmjgh-2019-001750">https://doi.org/10.1136/bmjgh-2019-001750</a>
 </div>
 <div id="ref-zellner1988optimal" class="csl-entry" role="listitem">
 Zellner, A. (1988). Optimal information processing and <span>Bayes</span>’s theorem. <em>The American Statistician</em>, <em>42</em>(4), 278–280. <a href="https://doi.org/10.2307/2685143">https://doi.org/10.2307/2685143</a>
