@@ -315,6 +315,38 @@ $$
 <!-- Cross-section of one slice (R/slice_section.R), then swapped for the text -->
 :::: {.r-stack}
 ::: {.fragment .fade-in-then-out fragment-index=1}
+::: {.content-visible unless-meta="nogif"}
+<!-- Animated version of R/slice_section.R; regenerate with R/slice_section_anim.R -->
+![](figures/slice_section.gif){.replay-gif width=93% fig-align="right"}
+
+```{=html}
+<script>
+// A GIF starts playing when the page loads, so restart it from a fresh object
+// URL each time its fragment is shown. The fetch is served from the cache.
+// Opened from disk, fetch is blocked, so reload with a cache-busting query.
+window.addEventListener("load", () => {
+  Reveal.on("fragmentshown", (event) => {
+    for (const fragment of event.fragments) {
+      for (const img of fragment.querySelectorAll("img.replay-gif")) {
+        img.dataset.gif ??= img.src;
+        fetch(img.dataset.gif)
+          .then((response) => response.blob())
+          .then((blob) => {
+            URL.revokeObjectURL(img.src);
+            img.src = URL.createObjectURL(blob);
+          })
+          .catch(() => {
+            img.src = img.dataset.gif + "?" + Date.now();
+          });
+      }
+    }
+  });
+});
+</script>
+```
+:::
+
+::: {.content-hidden unless-meta="nogif"}
 ```{r}
 #| label: slice-section
 #| file: "R/slice_section.R"
@@ -323,6 +355,7 @@ $$
 #| fig-align: right
 #| out-width: 93%
 ```
+:::
 :::
 
 ::: {.fragment fragment-index=2 style="width: 100%;"}
