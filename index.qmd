@@ -357,13 +357,16 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 
 ```{=html}
 <style>
-.lv-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
-.lv-card { display: grid; grid-template-columns: 1fr 30%; height: 116px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
-.lv-card > p { order: 2; margin: 0 !important; height: 116px; }
-.reveal .lv-card img { display: block; width: 100%; height: 100%; object-fit: cover; margin: 0; max-width: none; max-height: none; }
-.lv-text { display: flex; flex-direction: column; justify-content: center; padding: 0 18px; font-size: 19px; line-height: 1.3; }
+.lv-stack { display: grid; grid-auto-rows: 1fr; gap: 8px; margin-top: 6px; }
+.lv-card { display: grid; grid-template-columns: 1fr 27%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
+.lv-card > p { order: 2; position: relative; margin: 0 !important; }
+.reveal .lv-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; max-width: none; max-height: none; }
+.lv-text { display: flex; flex-direction: column; justify-content: center; padding: 9px 16px 11px; }
 .lv-text p { margin: 0 !important; }
-.lv-cite { display: block; font-size: 15px; margin-top: 6px; }
+.lv-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 12.5px; }
+.lv-tag { font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
+.lv-title { display: block; font-size: 17px; font-weight: 700; line-height: 1.22; margin: 3px 0; text-wrap: balance; }
+.lv-body { display: block; font-size: 15px; line-height: 1.32; color: #27343B; text-wrap: pretty; }
 </style>
 ```
 
@@ -388,39 +391,43 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 :::
 
 ::: {.lv-stack}
-::: {.lv-card}
+::: {.lv-card style="--c:#595403;"}
 ![](figures/unsplash-food.jpg)
 
 ::: {.lv-text}
-🌾 **The UN scores food insecurity** with a Rasch model on 8 yes/no questions.
-[[Cafiero et al. (2018)](https://doi.org/10.1016/j.measurement.2017.10.065)]{.lv-cite}
+[[🌾 Food]{.lv-tag} [[Cafiero et al. (2018)](https://doi.org/10.1016/j.measurement.2017.10.065)]{.lv-src}]{.lv-top}
+[The UN measures food insecurity with a Rasch model]{.lv-title}
+[Eight yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.]{.lv-body}
 :::
 :::
 
-::: {.lv-card}
+::: {.lv-card style="--c:#003B75;"}
 ![](figures/unsplash-water.jpg)
 
 ::: {.lv-text}
-💧 **One latent scale for household water insecurity**, from 23 countries.
-[[Young et al. (2019)](https://doi.org/10.1136/bmjgh-2019-001750)]{.lv-cite}
+[[💧 Water]{.lv-tag} [[Young et al. (2019)](https://doi.org/10.1136/bmjgh-2019-001750)]{.lv-src}]{.lv-top}
+[One scale for household water insecurity]{.lv-title}
+[Twelve questions, validated on 8,127 households at 28 sites in 23 countries, and unidimensional in factor analyses.]{.lv-body}
 :::
 :::
 
-::: {.lv-card}
+::: {.lv-card style="--c:#6D2463;"}
 ![](figures/unsplash-ai.jpg)
 
 ::: {.lv-text}
-🤖 **LLMs have latent abilities too**: factor analysis finds three in 29 models.
-[[Burnell et al. (2023)](https://arxiv.org/abs/2306.10062)]{.lv-cite}
+[[🤖 AI]{.lv-tag} [[Burnell et al. (2023)](https://arxiv.org/abs/2306.10062) · [Maia Polo et al. (2024)](https://proceedings.mlr.press/v235/maia-polo24a.html)]{.lv-src}]{.lv-top}
+[LLMs have latent abilities too]{.lv-title}
+[Factor analysis of 29 LLMs on 27 tasks finds three: reasoning, comprehension and core language modelling. And IRT estimates MMLU scores from 100 of its 14,000 questions.]{.lv-body}
 :::
 :::
 
-::: {.lv-card}
+::: {.lv-card style="--c:#004C59;"}
 ![](figures/unsplash-environment.jpg)
 
 ::: {.lv-text}
-🌿 **SEM sees what raw correlations hide**: richness boosts productivity.
-[[Grace et al. (2016)](https://doi.org/10.1038/nature16524)]{.lv-cite}
+[[🌿 Environment]{.lv-tag} [[Grace et al. (2016)](https://doi.org/10.1038/nature16524)]{.lv-src}]{.lv-top}
+[SEM sees what raw correlations hide]{.lv-title}
+[Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw data pattern.]{.lv-body}
 :::
 :::
 :::
