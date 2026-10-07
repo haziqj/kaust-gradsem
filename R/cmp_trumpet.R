@@ -74,7 +74,7 @@ two_panel <- function(logf, start, xl, yl, width_at, true_marg, marg_lim, ymax,
 
   p_left <-
     ggplot() +
-    geom_path(data = contours, aes(t1, t2, group = id), colour = "gray65", linewidth = 0.45) +
+    geom_path(data = contours, aes(t1, t2, group = id), colour = "gray73", linewidth = 0.45) +
     geom_segment(data = widths, aes(x = t1, xend = t1, y = mid - hw, yend = mid + hw),
                  colour = col_width, linewidth = 0.5,
                  arrow = arrow(ends = "both", length = unit(0.08, "cm"), angle = 90)) +
