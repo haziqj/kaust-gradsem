@@ -395,7 +395,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ![](figures/unsplash-food.jpg)
 
 ::: {.lv-text}
-[[🌾 Food]{.lv-tag} [[Cafiero et al. (2018)](https://doi.org/10.1016/j.measurement.2017.10.065)]{.lv-src}]{.lv-top}
+[[🌾 Food]{.lv-tag} [@cafiero2018food]{.lv-src}]{.lv-top}
 [The UN food insecurity measure]{.lv-title}
 [A Rasch model on eight yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.]{.lv-body}
 :::
@@ -405,7 +405,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ![](figures/unsplash-water.jpg)
 
 ::: {.lv-text}
-[[💧 Water]{.lv-tag} [[Young et al. (2019)](https://doi.org/10.1136/bmjgh-2019-001750)]{.lv-src}]{.lv-top}
+[[💧 Water]{.lv-tag} [@young2019household]{.lv-src}]{.lv-top}
 [One scale for household water insecurity]{.lv-title}
 [Twelve questions, validated on 8,127 households at 28 sites in 23 countries, and unidimensional in factor analyses.]{.lv-body}
 :::
@@ -415,7 +415,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ![](figures/unsplash-ai.jpg)
 
 ::: {.lv-text}
-[[🤖 AI]{.lv-tag} [[Burnell et al. (2023)](https://arxiv.org/abs/2306.10062) · [Maia Polo et al. (2024)](https://proceedings.mlr.press/v235/maia-polo24a.html)]{.lv-src}]{.lv-top}
+[[🤖 AI]{.lv-tag} [@burnell2023revealing · @maiapolo2024tinybenchmarks]{.lv-src}]{.lv-top}
 [LLMs have latent abilities too]{.lv-title}
 [Factor analysis reveals abilities like reasoning and comprehension. IRT finds a benchmark's most informative questions, so far fewer are needed.]{.lv-body}
 :::
@@ -425,7 +425,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ![](figures/unsplash-environment.jpg)
 
 ::: {.lv-text}
-[[🌿 Environment]{.lv-tag} [[Grace et al. (2016)](https://doi.org/10.1038/nature16524)]{.lv-src}]{.lv-top}
+[[🌿 Environment]{.lv-tag} [@grace2016integrative]{.lv-src}]{.lv-top}
 [SEM sees what raw correlations hide]{.lv-title}
 [Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw data pattern.]{.lv-body}
 :::
