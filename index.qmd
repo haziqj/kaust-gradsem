@@ -315,8 +315,8 @@ Data available from @ess2023ess5.
 :::
 
 ::: {.column width=30%}
-::: {.nudge-up}
-::: {style="font-size: 85%;"}
+::: {.nudge-up-small}
+::: {style="font-size: 89%;"}
 Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp.kaust.edu.sa/articles/2026/03/10/bayescomp-group-secures-crg-funding-revolutionize-latent-variable-modeling>].
 :::
 
@@ -330,7 +330,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 </style>
 <div class="wp-stack">
   <div class="wp-card" style="--c:#9C6FAE; --d:#6D2463;">
-    <div class="wp-title"><span class="wp-tag">WP1</span> Teach INLA to speak SEM</div>
+    <div class="wp-title"><span class="wp-tag">WP1</span> Theory &amp; model mapping</div>
     <div class="wp-text">Fast Bayesian SEM for continuous, binary &amp; ordinal items</div>
   </div>
   <div class="wp-card" style="--c:#00A6AA; --d:#004C59;">
