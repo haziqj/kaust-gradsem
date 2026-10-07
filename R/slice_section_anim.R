@@ -25,7 +25,7 @@ half_width <- sqrt(2 * pi) / 2 # rectangle area = peak x width = 1
 peak <- dnorm(0)
 y_width <- -0.045 # baseline offset of the width arrow
 y_lo <- y_width - 0.06 # bottom of the panel
-grow_from <- c(x = -zmax, y = y_lo) # the slice grows out of this point
+grow_from <- c(x = zmax, y = y_lo) # bottom right, nearest the 3D plot
 curve_fade <- 0.3 # final opacity of the outline, so the rectangle reads as one
 
 fps <- 25
@@ -36,7 +36,7 @@ gif_file <- "figures/slice_section.gif"
 timeline <- tribble(
   ~step,      ~secs,
   "blank",    0.2,
-  "grow",     1.4,  # slice grows out of the corner
+  "grow",     1.4,  # slice grows out of grow_from
   "label",    0.3,  # vartheta_{-j} fades in
   "pause",    0.3,
   "height",   0.7,  # height arrow rises from the baseline
@@ -49,7 +49,7 @@ timeline <- tribble(
   "pour",     1.8,  # tails drain into the corners
   "pause",    0.5,
   "merge",    0.9,  # corners turn orange, outline fades
-  "hold",     0.1
+  "hold",     3     # rest on the rectangle before looping
 ) |>
   mutate(start = cumsum(secs) - secs)
 
@@ -296,8 +296,8 @@ draw_frame <- function(f) {
 }
 
 ## ----- Render ----------------------------------------------------------------
-# Same size as the static figure (fig-width 5.4, fig-height 3.5). Plays once
-# and stops on the rectangle. The slide restarts it when its fragment shows.
+# Same size as the static figure (fig-width 5.4, fig-height 3.5). Loops, and
+# the slide restarts it from the beginning when its fragment shows.
 png_dir <- tempfile("slice_section_")
 dir.create(png_dir)
 png_files <- file.path(png_dir, sprintf("frame%04d.png", seq_len(nrow(frames))))
@@ -318,6 +318,6 @@ gifski::gifski(
   width = 5.4 * 160,
   height = 3.5 * 160,
   delay = 1 / fps,
-  loop = FALSE
+  loop = TRUE
 )
 unlink(png_dir, recursive = TRUE)
