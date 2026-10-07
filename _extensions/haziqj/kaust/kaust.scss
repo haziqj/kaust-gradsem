@@ -610,9 +610,11 @@ div.figure {
   }
 }
 
-.r-stack .cell .cell-output-display img {
-  width: auto !important; /* Return to default width */
-  max-width: 100% !important; /* Ensure it can grow beyond 100% of its container */
+// Chunk figures in a stack keep their natural width, capped at the container,
+// unless the chunk sets out-width.
+.r-stack .cell .cell-output-display img:not([style*="width"]) {
+  width: auto !important;
+  max-width: 100% !important;
   // transform: scale(1.2) !important; /* Enforce scaling; adjust as needed */
 }
 
