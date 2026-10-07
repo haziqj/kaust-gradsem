@@ -85,13 +85,13 @@ ggplot() +
     # linetype = "dashed"
   ) +
 
-  # Layer 2b: The Marginal, in the orange of the height x width rectangle
+  # Layer 2b: The Marginal, in KAUST blue to stand apart from the red spine
   geom_line(
     data = marginal_data,
     aes(x = x2, y = y_plot),
-    color = "#e07b00",
+    color = "#5284C4",
     linewidth = 1.4,
-    linetype = "dashed"
+    linetype = "dotted"
   ) +
 
   # # Layer 3: The Peak Points

@@ -17,7 +17,7 @@ library(tidyverse)
 col_fill <- "#f1a700" # the slice, peak colour of R/slices.R
 col_swap <- "#3ca9a1" # tails and corners, tail colour of R/slices.R
 col_peak <- "#b10f2e" # red as the spine in R/slices.R
-col_marginal <- "#e07b00" # orange as the dashed marginal in R/slices.R
+col_marginal <- "#5284C4" # KAUST blue as the dotted marginal in R/slices.R
 col_ink <- "black" # height, width and the rectangle
 col_curve <- "gray30" # outline of the slice, still visible once the tails drain
 col_axis <- "gray40"
@@ -299,6 +299,8 @@ draw_frame <- function(f) {
         alpha = f$width * fade_out
       )
   }
+  # The height arrow and its label turn blue as they become the marginal's
+  col_arrow <- mix_col(col_ink, col_marginal, f$extend)
   if (f$height > 0.08) {
     p <- p +
       annotate(
@@ -307,7 +309,7 @@ draw_frame <- function(f) {
         xend = 0,
         y = 0,
         yend = f$height * (peak - 0.012) + f$extend * (marginal_y - peak),
-        colour = col_ink,
+        colour = col_arrow,
         linewidth = 0.7,
         arrow = arrow_both
       ) +
@@ -316,7 +318,7 @@ draw_frame <- function(f) {
         x = -0.08,
         y = 0.05,
         label = "height",
-        colour = col_ink,
+        colour = col_arrow,
         size = 6.5,
         hjust = 1,
         alpha = f$height
@@ -330,7 +332,7 @@ draw_frame <- function(f) {
         x = -0.08,
         y = 0.105,
         label = "marginal",
-        colour = col_ink,
+        colour = col_marginal,
         size = 6.5,
         hjust = 1,
         alpha = f$extend
