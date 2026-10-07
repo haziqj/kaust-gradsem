@@ -1,4 +1,4 @@
-## Running example
+## A running example
 
 ### Glycemic control and kidney health
 

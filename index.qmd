@@ -359,11 +359,11 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 <style>
 .lv-stack { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 15px; margin-top: 6px; }
 .lv-card { display: flex; flex-direction: column; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
-.lv-card > p { flex: none; height: 110px; position: relative; margin: 0 !important; border-bottom: 4px solid var(--c); }
+.lv-card > p { flex: none; height: 123px; position: relative; margin: 0 !important; border-bottom: 4px solid var(--c); }
 .reveal .lv-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; max-width: none; max-height: none; }
 .lv-text { flex: 1; display: flex; flex-direction: column; padding: 9px 14px 12px; }
 .lv-text p { margin: 0 !important; }
-.lv-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 8px; font-size: 12.5px; }
+.lv-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 8px; font-size: 15px; }
 .lv-tag { font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
 .lv-title { display: block; font-size: 17px; font-weight: 700; line-height: 1.22; margin: 3px 0; text-wrap: balance; }
 .lv-body { display: block; font-size: 15px; line-height: 1.32; color: #27343B; text-wrap: pretty; }
@@ -372,10 +372,10 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 
 ::: {.columns}
 
-::: {.column width=50%}
+::: {.column width=43%}
 ::: {.nudge-down-small}
 1. **Brief overview of SEMs**
-    - Running example
+    - A running example
     - Bayesian inference
     - Marginal likelihood
 2. **INLA-based inference**
@@ -383,11 +383,13 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
     - Skew-normal Laplace profiling of posterior marginals
     - Gaussian copula sampling
 3. **The INLAvaan R package**
-4. **Discussion**
 :::
 :::
 
-::: {.column width=50%}
+::: {.column width=2%}
+:::
+
+::: {.column width=55%}
 ::: {.nudge-up-small}
 ::: {.small-text}
 ::: {.center-h}
@@ -401,7 +403,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ::: {.lv-text}
 [[🌾 Food]{.lv-tag} [@cafiero2018food]{.lv-src}]{.lv-top}
 [The UN food insecurity measure]{.lv-title}
-[A Rasch model (1PL IRT) on yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.]{.lv-body}
+[A Rasch model (1PL IRT) on yes/no questions, from worrying about food to going a whole day without eating; SDG 2.1.2.]{.lv-body}
 :::
 :::
 
@@ -419,9 +421,9 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ![](figures/unsplash-ai.jpg)
 
 ::: {.lv-text}
-[[🤖 AI]{.lv-tag} [@burnell2023revealing · @maiapolo2024tinybenchmarks]{.lv-src}]{.lv-top}
+[[🤖 AI]{.lv-tag} [@burnell2023revealing]{.lv-src}]{.lv-top}
 [LLMs have latent abilities too]{.lv-title}
-[Factor analysis reveals abilities like reasoning and comprehension. IRT finds a benchmark's most informative questions, so far fewer are needed.]{.lv-body}
+[Factor analysis reveals abilities like reasoning and comprehension. IRT used to find the most informative questions.]{.lv-body}
 :::
 :::
 
@@ -431,7 +433,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ::: {.lv-text}
 [[🌿 Environment]{.lv-tag} [@grace2016integrative]{.lv-src}]{.lv-top}
 [SEM sees what raw correlations hide]{.lv-title}
-[Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw data pattern.]{.lv-body}
+[Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw pattern.]{.lv-body}
 :::
 :::
 :::

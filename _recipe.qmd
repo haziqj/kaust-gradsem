@@ -299,14 +299,14 @@ Overlap (area shared by the two densities): $\int \min\{p(\vartheta), q(\varthet
 ::: {style="font-size: 90%;"}
 $$
 \class{marginal-lhs}{\pi(\vartheta_j \mid \mathbf y)} = \int_{\mathbb R^{m-1}} e^{\log \pi(\vartheta_j, \boldsymbol\vartheta_{-j} \mid \mathbf y)} \, d \boldsymbol\vartheta_{-j}
-\approx 
+\, \approx \,
 \overbrace{\pi\big(\vartheta_j, \boldsymbol\vartheta_{-j}^*(\vartheta_j) \mid \mathbf y\big)}^{\text{height}} \times 
 \overbrace{(2\pi)^{\frac{m-1}{2}} \left| \mathbf H_{-j}(\vartheta_j) \right|^{-1/2 }}^{\text{(cond.) width}} 
 $$
 :::
 
 <!-- Empty fragment that turns the marginal blue, as in the figures, at step 2 -->
-::: {.fragment fragment-index=2 .marginal-cue}
+::: {.fragment fragment-index=1 .marginal-cue}
 :::
 
 ```{=html}
@@ -388,6 +388,7 @@ window.addEventListener("load", () => {
 
 ::: {.column width="54%"}
 ::: {.fragment fragment-index=1}
+::: {.nudge-up-small}
 ```{r}
 #| label: slices
 #| file: "R/slices.R"
@@ -396,6 +397,7 @@ window.addEventListener("load", () => {
 #| fig-align: center
 #| out-width: 100%
 ```
+:::
 :::
 :::
 
