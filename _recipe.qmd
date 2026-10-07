@@ -355,7 +355,7 @@ $$
 
 
 ::: {.callout-note icon=false}
-#### Lemma 1 (Conditional Mean Path) [= No need for reoptimisation]{.text-org}
+#### Lemma 1 (Conditional Mean Path) [= No need for reoptimisation]{style="color: #f48412;"}
 
 Let $\small \boldsymbol\vartheta\sim\operatorname{N}_m(\boldsymbol\vartheta^*,\boldsymbol\Omega)$ with $\small\boldsymbol\Omega \succ \mathbf 0$. 
 Then the marginal density of the $\small j$th component, $\small j=1,\dots,m$, is proportional to the joint density evaluated along its CMP:
@@ -391,7 +391,7 @@ $$
 ## [Step 2b] Posterior marginals---the "width"
 
 ::: {.callout-note icon=false}
-#### Lemma 2 (Efficient volume correction) [= No need to factor dense Hessian]{.text-org}
+#### Lemma 2 (Efficient volume correction) [= No need to factor dense Hessian]{style="color: #f48412;"}
 
 For the $\small j$th component along the CMP, $\small-\frac12 \log | \mathbf H_{-j}(t) | \approx \text{const.} + t\gamma_j'$. 
 Then
