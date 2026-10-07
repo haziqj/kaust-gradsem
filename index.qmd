@@ -370,6 +370,12 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 </style>
 ```
 
+::: {.content-hidden unless-meta="nogif"}
+<style>
+.lv-card { box-shadow: none; border: 1px solid #DDE2E5; }
+</style>
+:::
+
 ::: {.columns}
 
 ::: {.column width=43%}
