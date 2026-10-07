@@ -921,24 +921,24 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <section id="outline" class="slide level2">
 <h2>Outline</h2>
 <style>
-.lv-stack { display: grid; grid-auto-rows: 1fr; gap: 15px; margin-top: 6px; }
-.lv-card { display: grid; grid-template-columns: 1fr 33%; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
-.lv-card > p { order: 2; position: relative; margin: 0 !important; }
+.lv-stack { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 15px; margin-top: 6px; }
+.lv-card { display: flex; flex-direction: column; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
+.lv-card > p { flex: none; height: 123px; position: relative; margin: 0 !important; border-bottom: 4px solid var(--c); }
 .reveal .lv-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; max-width: none; max-height: none; }
-.lv-text { display: flex; flex-direction: column; justify-content: center; padding: 9px 16px 11px; }
+.lv-text { flex: 1; display: flex; flex-direction: column; padding: 9px 14px 12px; }
 .lv-text p { margin: 0 !important; }
-.lv-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 12.5px; }
+.lv-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 8px; font-size: 15px; }
 .lv-tag { font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c); }
 .lv-title { display: block; font-size: 17px; font-weight: 700; line-height: 1.22; margin: 3px 0; text-wrap: balance; }
 .lv-body { display: block; font-size: 15px; line-height: 1.32; color: #27343B; text-wrap: pretty; }
 </style>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:43%;">
 <div class="nudge-down-small">
 <ol type="1">
 <li><strong>Brief overview of SEMs</strong>
 <ul>
-<li>Running example</li>
+<li>A running example</li>
 <li>Bayesian inference</li>
 <li>Marginal likelihood</li>
 </ul></li>
@@ -949,10 +949,11 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <li>Gaussian copula sampling</li>
 </ul></li>
 <li><strong>The INLAvaan R package</strong></li>
-<li><strong>Discussion</strong></li>
 </ol>
 </div>
-</div><div class="column" style="width:50%;">
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:55%;">
 <div class="nudge-up-small">
 <div class="small-text">
 <div class="center-h">
@@ -962,7 +963,7 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="lv-card" style="--c:#595403;">
 <p><img data-src="figures/unsplash-food.jpg"></p>
 <div class="lv-text">
-<p><span class="lv-top"><span class="lv-tag">🌾 Food</span> <span class="lv-src"><span class="citation" data-cites="cafiero2018food">Cafiero et al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></span> <span class="lv-title">The UN food insecurity measure</span> <span class="lv-body">A Rasch model (1PL IRT) on yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.</span></p>
+<p><span class="lv-top"><span class="lv-tag">🌾 Food</span> <span class="lv-src"><span class="citation" data-cites="cafiero2018food">Cafiero et al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></span> <span class="lv-title">The UN food insecurity measure</span> <span class="lv-body">A Rasch model (1PL IRT) on yes/no questions, from worrying about food to going a whole day without eating; SDG 2.1.2.</span></p>
 </div>
 </div>
 <div class="lv-card" style="--c:#003B75;">
@@ -974,13 +975,13 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <div class="lv-card" style="--c:#6D2463;">
 <p><img data-src="figures/unsplash-ai.jpg"></p>
 <div class="lv-text">
-<p><span class="lv-top"><span class="lv-tag">🤖 AI</span> <span class="lv-src"><span class="citation" data-cites="burnell2023revealing">Burnell et al. (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span> · <span class="citation" data-cites="maiapolo2024tinybenchmarks">Maia Polo et al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span></span></span> <span class="lv-title">LLMs have latent abilities too</span> <span class="lv-body">Factor analysis reveals abilities like reasoning and comprehension. IRT finds a benchmark’s most informative questions, so far fewer are needed.</span></p>
+<p><span class="lv-top"><span class="lv-tag">🤖 AI</span> <span class="lv-src"><span class="citation" data-cites="burnell2023revealing">Burnell et al. (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></span></span> <span class="lv-title">LLMs have latent abilities too</span> <span class="lv-body">Factor analysis reveals abilities like reasoning and comprehension. IRT used to find the most informative questions.</span></p>
 </div>
 </div>
 <div class="lv-card" style="--c:#004C59;">
 <p><img data-src="figures/unsplash-environment.jpg"></p>
 <div class="lv-text">
-<p><span class="lv-top"><span class="lv-tag">🌿 Environment</span> <span class="lv-src"><span class="citation" data-cites="grace2016integrative">Grace et al. (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span></span></span> <span class="lv-title">SEM sees what raw correlations hide</span> <span class="lv-body">Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw data pattern.</span></p>
+<p><span class="lv-top"><span class="lv-tag">🌿 Environment</span> <span class="lv-src"><span class="citation" data-cites="grace2016integrative">Grace et al. (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span></span></span> <span class="lv-title">SEM sees what raw correlations hide</span> <span class="lv-body">Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw pattern.</span></p>
 </div>
 </div>
 </div>
@@ -996,8 +997,8 @@ Haziq Jamil <a href="https://orcid.org/0000-0003-3298-1010" class="quarto-title-
 <h1>Structural equation models</h1>
 
 </section>
-<section id="running-example" class="slide level2">
-<h2>Running example</h2>
+<section id="a-running-example" class="slide level2">
+<h2>A running example</h2>
 <h3 id="glycemic-control-and-kidney-health">Glycemic control and kidney health</h3>
 <blockquote>
 <p>Does poorer glycemic control lead to greater severity of kidney disease?</p>
@@ -2019,12 +2020,24 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 </ul>
 <div style="font-size: 90%;">
 <p><span class="math display">\[
-\pi(\vartheta_j \mid \mathbf y) = \int_{\mathbb R^{m-1}} e^{\log \pi(\vartheta_j, \boldsymbol\vartheta_{-j} \mid \mathbf y)} \, d \boldsymbol\vartheta_{-j}
-\approx (2\pi)^{\frac{m-1}{2}} \times
+\class{marginal-lhs}{\pi(\vartheta_j \mid \mathbf y)} = \int_{\mathbb R^{m-1}} e^{\log \pi(\vartheta_j, \boldsymbol\vartheta_{-j} \mid \mathbf y)} \, d \boldsymbol\vartheta_{-j}
+\, \approx \,
 \overbrace{\pi\big(\vartheta_j, \boldsymbol\vartheta_{-j}^*(\vartheta_j) \mid \mathbf y\big)}^{\text{height}} \times
-\overbrace{\left| \mathbf H_{-j}(\vartheta_j) \right|^{-1/2 }}^{\text{(cond.) width}}
+\overbrace{(2\pi)^{\frac{m-1}{2}} \left| \mathbf H_{-j}(\vartheta_j) \right|^{-1/2 }}^{\text{(cond.) width}}
 \]</span></p>
 </div>
+<!-- Empty fragment that turns the marginal blue, as in the figures, at step 2 -->
+<div class="fragment marginal-cue" data-fragment-index="1">
+
+</div>
+<style>
+.reveal .marginal-lhs {
+  transition: color 0.4s;
+}
+.reveal section:not(.stack):has(.marginal-cue.visible) .marginal-lhs {
+  color: #5284C4;
+}
+</style>
 <div class="fragment" data-fragment-index="1">
 <ul>
 <li><u>Geometric intuition</u>: the marginal at each <span class="math inline">\(\vartheta_j\)</span> is the volume of the posterior’s slice there, roughly the slice’s <em>peak height</em> times its <em>width</em>.</li>
@@ -2035,15 +2048,35 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 <!-- Cross-section of one slice (R/slice_section.R), then swapped for the text -->
 <div class="r-stack">
 <div class="fragment fade-in-then-out" data-fragment-index="1">
-<div class="cell" data-layout-align="right">
-<div class="cell-output-display">
+<!-- Animated version of R/slice_section.R; regenerate with R/slice_section_anim.R -->
 <div class="quarto-figure quarto-figure-right">
 <figure>
-<p><img data-src="index_files/figure-revealjs/slice-section-1.png" class="quarto-figure quarto-figure-right" style="width:93.0%"></p>
+<p><img data-src="figures/slice_section.gif" class="replay-gif quarto-figure quarto-figure-right" style="width:93.0%"></p>
 </figure>
 </div>
-</div>
-</div>
+<script>
+// A GIF starts playing when the page loads, so restart it from a fresh object
+// URL each time its fragment is shown. The fetch is served from the cache.
+// Opened from disk, fetch is blocked, so reload with a cache-busting query.
+window.addEventListener("load", () => {
+  Reveal.on("fragmentshown", (event) => {
+    for (const fragment of event.fragments) {
+      for (const img of fragment.querySelectorAll("img.replay-gif")) {
+        img.dataset.gif ??= img.src;
+        fetch(img.dataset.gif)
+          .then((response) => response.blob())
+          .then((blob) => {
+            URL.revokeObjectURL(img.src);
+            img.src = URL.createObjectURL(blob);
+          })
+          .catch(() => {
+            img.src = img.dataset.gif + "?" + Date.now();
+          });
+      }
+    }
+  });
+});
+</script>
 </div>
 <div class="fragment" data-fragment-index="2" style="width: 100%;">
 <div class="nudge-up-medium">
@@ -2060,12 +2093,14 @@ f(\boldsymbol\vartheta) \approx f(\boldsymbol\vartheta^*)
 </div>
 </div><div class="column" style="width:54%;">
 <div class="fragment" data-fragment-index="1">
+<div class="nudge-up-small">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="index_files/figure-revealjs/slices-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
+</div>
 </div>
 </div>
 </div>
@@ -2297,7 +2332,7 @@ $ y6 &lt;dbl&gt; 7.758444, 5.232205, 11.5583…</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">print</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>INLAvaan 0.3.2.9001 ended normally after 71 iterations
+<pre><code>INLAvaan 0.3.2.9003 ended normally after 71 iterations
 
   Estimator                                      BAYES
   Optimization method                           NLMINB
@@ -2554,7 +2589,7 @@ looic      7909.9 57.3
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>tictoc<span class="sc">::</span><span class="fu">toc</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.04 sec elapsed</code></pre>
+<pre><code>0.037 sec elapsed</code></pre>
 </div>
 </div>
 </section></section>
@@ -2639,9 +2674,6 @@ Kass, R. E., &amp; Raftery, A. E. (1995). Bayes factors. <em>Journal of the Amer
 </div>
 <div id="ref-krainski2018advanced" class="csl-entry" role="listitem">
 Krainski, E., Gómez-Rubio, V., Bakka, H., Lenzi, A., Castro-Camilo, D., Simpson, D. P., Lindgren, F., &amp; Rue, H. (2018). <em>Advanced spatial modeling with stochastic partial differential equations using <span>R</span> and <span>INLA</span></em>. <span>Chapman and Hall/CRC</span>. <a href="https://doi.org/10.1201/9780429031892">https://doi.org/10.1201/9780429031892</a>
-</div>
-<div id="ref-maiapolo2024tinybenchmarks" class="csl-entry" role="listitem">
-Maia Polo, F., Weber, L., Choshen, L., Sun, Y., Xu, G., &amp; Yurochkin, M. (2024). <span class="nocase">tinyBenchmarks</span>: Evaluating <span>LLMs</span> with fewer examples. In R. Salakhutdinov, Z. Kolter, K. Heller, A. Weller, N. Oliver, J. Scarlett, &amp; F. Berkenkamp (Eds.), <em>Proceedings of the 41st international conference on machine learning</em> (Vol. 235, pp. 34303–34326). PMLR. <a href="https://proceedings.mlr.press/v235/maia-polo24a.html">https://proceedings.mlr.press/v235/maia-polo24a.html</a>
 </div>
 <div id="ref-merkle2021efficient" class="csl-entry" role="listitem">
 Merkle, E. C., Fitzsimmons, E., Uanhoro, J., &amp; Goodrich, B. (2021). Efficient <span>Bayesian</span> structural equation modeling in <span>Stan</span>. <em>Journal of Statistical Software</em>, <em>100</em>(6), 1–22. <a href="https://doi.org/10.18637/jss.v100.i06">https://doi.org/10.18637/jss.v100.i06</a>
