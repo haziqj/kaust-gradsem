@@ -7,18 +7,18 @@ library(INLAvaan)
 #   y1: HbA1c (%)                            -- mean ~6.5, SD ~1.3
 #   y2: Fasting plasma glucose (mmol/L)      -- mean ~6.1, SD ~1.38
 #   y3: Fasting insulin level (µU/mL)        -- mean ~12,  SD ~6
-#   y4: Plasma creatinine (µmol/L)           -- mean ~88,  SD ~38
-#   y5: Albumin-creatinine ratio (mg/g)      -- mean ~60,  SD ~32
-#   y6: Blood urea nitrogen (mmol/L)         -- mean ~7.9, SD ~3.1
+#   y4: Plasma creatinine (µmol/L)           -- mean ~88,  SD ~34
+#   y5: Albumin-creatinine ratio (mg/g)      -- mean ~60,  SD ~28
+#   y6: Blood urea nitrogen (mmol/L)         -- mean ~7.9, SD ~2.74
 #
 # Latent factors (eta1 var = 1; eta2 residual var = 1, as in a std.lv = TRUE fit):
 #   eta1: Glycemic Control   (higher = worse glycaemia)
 #   eta2: Kidney Dysfunction (higher = more dysfunction)
 #
 # Loadings chosen so that var(yi) = lambda_i^2 * var(eta) + theta_i
-# giving R^2 ≈ 0.63-0.78 for each indicator.
-# Structural path 1: var(eta2) = 1 + 1^2 = 2, so eta1 explains 50% of the
-# variance in eta2 (standardised coefficient ~0.71).
+# giving R^2 ≈ 0.58-0.71 for each indicator.
+# Structural path 0.60: var(eta2) = 1 + 0.6^2 = 1.36, so eta1 explains ~26%
+# of the variance in eta2 (standardised coefficient ~0.51).
 
 n <- 250
 
@@ -31,7 +31,7 @@ mod_tru <- "
   eta2 =~ 22*y4 + 20*y5 + 1.8*y6
 
   # -- Structural model --
-  eta2 ~ 1*eta1
+  eta2 ~ 0.60*eta1
 
   # -- Latent (residual) variances --
   eta1 ~~ 1*eta1
@@ -39,8 +39,8 @@ mod_tru <- "
 
   # -- Residual variances (theta) --
   # var(yi) = lambda^2 + theta  =>  theta = var(yi) - lambda^2
-  # (y4-y6 set assuming var(KdnHlt) = 1; it is now 2, so their SDs are
-  # ~38, ~32, ~3.1 and R^2 ~0.67, 0.78, 0.68)
+  # (y4-y6 set assuming var(KdnHlt) = 1; it is now 1.36, so their SDs are
+  # ~34, ~28, ~2.74 and R^2 ~0.58, 0.71, 0.59)
   y1 ~~ 0.52*y1   #  1.3^2 - 1.08^2
   y2 ~~ 0.70*y2   # 1.38^2 - 1.1^2
   y3 ~~   11*y3   #    6^2 -   5^2
