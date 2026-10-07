@@ -439,7 +439,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ::: {.lv-text}
 [[🌿 Environment]{.lv-tag} [@grace2016integrative]{.lv-src}]{.lv-top}
 [SEM sees what raw correlations hide]{.lv-title}
-[Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw pattern.]{.lv-body}
+[Across 1,126 grassland plots on 5 continents, species richness boosts productivity, in contrast with data patterns.]{.lv-body}
 :::
 :::
 :::
