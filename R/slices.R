@@ -45,6 +45,24 @@ peak_data <- tibble(x1 = x1_slices) %>%
     y_plot = x1 + (peak_height * scale_factor)
   )
 
+# 3b. Create the Marginal Data (Height x Width)
+# Laplace's marginal is the peak height times the width, drawn above each
+# slice's peak. The exact width is sqrt(2 pi) x cond. SD, which gives the
+# N(0, 1) density of x1 but floats far above the slices. Shrunk for display.
+cond_sd <- sqrt(1 - rho^2) # |H_{-j}|^{-1/2}, the same for every slice
+width_mult <- 1.6 # width = 1.6 x cond. SD (exact: sqrt(2 pi) = 2.5)
+marginal_data <- tibble(x1 = seq(-zmax, zmax, length.out = 300)) %>%
+  mutate(
+    x2 = rho * x1,
+    peak_height = map2_dbl(
+      x1,
+      x2,
+      ~ dmvnorm(c(.x, .y), mean = c(0, 0), sigma = matrix(c(1, rho, rho, 1), 2))
+    ),
+    marginal = peak_height * width_mult * cond_sd,
+    y_plot = x1 + (marginal * scale_factor)
+  )
+
 # 4. Plot
 ggplot() +
 
@@ -65,6 +83,15 @@ ggplot() +
     color = "#b10f2e",
     size = 1,
     # linetype = "dashed"
+  ) +
+
+  # Layer 2b: The Marginal, in the orange of the height x width rectangle
+  geom_line(
+    data = marginal_data,
+    aes(x = x2, y = y_plot),
+    color = "#e07b00",
+    linewidth = 1.4,
+    linetype = "dashed"
   ) +
 
   # # Layer 3: The Peak Points
