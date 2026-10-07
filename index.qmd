@@ -383,7 +383,9 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 
 ::: {.column width=50%}
 ::: {.small-text}
-[$\hspace{1.8cm}$**Latent variables on KAUST's agenda**]{.text-org}
+::: {.center-h}
+[**Latent variables on KAUST's agenda**]{.text-org}
+:::
 
 ::: {.lv-stack}
 ::: {.lv-card}
