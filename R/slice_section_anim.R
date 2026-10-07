@@ -1,13 +1,15 @@
 ################################################################################
 #
-# Animated version of R/slice_section.R. An orange slice is pulled out of a
-# point, as if lifted from the posterior in R/slices.R. Its peak height and
-# width are then marked out, sweeping out the height x width rectangle. The two
-# tails turn turquoise and pour into the empty corners of the rectangle, which
-# ends up as one orange block of the same area. The block then collapses onto a
-# single point above the red dot, the marginal's height, as on the dashed curve
-# in R/slices.R. The height arrow extends up to it and becomes the marginal
-# height. Run from the project root. Writes figures/slice_section.gif.
+# Animated version of R/slice_section.R. An orange slice of the posterior in
+# R/slices.R blooms up from the baseline. Its peak height and width are then
+# marked out, sweeping out the height x width rectangle. The two tails turn
+# turquoise and pour into the empty corners of the rectangle, which ends up as
+# one orange block of the same area. The block then collapses onto a single
+# point above the red dot, the marginal's height, as on the blue curve in
+# R/slices.R. The height arrow extends up to it and becomes the marginal height.
+# Finally everything falls flat onto the baseline, which is where the loop
+# starts, so it repeats without a seam. Run from the project root. Writes
+# figures/slice_section.gif.
 #
 ################################################################################
 
@@ -17,7 +19,7 @@ library(tidyverse)
 col_fill <- "#f1a700" # the slice, peak colour of R/slices.R
 col_swap <- "#3ca9a1" # tails and corners, tail colour of R/slices.R
 col_peak <- "#b10f2e" # red as the spine in R/slices.R
-col_marginal <- "#5284C4" # KAUST blue as the dotted marginal in R/slices.R
+col_marginal <- "#5284C4" # KAUST blue as the marginal in R/slices.R
 col_ink <- "black" # height, width and the rectangle
 col_curve <- "gray30" # outline of the slice, still visible once the tails drain
 col_axis <- "gray40"
@@ -28,11 +30,10 @@ half_width <- sqrt(2 * pi) / 2 # rectangle area = peak x width = 1
 peak <- dnorm(0)
 y_width <- -0.045 # baseline offset of the width arrow
 y_lo <- y_width - 0.06 # bottom of the panel
-grow_from <- c(x = zmax, y = y_lo) # bottom right, nearest the 3D plot
 curve_fade <- 0.3 # final opacity of the outline, so the rectangle reads as one
 
-# The marginal sits at the same multiple of the peak height as the dashed curve
-# in R/slices.R: width_mult x cond. SD, with rho = 0.5.
+# The marginal sits at the same multiple of the peak height as the blue curve in
+# R/slices.R: width_mult x cond. SD, with rho = 0.5.
 marginal_y <- peak * 1.6 * sqrt(1 - 0.5^2)
 
 fps <- 25
@@ -42,10 +43,9 @@ gif_file <- "figures/slice_section.gif"
 # fmt: skip
 timeline <- tribble(
   ~step,      ~secs,
-  "blank",    0.2,
-  "grow",     1.4,  # slice grows out of grow_from
-  "label",    0.3,  # vartheta_{-j} fades in
-  "pause",    0.3,
+  "blank",    0.4,  # baseline only, as at the end of the loop
+  "grow",     1.2,  # slice blooms up from the baseline
+  "pause",    0.4,
   "height",   0.7,  # height arrow rises from the baseline
   "dot",      0.25, # peak dot pops in
   "pause",    0.4,
@@ -60,22 +60,26 @@ timeline <- tribble(
   "collapse", 1.2,  # rectangle collapses onto the marginal
   "pause",    0.3,
   "extend",   0.8,  # height arrow extends up to the marginal
-  "hold",     3     # rest on the marginal before looping
+  "pause",    2.5,  # rest on the marginal height
+  "fall",     0.9,  # everything falls flat onto the baseline
+  "hold",     0.4   # baseline only, so the loop is seamless
 ) |>
   mutate(start = cumsum(secs) - secs)
 
 # Cubic ease-in-out, as in R/variational_anim.R
 ease <- function(t) ifelse(t < 0.5, 4 * t^3, 1 - (-2 * t + 2)^3 / 2)
 
-progress <- function(t, name) {
+progress <- function(t, name, easing = ease) {
   row <- filter(timeline, step == name)
-  ease(pmin(1, pmax(0, (t - row$start) / row$secs)))
+  easing(pmin(1, pmax(0, (t - row$start) / row$secs)))
 }
 
 frames <- tibble(t = seq(0, sum(timeline$secs), by = 1 / fps))
 for (name in setdiff(timeline$step, c("blank", "pause", "hold"))) {
   frames[[name]] <- progress(frames$t, name)
 }
+# The fall speeds up into the baseline, as if dropped
+frames$fall <- progress(frames$t, "fall", easing = function(t) t^2)
 
 ## ----- Pour ------------------------------------------------------------------
 # Each tail drains from its far end towards the rectangle, while the matching
@@ -144,13 +148,9 @@ above <- function(a, b, id) {
   tibble(id = id, x = c(xs, rev(xs)), y = c(dnorm(xs), rep(peak, length(xs))))
 }
 
-# Scale towards grow_from, so the slice emerges from a single point
-shrink <- function(df, g) {
-  mutate(
-    df,
-    x = grow_from[["x"]] + g * (x - grow_from[["x"]]),
-    y = grow_from[["y"]] + g * (y - grow_from[["y"]])
-  )
+# Scale heights from the baseline, so the slice blooms up and falls flat
+rise <- function(df, v) {
+  mutate(df, y = v * y)
 }
 
 arrow_both <- arrow(ends = "both", length = unit(0.18, "cm"), type = "closed")
@@ -170,10 +170,24 @@ draw_frame <- function(f) {
     theme(
       plot.background = element_rect(fill = "white", colour = NA),
       plot.margin = margin(4, 12, 4, 4)
+    ) +
+    geom_line(data = baseline, aes(x, y), colour = col_axis) +
+    annotate(
+      "text",
+      x = zmax,
+      y = y_width,
+      label = "vartheta[-j]",
+      parse = TRUE,
+      colour = col_axis,
+      size = 6,
+      hjust = 1
     )
-  if (f$grow == 0) {
+  if (f$grow == 0 || f$fall == 1) {
     return(p)
   }
+  v <- f$grow * (1 - f$fall) # height scale, as it blooms and falls
+  label_fade <- 1 - pmin(1, 2 * f$fall)
+  arrow_fade <- 1 - pmin(1, pmax(0, 2 * f$fall - 1))
 
   # The rectangle shrinks onto the marginal as it collapses
   rect <- c(
@@ -219,7 +233,7 @@ draw_frame <- function(f) {
   if (f$collapse == 0) {
     p <- p +
       geom_polygon(
-        data = shrink(body, f$grow),
+        data = rise(body, v),
         aes(x, y, group = id),
         fill = orange
       )
@@ -239,28 +253,11 @@ draw_frame <- function(f) {
   ## ----- Lines and labels ----------------------------------------------------
   p <- p +
     geom_line(
-      data = shrink(baseline, f$grow),
-      aes(x, y),
-      colour = col_axis,
-      alpha = pmin(1, 3 * f$grow)
-    ) +
-    geom_line(
-      data = shrink(bell, f$grow),
+      data = rise(bell, v),
       aes(x, y),
       colour = col_curve,
       linewidth = 0.7,
       alpha = pmin(1, 3 * f$grow) * (1 - (1 - curve_fade) * f$merge)
-    ) +
-    annotate(
-      "text",
-      x = zmax,
-      y = y_width,
-      label = "vartheta[-j]",
-      parse = TRUE,
-      colour = col_axis,
-      size = 6,
-      hjust = 1,
-      alpha = f$label
     )
   if (f$width > 0) {
     p <- p +
@@ -301,27 +298,32 @@ draw_frame <- function(f) {
   }
   # The height arrow and its label turn blue as they become the marginal's
   col_arrow <- mix_col(col_ink, col_marginal, f$extend)
-  if (f$height > 0.08) {
+  y_arrow <- f$height * (peak - 0.012) + f$extend * (marginal_y - peak)
+  if (f$height > 0.08 && y_arrow * (1 - f$fall) > 0.03) {
     p <- p +
       annotate(
         "segment",
         x = 0,
         xend = 0,
         y = 0,
-        yend = f$height * (peak - 0.012) + f$extend * (marginal_y - peak),
+        yend = y_arrow * (1 - f$fall),
         colour = col_arrow,
         linewidth = 0.7,
+        alpha = arrow_fade,
         arrow = arrow_both
-      ) +
+      )
+  }
+  if (f$height > 0.08) {
+    p <- p +
       annotate(
         "text",
         x = -0.08,
-        y = 0.05,
+        y = 0.05 * (1 - f$fall),
         label = "height",
         colour = col_arrow,
         size = 6.5,
         hjust = 1,
-        alpha = f$height
+        alpha = f$height * label_fade
       )
   }
   # Low on the arrow, so "marginal" clears the faded outline
@@ -330,17 +332,23 @@ draw_frame <- function(f) {
       annotate(
         "text",
         x = -0.08,
-        y = 0.105,
+        y = 0.105 * (1 - f$fall),
         label = "marginal",
         colour = col_marginal,
         size = 6.5,
         hjust = 1,
-        alpha = f$extend
+        alpha = f$extend * label_fade
       )
   }
   if (f$dot > 0) {
     p <- p +
-      annotate("point", x = 0, y = peak, colour = col_peak, size = 2.6 * f$dot)
+      annotate(
+        "point",
+        x = 0,
+        y = peak * (1 - f$fall),
+        colour = col_peak,
+        size = 2.6 * f$dot * (1 - f$fall)
+      )
   }
   # The marginal grows out of the shrinking rectangle's centre and takes over
   # as the rectangle becomes smaller than it
@@ -349,9 +357,9 @@ draw_frame <- function(f) {
       annotate(
         "point",
         x = 0,
-        y = (rect[["ymin"]] + rect[["ymax"]]) / 2,
+        y = (rect[["ymin"]] + rect[["ymax"]]) / 2 * (1 - f$fall),
         colour = col_marginal,
-        size = 3.2 * (f$collapse - 0.8) / 0.2
+        size = 3.2 * (f$collapse - 0.8) / 0.2 * (1 - f$fall)
       )
   }
   p
