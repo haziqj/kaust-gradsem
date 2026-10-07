@@ -358,8 +358,8 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ```{=html}
 <style>
 .lv-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
-.lv-card { display: grid; grid-template-columns: 30% 1fr; height: 116px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
-.lv-card > p { margin: 0 !important; height: 116px; }
+.lv-card { display: grid; grid-template-columns: 1fr 30%; height: 116px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 14px rgba(0, 0, 0, .08); }
+.lv-card > p { order: 2; margin: 0 !important; height: 116px; }
 .reveal .lv-card img { display: block; width: 100%; height: 100%; object-fit: cover; margin: 0; max-width: none; max-height: none; }
 .lv-text { display: flex; flex-direction: column; justify-content: center; padding: 0 18px; font-size: 19px; line-height: 1.3; }
 .lv-text p { margin: 0 !important; }
