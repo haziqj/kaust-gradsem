@@ -121,7 +121,7 @@ p_gauss <- two_panel(
     right = list(
       annotate("text", -1.35, 0.40, label = "height only", colour = col_h, size = 4.2, hjust = 1),
       annotate("text", 1.35, 0.40, label = "height × width", colour = col_hw, size = 4.2, hjust = 0),
-      annotate("text", 3.4, 0.03, label = "truth", colour = "gray45", size = 4, hjust = 1)
+      annotate("text", 1.85, 0.10, label = "truth", colour = "gray45", size = 4, hjust = 0)
     )
   )
 )
@@ -143,7 +143,7 @@ p_trumpet <- two_panel(
     right = list(
       annotate("text", -1.55, 0.40, label = "height only", colour = col_h, size = 4.2, hjust = 1),
       annotate("text", 1.15, 0.40, label = "height × width", colour = col_hw, size = 4.2, hjust = 0),
-      annotate("text", 3.4, 0.03, label = "truth", colour = "gray45", size = 4, hjust = 1)
+      annotate("text", 1.85, 0.10, label = "truth", colour = "gray45", size = 4, hjust = 0)
     )
   )
 )
