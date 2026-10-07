@@ -11,9 +11,10 @@ library(patchwork)
 # estimated numerically exactly as the method would.
 # Run from the project root; writes figures/cmp_gaussian.png and figures/cmp_trumpet.png.
 
-col_cmp   <- "#00A6AA"  # CMP / height x width (turquoise)
-col_true  <- "#b10f2e"  # true conditional-mode path (KAUST red)
-col_h     <- "#e38b0b"  # height only (orange)
+col_cmp   <- "#9C6FAE"  # CMP (KAUST purple)
+col_true  <- "#F18F00"  # true conditional-mode path (KAUST orange)
+col_h     <- "#b10f2e"  # height only (KAUST red, as the spine in R/slices.R)
+col_hw    <- "#5284C4"  # height x width (KAUST blue, as the marginal in R/slices.R)
 col_width <- "gray30"   # conditional width intervals
 
 theme_panel <- function() {
@@ -94,7 +95,7 @@ two_panel <- function(logf, start, xl, yl, width_at, true_marg, marg_lim, ymax,
   p_right <-
     ggplot(marg, aes(x)) +
     geom_area(aes(y = truth), fill = "gray82") +
-    geom_line(aes(y = corrected), colour = col_cmp, linewidth = 1.2) +
+    geom_line(aes(y = corrected), colour = col_hw, linewidth = 1.2) +
     geom_line(aes(y = height_only), colour = col_h, linewidth = 1.1, linetype = "dashed") +
     labels$right +
     coord_cartesian(xlim = marg_lim, ylim = c(0, ymax), expand = FALSE, clip = "off") +
@@ -119,7 +120,7 @@ p_gauss <- two_panel(
   labels = list(
     right = list(
       annotate("text", -1.35, 0.40, label = "height only", colour = col_h, size = 4.2, hjust = 1),
-      annotate("text", 1.35, 0.40, label = "height × width", colour = col_cmp, size = 4.2, hjust = 0),
+      annotate("text", 1.35, 0.40, label = "height × width", colour = col_hw, size = 4.2, hjust = 0),
       annotate("text", 3.4, 0.03, label = "truth", colour = "gray45", size = 4, hjust = 1)
     )
   )
@@ -141,7 +142,7 @@ p_trumpet <- two_panel(
   labels = list(
     right = list(
       annotate("text", -1.55, 0.40, label = "height only", colour = col_h, size = 4.2, hjust = 1),
-      annotate("text", 1.15, 0.40, label = "height × width", colour = col_cmp, size = 4.2, hjust = 0),
+      annotate("text", 1.15, 0.40, label = "height × width", colour = col_hw, size = 4.2, hjust = 0),
       annotate("text", 3.4, 0.03, label = "truth", colour = "gray45", size = 4, hjust = 1)
     )
   )
