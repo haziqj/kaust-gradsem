@@ -417,7 +417,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 ::: {.lv-text}
 [[🤖 AI]{.lv-tag} [[Burnell et al. (2023)](https://arxiv.org/abs/2306.10062) · [Maia Polo et al. (2024)](https://proceedings.mlr.press/v235/maia-polo24a.html)]{.lv-src}]{.lv-top}
 [LLMs have latent abilities too]{.lv-title}
-[Factor analysis finds three: reasoning, comprehension and core language modelling. IRT estimates MMLU scores from 100 of its 14,000 questions.]{.lv-body}
+[Factor analysis reveals abilities like reasoning and comprehension. IRT finds a benchmark's most informative questions, so far fewer are needed.]{.lv-body}
 :::
 :::
 
