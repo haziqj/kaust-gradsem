@@ -359,28 +359,9 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 
 ## Outline
 
-```{=html}
-<style>
-.outline-list { font-size: 0.78em; }
-.outline-list ol > li { margin-bottom: .45em; }
-.outline-list ol > li > ul { font-size: 0.86em; margin-top: .1em; }
-.lvm-panel p { margin: 0; }
-.lvm-label { display: block; font-size: 15px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #73797C; }
-.lvm-head { display: block; font-size: 25px; font-weight: 600; line-height: 1.2; margin: .1em 0 .5em; }
-.lvm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.lvm-card { position: relative; background: #fff; border: 1px solid #E1E4E5; border-top: 6px solid var(--c); border-radius: 8px; padding: 9px 14px 12px; }
-.lvm-card .ico { position: absolute; top: 6px; right: 10px; font-size: 30px; line-height: 1; }
-.lvm-card .tag { display: block; font-size: 14px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--d); }
-.lvm-card .hook { display: block; font-size: 20px; font-weight: 700; line-height: 1.22; margin: .25em 0 .3em; padding-right: 30px; }
-.lvm-card .what { display: block; font-size: 16.5px; line-height: 1.35; color: #27343B; }
-.lvm-card .ref { display: block; font-size: 14px; line-height: 1.3; color: #73797C; margin-top: .45em; }
-</style>
-```
-
 ::: {.columns}
 
-::: {.column width=37%}
-::: {.outline-list}
+::: {.column width=50%}
 1. **Brief overview of SEMs**
     - Motivating example
     - Bayesian inference
@@ -391,45 +372,29 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
     - Gaussian copula sampling
 3. **The INLAvaan R package**
 :::
-:::
 
-::: {.column width=63%}
-::: {.lvm-panel}
-[Side reading]{.lvm-label}
-[Latent variables on KAUST's research agenda]{.lvm-head}
+::: {.column width=50%}
+::: {.small-text}
+**Latent variables on KAUST's agenda**
 
-::: {.lvm-grid}
-::: {.lvm-card style="--c:#adbf04; --d:#595403;"}
-[🌾]{.ico} [Food]{.tag}
-[The UN measures food insecurity with a Rasch model]{.hook}
-[Eight yes/no questions, from worrying about food to going a whole day without eating, behind SDG indicator 2.1.2.]{.what}
-[Cafiero, Viviani & Nord (2018), [*Measurement*](https://doi.org/10.1016/j.measurement.2017.10.065)]{.ref}
-:::
+::: {.nudge-up}
+::: {layout-ncol=2}
+![*(Food · Rasch model)*<br>UN food insecurity scale](figures/unsplash-food.jpg)
 
-::: {.lvm-card style="--c:#5284C4; --d:#003B75;"}
-[💧]{.ico} [Water]{.tag}
-[One scale for household water insecurity]{.hook}
-[Twelve questions, validated on 8,127 households at 28 sites in 23 countries, and unidimensional in factor analyses.]{.what}
-[Young et al. (2019), [*BMJ Global Health*](https://doi.org/10.1136/bmjgh-2019-001750)]{.ref}
-:::
+![*(Water · factor analysis)*<br>Household water insecurity](figures/unsplash-water.jpg)
 
-::: {.lvm-card style="--c:#9C6FAE; --d:#6D2463;"}
-[🤖]{.ico} [AI]{.tag}
-[LLMs have latent abilities too]{.hook}
-[Factor analysis of 29 LLMs on 27 tasks finds three: reasoning, comprehension and core language modelling. And IRT estimates MMLU scores from 100 of its 14,000 questions.]{.what}
-[Burnell et al. (2023), [arXiv](https://arxiv.org/abs/2306.10062) · Maia Polo et al. (2024), [ICML](https://proceedings.mlr.press/v235/maia-polo24a.html)]{.ref}
-:::
+![*(AI · factor analysis)*<br>Latent abilities of LLMs](figures/unsplash-ai.jpg)
 
-::: {.lvm-card style="--c:#00A6AA; --d:#004C59;"}
-[🌿]{.ico} [Environment]{.tag}
-[SEM sees what raw correlations hide]{.hook}
-[Across 1,126 grassland plots on five continents, species richness boosts productivity, in contrast with the raw data pattern.]{.what}
-[Grace et al. (2016), [*Nature*](https://doi.org/10.1038/nature16524)]{.ref}
+![*(Environment · SEM)*<br>What raw correlations hide](figures/unsplash-environment.jpg)
 :::
 :::
 :::
 :::
 
+:::
+
+::: aside
+Side reading: [Cafiero et al. (2018)](https://doi.org/10.1016/j.measurement.2017.10.065), [Young et al. (2019)](https://doi.org/10.1136/bmjgh-2019-001750), [Burnell et al. (2023)](https://arxiv.org/abs/2306.10062), [Grace et al. (2016)](https://doi.org/10.1038/nature16524). Photos: Unsplash [\@pazarando](https://unsplash.com/photos/person-holding-stack-of-wheat-zwZusrYAGoM), [\@_mrjn_esf](https://unsplash.com/photos/pouring-water-on-persons-hands-YpZ2cj4s0oo), [\@katjaano](https://unsplash.com/photos/child-touching-white-robotic-hand-_7ceGXTAtyQ), [\@jarlock55](https://unsplash.com/photos/hand-touching-grass-in-sunlit-field-cbpbQ1LjAws).
 :::
 
 # Structural equation models {.transition-slide}
