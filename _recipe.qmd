@@ -312,7 +312,20 @@ $$
 ::: {.columns}
 
 ::: {.column width="46%"}
-::: {.fragment fragment-index=2}
+<!-- Cross-section of one slice (R/slice_section.R), then swapped for the text -->
+:::: {.r-stack}
+::: {.fragment .fade-in-then-out fragment-index=1}
+```{r}
+#| label: slice-section
+#| file: "R/slice_section.R"
+#| fig-height: 3.5
+#| fig-width: 5.4
+#| fig-align: center
+#| out-width: 100%
+```
+:::
+
+::: {.fragment fragment-index=2 style="width: 100%;"}
 - This is [**expensive**]{.text-mer} to compute, as for every $\vartheta_j$ evaluation, need
 
   1. An optimisation of $\boldsymbol\vartheta_{-j}\in\mathbb R^{m-1}$ at this location; and
@@ -320,6 +333,7 @@ $$
 
 - Next slides: two important results.
 :::
+::::
 :::
 
 ::: {.column width="54%"}
