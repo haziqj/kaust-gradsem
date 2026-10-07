@@ -11,11 +11,12 @@
 ## ----- Configuration ---------------------------------------------------------
 library(tidyverse)
 
-col_shared <- "#00A6AA" # bell inside the rectangle (KAUST turquoise)
-col_swap <- "#F18F00" # tails and corners, equal areas (KAUST orange)
-col_height <- "#b10f2e" # peak and height, as the spine in R/slices.R
-col_width <- "gray25"
-col_move <- "#B86D00" # tails-into-corners arrows (dark orange)
+col_inside <- "#F18F00" # bell inside the rectangle, orange as in R/slices.R
+col_swap <- "#00A6AA" # tails and corners, equal areas, turquoise as tails
+col_curve <- "#b10f2e" # slice and its peak, red as the spine in R/slices.R
+col_arrow <- "black" # height and width
+col_box <- "gray45"
+col_move <- "#00777A" # tails-into-corners arrows (dark turquoise)
 
 zmax <- 3.6
 half_width <- sqrt(2 * pi) / 2 # rectangle area = peak x width = 1
@@ -34,18 +35,18 @@ arrow_both <- arrow(ends = "both", length = unit(0.18, "cm"), type = "closed")
 arrow_move <- arrow(length = unit(0.16, "cm"), type = "closed")
 
 ggplot() +
-  geom_area(data = inside, aes(x, y), fill = col_shared, alpha = 0.35) +
+  geom_area(data = inside, aes(x, y), fill = col_inside, alpha = 0.5) +
   geom_ribbon(
     data = inside,
     aes(x, ymin = y, ymax = peak),
     fill = col_swap,
-    alpha = 0.55
+    alpha = 0.45
   ) +
   geom_area(
     data = tails,
     aes(x, y, group = side),
     fill = col_swap,
-    alpha = 0.55
+    alpha = 0.45
   ) +
   annotate(
     "rect",
@@ -54,10 +55,10 @@ ggplot() +
     ymin = 0,
     ymax = peak,
     fill = NA,
-    colour = col_swap,
+    colour = col_box,
     linewidth = 0.7
   ) +
-  geom_line(data = bell, aes(x, y), colour = col_shared, linewidth = 1.2) +
+  geom_line(data = bell, aes(x, y), colour = col_curve, linewidth = 1.2) +
   annotate(
     "segment",
     x = -zmax,
@@ -72,17 +73,17 @@ ggplot() +
     xend = 0,
     y = 0,
     yend = peak - 0.012,
-    colour = col_height,
+    colour = col_arrow,
     linewidth = 0.7,
     arrow = arrow_both
   ) +
-  annotate("point", x = 0, y = peak, colour = col_height, size = 2.6) +
+  annotate("point", x = 0, y = peak, colour = col_curve, size = 2.6) +
   annotate(
     "text",
     x = -0.08,
     y = 0.3 * peak,
     label = "height",
-    colour = col_height,
+    colour = col_arrow,
     size = 6.5,
     hjust = 1
   ) +
@@ -92,7 +93,7 @@ ggplot() +
     xend = half_width,
     y = y_width,
     yend = y_width,
-    colour = col_width,
+    colour = col_arrow,
     linewidth = 0.7,
     arrow = arrow_both
   ) +
@@ -101,7 +102,7 @@ ggplot() +
     x = 0,
     y = y_width - 0.035,
     label = "width",
-    colour = col_width,
+    colour = col_arrow,
     size = 6.5
   ) +
   annotate(
