@@ -375,17 +375,17 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 
 ::: {.column width=50%}
 ::: {.small-text}
-**Latent variables on KAUST's agenda**
+[$\hspace{1.8cm}$**Latent variables on KAUST's agenda**]{.text-org}
 
 ::: {.nudge-up}
 ::: {layout-ncol=2}
-![*(Food · Rasch model)*<br>UN food insecurity scale](figures/unsplash-food.jpg)
+![🌾 **The UN scores food insecurity** with a Rasch model on 8 yes/no questions.<br>[Cafiero et al. (2018)](https://doi.org/10.1016/j.measurement.2017.10.065)](figures/unsplash-food.jpg)
 
-![*(Water · factor analysis)*<br>Household water insecurity](figures/unsplash-water.jpg)
+![💧 **One latent scale for household water insecurity**, from 23 countries.<br>[Young et al. (2019)](https://doi.org/10.1136/bmjgh-2019-001750)](figures/unsplash-water.jpg)
 
-![*(AI · factor analysis)*<br>Latent abilities of LLMs](figures/unsplash-ai.jpg)
+![🤖 **LLMs have latent abilities too**: factor analysis finds three in 29 models.<br>[Burnell et al. (2023)](https://arxiv.org/abs/2306.10062)](figures/unsplash-ai.jpg)
 
-![*(Environment · SEM)*<br>What raw correlations hide](figures/unsplash-environment.jpg)
+![🌿 **SEM sees what raw correlations hide**: richness boosts productivity.<br>[Grace et al. (2016)](https://doi.org/10.1038/nature16524)](figures/unsplash-environment.jpg)
 :::
 :::
 :::
@@ -394,7 +394,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
 :::
 
 ::: aside
-Side reading: [Cafiero et al. (2018)](https://doi.org/10.1016/j.measurement.2017.10.065), [Young et al. (2019)](https://doi.org/10.1136/bmjgh-2019-001750), [Burnell et al. (2023)](https://arxiv.org/abs/2306.10062), [Grace et al. (2016)](https://doi.org/10.1038/nature16524). Photos: Unsplash [\@pazarando](https://unsplash.com/photos/person-holding-stack-of-wheat-zwZusrYAGoM), [\@_mrjn_esf](https://unsplash.com/photos/pouring-water-on-persons-hands-YpZ2cj4s0oo), [\@katjaano](https://unsplash.com/photos/child-touching-white-robotic-hand-_7ceGXTAtyQ), [\@jarlock55](https://unsplash.com/photos/hand-touching-grass-in-sunlit-field-cbpbQ1LjAws).
+Photo credits: Unsplash [\@pazarando](https://unsplash.com/photos/person-holding-stack-of-wheat-zwZusrYAGoM), [\@_mrjn_esf](https://unsplash.com/photos/pouring-water-on-persons-hands-YpZ2cj4s0oo), [\@katjaano](https://unsplash.com/photos/child-touching-white-robotic-hand-_7ceGXTAtyQ), [\@jarlock55](https://unsplash.com/photos/hand-touching-grass-in-sunlit-field-cbpbQ1LjAws).
 :::
 
 # Structural equation models {.transition-slide}
