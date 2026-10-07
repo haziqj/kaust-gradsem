@@ -442,17 +442,39 @@ where $\small\mathbf{g}(\boldsymbol\vartheta) = -\nabla \log \pi(\boldsymbol\var
 :::
 
 ::: {.column width=45%}
-::: {.fragment fragment-index=2}
 ```{r}
-#| label: skewnormfit
+#| label: skewnorm
+#| include: false
 #| message: false
 #| file: "R/skewnorm.R"
+```
+
+<!-- Evaluated points only (R/skewnorm.R), then swapped for the SN fit -->
+:::: {.r-stack}
+::: {.fragment .fade-in-then-out fragment-index=1}
+```{r}
+#| label: skewnormfit-points
+#| dependson: "skewnorm"
 #| fig-height: 5.1
 #| fig-width: 4.8
 #| fig-align: center
 #| out-width: 100%
+p_skewnorm_points
 ```
 :::
+
+::: {.fragment fragment-index=2}
+```{r}
+#| label: skewnormfit
+#| dependson: "skewnorm"
+#| fig-height: 5.1
+#| fig-width: 4.8
+#| fig-align: center
+#| out-width: 100%
+p_skewnorm
+```
+:::
+::::
 :::
 :::
 
