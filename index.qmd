@@ -342,7 +342,7 @@ Supported by the 2025 KAUST Competitive Research Grant (CRG)^[<https://bayescomp
     <div class="wp-text">Growth curves &amp; dynamic SEM</div>
   </div>
   <div class="wp-card" style="--c:#F18F00; --d:#804900;">
-    <div class="wp-title"><span class="wp-tag">WP4</span> Make it usable</div>
+    <div class="wp-title"><span class="wp-tag">WP4</span> Software &amp; dissemination</div>
     <div class="wp-text">Open-source R package: INLAvaan</div>
   </div>
 </div>
