@@ -7,8 +7,8 @@ library(INLAvaan)
 # The Kidney indicators live on very different scales, so one prior for all loadings
 # cannot make sense. Strong priors are applied only to indicators on a comparable scale,
 # y1, y2 and y6 (all other parameters keep the default priors):
-#   - loadings (true 0.87, 1.1, 1.8):             N(4, 0.1^2)
-#   - residual variances (true 0.33, 0.70, 3.1):  Gamma(100, 50)  (mean 2, SD 0.2)
+#   - loadings (true 1.08, 1.1, 1.8):             N(2, 0.1^2)
+#   - residual variances (true 0.29, 0.30, 1.1):  Gamma(100, 50)  (mean 2, SD 0.2)
 # Each panel has its own strong-prior fit, so the two sets of priors do not interact.
 # Run from the project root; writes R/p_priors.RData (p1: loadings, p2: residual variances).
 
